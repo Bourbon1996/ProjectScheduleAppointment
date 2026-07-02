@@ -8,8 +8,7 @@ import utils.JpaUtil;
 public class UserDAOImpl implements UserDAO {
 	EntityManager em =  JpaUtil.getEntityManager();
 
-	GenericCRUDUtil<User> userDAO =
-	        new GenericCRUDUtil<>(em, User.class);
+	GenericCRUDUtil<User> userDAO = new GenericCRUDUtil<>(em, User.class);
 	
 	
 	
