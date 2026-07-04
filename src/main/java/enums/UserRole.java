@@ -1,5 +1,5 @@
 package enums;
 
 public enum UserRole {
-	PATIENT, DOCTOR, ADMIN
+	PATIENT, DOCTOR, ADMIN, STAFF
 }

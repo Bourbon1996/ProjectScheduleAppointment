@@ -5,37 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Home</title>
+
+<!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-	<table boder = 1>
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Fullname</th>
-				<th>Phone</th>
-				<th>Email</th>
-				<th>Password</th>
-				<th>Role</th>
-			
-			</tr>
-			
-			
-		</thead>
-	
-	<tbody>
-			<c:forEach var = "user" items = "${list}">
-				<tr>
-					<td>${user.id}</td>
-					<td>${user.fullname}</td>
-					<td>${user.phone}</td>
-					<td>${user.email}</td>
-					<td>${user.passwordHash}</td>
-					<td>${user.role}</td>
-				</tr> 
-			</c:forEach>
-	</tbody>
-	
-	</table>
+	<jsp:include page="/layout/home/header.jsp"/>
 </body>
 </html>

@@ -3,7 +3,6 @@ package users.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.management.Notification;
 
 import doctors.entity.Doctor;
 import enums.UserRole;
@@ -22,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import notifications.entity.Notification;
 import patients.entity.Patient;
 
 @Entity

@@ -8,11 +8,10 @@ import java.util.List;
 
 public class GenericCRUDUtil<T> {
 
-    private final EntityManager em;
+    private final EntityManager em = JpaUtil.getEntityManager();
     private final Class<T> entityClass;
 
-    public GenericCRUDUtil(EntityManager em, Class<T> entityClass) {
-        this.em = em;
+    public GenericCRUDUtil(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
