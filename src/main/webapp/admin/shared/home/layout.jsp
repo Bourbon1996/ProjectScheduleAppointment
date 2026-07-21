@@ -1,4 +1,4 @@
-<%@ include file="/admin/shared/page.jsp" %>
+<%@ include file="/admin/shared/home/page.jsp" %>
 
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
