@@ -59,8 +59,8 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "user")
-    private Patient patient;
+    @OneToMany(mappedBy = "user")
+    private List<Patient> patients;
 
     @OneToOne(mappedBy = "user")
     private Doctor doctor;

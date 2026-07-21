@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "departments")
@@ -38,4 +40,18 @@ public class Department {
 
     @OneToMany(mappedBy = "department")
     private List<Appointment> appointments;
+    
+
+    public BigDecimal getMinFee() {
+        if (this.doctors == null || this.doctors.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+        
+        return this.doctors.stream()
+                .map(Doctor::getExaminationFee)
+                .filter(Objects::nonNull)
+                .min(BigDecimal::compareTo)
+                .orElse(BigDecimal.ZERO);
+        
+    }
 }

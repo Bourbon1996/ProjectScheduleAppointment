@@ -1,5 +1,6 @@
 package doctors.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import appointments.entity.Appointment;
@@ -42,9 +43,9 @@ public class Doctor {
     private Department department;
 
     private String title;
-
-    @Column(name = "license_number")
-    private String licenseNumber;
+    
+    @Column(name = "examination_fee", nullable = false, precision = 18, scale = 2)
+    private BigDecimal examinationFee = new BigDecimal("150000.00");
 
     @Column(name = "experience_years")
     private Integer experienceYears;
