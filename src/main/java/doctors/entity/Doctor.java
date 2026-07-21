@@ -43,9 +43,7 @@ public class Doctor {
 
     private String title;
 
-    @Column(name = "license_number")
-    private String licenseNumber;
-
+   
     @Column(name = "experience_years")
     private Integer experienceYears;
 

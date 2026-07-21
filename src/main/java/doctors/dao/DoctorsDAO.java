@@ -1,5 +1,8 @@
 package doctors.dao;
 
-public class DoctorsDAO {
+import doctors.entity.Doctor;
 
+public class DoctorsDAO {
+   
+  
 }
