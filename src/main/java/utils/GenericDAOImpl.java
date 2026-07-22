@@ -6,12 +6,12 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class GenericCRUDUtil<T> {
+public class GenericDAOImpl<T> implements GenericDAO<T> {
 
     private final EntityManager em = JpaUtil.getEntityManager();
     private final Class<T> entityClass;
 
-    public GenericCRUDUtil(Class<T> entityClass) {
+    public GenericDAOImpl(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 

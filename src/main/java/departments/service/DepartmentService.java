@@ -7,7 +7,7 @@ import departments.dao.DepartmentDaoImpl;
 import departments.entity.Department;
 
 public class DepartmentService {
-	DepartmentDaoImpl dao = new DepartmentDaoImpl();
+	DepartmentDAO dao = new DepartmentDaoImpl();
 	
 	public List<Department> getAllDepartmentParent(){
 		

@@ -1,9 +1,9 @@
 package users.dao;
 
 import users.entity.User;
-import utils.GenericCRUDUtil;
+import utils.GenericDAOImpl;
 
-public class UserDAOImpl extends GenericCRUDUtil<User> implements UserDAO {
+public class UserDAOImpl extends GenericDAOImpl<User> implements UserDAO {
 
     public UserDAOImpl() {
         super(User.class);

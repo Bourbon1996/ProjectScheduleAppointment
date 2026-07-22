@@ -5,10 +5,10 @@ import java.util.List;
 import departments.entity.Department;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import utils.GenericCRUDUtil;
+import utils.GenericDAOImpl;
 import utils.JpaUtil;
 
-public class DepartmentDaoImpl extends GenericCRUDUtil<Department> implements DepartmentDAO {
+public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements DepartmentDAO {
 
 	public DepartmentDaoImpl() {
 		super(Department.class);
