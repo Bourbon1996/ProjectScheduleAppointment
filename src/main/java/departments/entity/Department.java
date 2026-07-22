@@ -37,6 +37,8 @@ public class Department {
 
     private String status;
 
+    private String image_url;
+    
     @OneToMany(mappedBy = "department")
     private List<Doctor> doctors;
 
