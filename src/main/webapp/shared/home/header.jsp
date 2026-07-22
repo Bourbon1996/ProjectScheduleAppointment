@@ -1,9 +1,6 @@
 <%@ page language="java"
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-    <link rel="stylesheet"
-      href="${pageContext.request.contextPath}/css/auth.css">
 
 <nav class="navbar navbar-expand-sm hospital-navbar p-0">
 
@@ -40,7 +37,6 @@
                 <a class="nav-link" href="#">Hỗ trợ người bệnh</a>
             </li>
 
-            <!-- Đẩy nhóm bên phải -->
             <li class="nav-item ms-auto">
                 <a class="nav-link appointment-link" href="#">
                     Đặt lịch khám

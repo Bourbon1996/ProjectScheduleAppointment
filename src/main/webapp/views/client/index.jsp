@@ -9,6 +9,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    
+    <!-- Cài đặt Favicon cho web -->
+	<link rel="icon" type="image/png" href="${ctx}/img/logo.png">
 
     <!-- Bootstrap CSS: vẫn giữ để dùng cho navbar -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -20,7 +23,11 @@
 
     <!-- CSS trang chủ -->
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/index.css">
+          href="${ctx}/css/client/index.css">
+          
+    <!-- CSS popup đăng nhập -->
+    <link rel="stylesheet"
+          href="${ctx}/css/client/auth.css">
           
     
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,9 +35,6 @@
 	
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    <!-- CSS popup đăng nhập -->
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/css/auth.css">
 </head>
 
 <body>
@@ -42,18 +46,19 @@
 
 	<main>
 		<!-- SECTION BANNER -->
-		<%@ include file="/layouts/banner.jsp" %>
-		    
+		<section>
+			<%@ include file="/layouts/client/banner.jsp" %>
+		</section>
 		    
 		<!-- SECTION MENU(HÙNG) -->
 		<section>
-		
+			<%@ include file="/layouts/client/section-menu.jsp" %>
 		</section>
 		    
 		    
 		<!-- SECTION DEPARTMENTS(KA) -->
 		<section>
-			<%@ include file="/layouts/section-departments.jsp" %>
+			<%@ include file="/layouts/client/section-departments.jsp" %>
 		</section>
 		
 		
@@ -63,12 +68,15 @@
 		<jsp:include page="/shared/home/footer.jsp"/>
 	</footer>
 
-    <!-- Nội dung popup đăng nhập -->
+    <!-- Popup Auth -->
     <jsp:include page="/shared/home/Auth.jsp"/>
-
+    
+    
+    
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="${ctx}/JS/auth.js"></script>
 
 </body>
 </html>
+
+<script src="${ctx}/js/auth.js"></script>

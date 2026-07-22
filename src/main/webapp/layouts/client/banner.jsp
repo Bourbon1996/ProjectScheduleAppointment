@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- Hero Banner Section -->
-<section class="hero-banner position-relative d-flex align-items-center" style="background-image: url('${ctx}/img/banner.png');">
+<div class="hero-banner position-relative d-flex align-items-center" style="background-image: url('${ctx}/img/banner-hero.png');">
     
     <div class="overlay-gradient w-100 h-100 position-absolute top-0 start-0"></div>
 
@@ -28,4 +28,4 @@
             </div>
         </div>
     </div>
-</section>
+</div>

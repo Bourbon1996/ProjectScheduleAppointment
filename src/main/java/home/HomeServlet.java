@@ -37,7 +37,7 @@ public class HomeServlet extends HttpServlet {
 		
 		request.setAttribute("listDepartmentsParent", listDepartments);
 		
-		request.getRequestDispatcher("/views/index.jsp").forward(request, response);
+		request.getRequestDispatcher("/views/client/index.jsp").forward(request, response);
 	}
 
 	/**

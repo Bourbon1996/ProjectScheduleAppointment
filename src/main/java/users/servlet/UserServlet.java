@@ -35,15 +35,6 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-			
-
-			UserService service = new UserServiceImpl();
-			
-			List<User> list = service.findAll();
-			
-			request.setAttribute("list", list);
-			
-			request.getRequestDispatcher("/views/index.jsp").forward(request, response);
 		
 	}
 

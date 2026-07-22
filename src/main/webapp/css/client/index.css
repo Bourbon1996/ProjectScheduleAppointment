@@ -1,0 +1,363 @@
+@charset "UTF-8";
+
+/* START DÙNG CHUNG */
+:root {
+    --primary-blue: #0d68aa; 
+    --text-color: #0d71ba;
+    --footer-color: #ecfaff;
+}
+
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, a, span, button, div {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-blue, #0d68aa) #f1f5f9;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--primary-blue, #0d68aa);
+    border-radius: 5px;
+    border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #094a7a;
+}
+
+/* END DÙNG CHUNG */
+
+
+
+
+
+/* START HEADER */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.hospital-navbar {
+    background-color: var(--primary-blue);
+    font-family: 'Roboto', sans-serif;
+}
+
+.hospital-navbar .nav-link {
+    min-height: 70px; 
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 500; 
+    padding: 0 20px;
+    transition: all 0.3s ease;
+}
+
+.hospital-navbar .nav-link:not(.appointment-link):hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+}
+
+.nav-logo {
+    height: 55px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.hospital-navbar .nav-item:first-child .nav-link {
+    padding-left: 15px;
+    padding-right: 25px;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+.appointment-link {
+    background: #ffffff !important;
+    color: var(--primary-blue, #0d68aa) !important;
+    border-radius: 50px;
+    padding: 0 24px !important; 
+    height: 46px;
+    min-height: 46px !important;
+    margin: 12px 20px 12px auto !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    display: flex !important;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.appointment-link:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+    background: #f1f5f9 !important;
+}
+
+
+
+.navbar-icon {
+    width: 46px !important; 
+    height: 46px !important;
+    min-height: 46px !important; 
+    margin: 12px 12px 12px 0 !important;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.2rem;
+    color: #ffffff !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+.account-icon, .search-icon {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.navbar-icon:hover {
+    background-color: #ffffff !important;
+    color: var(--primary-blue, #0d68aa) !important; 
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.hospital-navbar .nav-item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+/* END HEADER */
+
+
+
+
+
+/* START MAIN */
+
+/* START BANNER */
+
+.hero-banner {
+	min-height: 80vh; 
+    background-size: cover;
+    background-position: right 20%;
+    background-repeat: no-repeat;
+    
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.overlay-gradient {
+    background: linear-gradient(to right, rgba(13, 104, 170, 0.95) 0%, rgba(13, 104, 170, 0.6) 45%, rgba(13, 104, 170, 0) 100%);
+}
+
+.btn-booking {
+    color: var(--primary-blue, #0d68aa) !important;
+    transition: all 0.3s ease;
+}
+
+.btn-booking:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    background-color: #f8f9fa; 
+}
+
+/* END BANNER */
+
+
+
+
+
+
+/* START DEPARTMENT-SECTION */
+.title{
+	color: var(--text-color)
+}
+
+.nav-link{
+	font-size: 20px;
+}
+
+.nav-link:hover{
+	color: var(--primary-blue) !important;
+}
+.nav-tabs .nav-link.active {
+    color: var(--text-color) !important;
+    border-bottom: 3px solid var(--text-color);
+}
+
+.umc-card {
+    background-color: #ffffff !important;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    padding: 2.5rem 1rem;
+    cursor: pointer;
+}
+
+.umc-card .card-title {
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.5;
+    transition: color 0.3s ease;
+}
+
+.umc-card .card-icon {
+    width: 84px;
+    height: 84px;
+    
+    background-color: var(--text-color); 
+    
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    
+    transition: background-color 0.3s ease; 
+}
+
+.umc-card:hover .card-icon {
+    background-color: #ffffff !important;
+}
+
+.umc-card:hover {
+    background-color: var(--text-color) !important;
+    transform: translateY(-8px); 
+    box-shadow: 0 12px 24px rgba(13, 104, 170, 0.25) !important; 
+}
+
+.umc-card:hover .card-title {
+    color: #ffffff !important;
+}
+    
+/* END DEPARTMENT-SECTION */
+
+/* END MAIN */
+
+
+
+
+
+
+/* FOOTER */
+
+/* Base Footer */
+.umc-footer {
+    background-color: var(--footer-color);
+    color: #4b5563; 
+    border-top: 5px solid var(--primary-blue);
+}
+
+.brand-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid var(--primary-blue); 
+    border-radius: 12px;
+    padding: 30px 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+}
+
+.brand-border-bottom {
+    border-bottom: 1px dashed #cbd5e1;
+}
+
+
+.umc-footer .footer-title {
+    color: var(--text-color);
+    font-weight: 700;
+    font-size: 1.1rem;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.umc-footer .footer-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 45px;
+    height: 3px;
+    background-color: var(--primary-blue);
+    border-radius: 2px;
+}
+
+.umc-footer .contact-info i {
+    color: var(--primary-blue);
+    margin-top: 2px;
+}
+
+.umc-footer .work-hours span {
+    color: #6b7280;
+}
+
+.umc-footer .footer-links a {
+    color: #4b5563;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.umc-footer .footer-links a:hover {
+    color: var(--text-color);
+    padding-left: 8px;
+    font-weight: 500;
+}
+
+.umc-footer .social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    color: var(--primary-blue);
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.umc-footer .social-links a:hover {
+    transform: translateY(-5px); 
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(13, 104, 170, 0.3);
+}
+
+.app-badge {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: #4b5563;
+}
+
+.app-badge:hover {
+    border-color: var(--primary-blue) !important;
+    background-color: #f0f8ff !important;
+    color: var(--text-color);
+}
+/* END FOOTER */
+
