@@ -1,6 +1,9 @@
 <%@ page language="java"
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    <link rel="stylesheet"
+      href="${pageContext.request.contextPath}/css/auth.css">
 
 <nav class="navbar navbar-expand-sm hospital-navbar p-0">
 
@@ -46,12 +49,13 @@
 
             <!-- Tài khoản -->
             <li class="nav-item">
-                <a class="navbar-icon account-icon"
-                   href="${pageContext.request.contextPath}/login"
-                   title="Tài khoản">
-
-                    <i class="bi bi-person"></i>
-                </a>
+                <a href=""
+				   class="navbar-icon account-icon"
+				   id="openLoginPopup"
+				   title="Đăng nhập">
+				
+				    <i class="bi bi-person"></i>
+				</a>
             </li>
 
             <!-- Tìm kiếm -->
