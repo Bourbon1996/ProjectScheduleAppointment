@@ -190,3 +190,45 @@
 .auth-register-text a:hover {
     text-decoration: underline;
 }
+
+/* Tiêu đề popup đăng ký */
+.auth-title {
+    margin: 0 0 8px;
+
+    text-align: center;
+
+    color: #333;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+/*
+ * Popup đăng ký dài hơn popup đăng nhập.
+ * Nếu màn hình thấp thì cho phép cuộn bên trong.
+ */
+.auth-register-box {
+    width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Thông báo lỗi */
+.auth-error-message {
+    display: none;
+
+    margin: 0 0 14px;
+    padding: 10px 12px;
+
+    border: 1px solid #f1aeb5;
+    border-radius: 5px;
+
+    background-color: #f8d7da;
+    color: #842029;
+
+    font-size: 14px;
+}
+
+/* Khi có lỗi thì JavaScript thêm class show */
+.auth-error-message.show {
+    display: block;
+}
