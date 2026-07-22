@@ -6,11 +6,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+
+import departments.entity.Department;
+import departments.service.DepartmentService;
 
 /**
  * Servlet implementation class HomeServlet
  */
-@WebServlet({"/home/index", "/home/about", "/home/contact", "/home/medical-specialty", "/home/doctor"})
+@WebServlet({"/home/index", "/home/about", "/home/contact", "/home/departments", "/home/doctor"})
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -27,6 +31,12 @@ public class HomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		DepartmentService departmentService = new DepartmentService();
+		
+		List<Department> listDepartments = departmentService.getAllDepartmentParent();
+		
+		request.setAttribute("listDepartmentsParent", listDepartments);
+		
 		request.getRequestDispatcher("/views/index.jsp").forward(request, response);
 	}
 

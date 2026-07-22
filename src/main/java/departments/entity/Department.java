@@ -4,6 +4,7 @@ import java.util.List;
 
 import appointments.entity.Appointment;
 import doctors.entity.Doctor;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,7 +38,8 @@ public class Department {
 
     private String status;
 
-    private String image_url;
+    @Column(name = "image_url")
+    private String imageUrl;
     
     @OneToMany(mappedBy = "department")
     private List<Doctor> doctors;

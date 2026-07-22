@@ -1,6 +1,5 @@
 package users.dao;
 
-import jakarta.persistence.EntityManager;
 import users.entity.User;
 import utils.GenericCRUDUtil;
 

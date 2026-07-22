@@ -81,3 +81,9 @@ INSERT INTO departments (name, parent_id, image_url) VALUES
 (N'Khoa Kiểm soát nhiễm khuẩn', 3, '/img/departments/khoa-kiem-soat-nhiem-khuan.jpg');
 
 go
+
+UPDATE departments
+SET image_url = REPLACE(image_url, '.jpg', '.png')
+WHERE image_url LIKE '%.jpg';
+
+go
