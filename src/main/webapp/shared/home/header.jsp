@@ -145,7 +145,7 @@
             </li>
 
             <li class="nav-item ms-auto">
-                <a class="nav-link appointment-link" href="${ctx}/department">
+                <a class="nav-link appointment-link" href="${ctx}/appointment">
                     Đặt lịch khám
                 </a>
             </li>

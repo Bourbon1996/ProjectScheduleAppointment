@@ -17,7 +17,7 @@
             <!-- BODY -->
             <div class="modal-body p-4">
                 <!-- Thêm action trỏ về Servlet và method="POST" -->
-				<form id="newProfileForm" action="${pageContext.request.contextPath}/patient/save" method="POST">
+				<form id="newProfileForm" action="${pageContext.request.contextPath}/patient/create" method="POST">
 				    
 				    <div class="row g-3 mb-4">
 				        <!-- BẮT BUỘC THÊM THUỘC TÍNH name="..." CHO TẤT CẢ INPUT / SELECT -->
