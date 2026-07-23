@@ -1,2 +1,277 @@
 @charset "UTF-8";
+/* --- GIAO DIỆN ĐẶT LỊCH KHÁM (UMC STYLE) --- */
+:root {
+    --umc-blue: #006298;
+    --umc-light-blue: #e8f4fa;
+    --umc-border: #bce0f0;
+}
 
+/* Thanh Stepper 4 bước */
+.booking-stepper-container {
+    background-color: var(--umc-blue);
+    border-radius: 8px;
+    padding: 25px 15px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stepper-wrapper {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.step-item {
+    text-align: center;
+    position: relative;
+    flex: 1;
+    z-index: 2;
+}
+
+.step-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background-color: var(--umc-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.step-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Đường kẻ nối giữa các bước */
+.step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.4);
+    z-index: -1;
+}
+
+/* Trạng thái Active (Đang chọn) và Completed (Đã xong) */
+.step-item.active .step-icon {
+    background-color: white;
+    color: var(--umc-blue);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.step-item.completed .step-icon {
+    background-color: #00c853;
+    border-color: #00c853;
+    color: white;
+}
+
+.step-item.completed:not(:last-child)::after {
+    background-color: #00c853;
+}
+
+/* Khung nội dung từng bước */
+.step-content-box {
+    background: white;
+    border: 1px solid var(--umc-border);
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.step-title {
+    color: var(--umc-blue);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--umc-light-blue);
+    padding-bottom: 10px;
+}
+
+/* Thẻ chọn hồ sơ (Bước 1) */
+.profile-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.profile-card:hover, .profile-card.selected {
+    border-color: var(--umc-blue);
+    background-color: var(--umc-light-blue);
+}
+
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    background-color: var(--umc-blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Thanh tổng tiền (Bước 3) */
+.total-price-bar {
+    background-color: var(--umc-blue);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Ẩn các bước chưa kích hoạt */
+.step-pane {
+    display: none;
+}
+.step-pane.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ==========================================================================
+   FORM TẠO HỒ SƠ BỆNH NHÂN (MODAL UMC PREMIUM STYLE)
+   ========================================================================== */
+
+/* Viền và bo góc Modal */
+.umc-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 98, 152, 0.15);
+    overflow: hidden;
+}
+
+/* Header màu xanh chủ đạo có dải màu chuyển nhẹ (Gradient) */
+.umc-modal .modal-header {
+    background: linear-gradient(135deg, var(--umc-blue) 0%, #004d7a 100%);
+    padding: 20px 25px;
+    border-bottom: none;
+}
+
+.umc-modal .modal-title {
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+/* Tiêu đề từng nhóm thông tin trong Form */
+.form-section-title {
+    color: var(--umc-blue);
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--umc-light-blue);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Nhãn (Label) của ô nhập liệu */
+.umc-form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.umc-form-label i {
+    color: var(--umc-blue);
+    font-size: 1rem;
+}
+
+/* Tinh chỉnh ô Input & Select */
+.umc-input {
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    transition: all 0.25s ease;
+    background-color: #f8fafc;
+}
+
+/* Hiệu ứng khi click vào ô Input (Focus) */
+.umc-input:focus {
+    border-color: var(--umc-blue);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 98, 152, 0.12);
+    outline: none;
+}
+
+.umc-input::placeholder {
+    color: #94a3b8;
+    font-size: 0.88rem;
+}
+
+/* Ô nhập Họ tên nổi bật hơn */
+.umc-input-name {
+    font-weight: 600;
+    color: var(--umc-blue);
+}
+
+/* Phần Footer chứa nút bấm */
+.umc-modal .modal-footer {
+    background-color: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 15px 25px;
+}
+
+/* Nút bấm trong Modal */
+.btn-umc-primary {
+    background-color: var(--umc-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 98, 152, 0.2);
+}
+
+.btn-umc-primary:hover {
+    background-color: #004d7a;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(0, 98, 152, 0.3);
+}
+
+.btn-umc-secondary {
+    background-color: #e2e8f0;
+    color: #475569;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-umc-secondary:hover {
+    background-color: #cbd5e1;
+    color: #1e293b;
+}

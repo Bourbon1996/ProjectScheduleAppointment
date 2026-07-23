@@ -12,13 +12,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import users.entity.User; // Nhớ import Entity User vào nhé
+import users.entity.User;
 
 @Entity
 @Table(name = "patients")
@@ -35,6 +34,14 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    
+    @Column(name = "full_name", nullable = false, length = 100)
+    private String fullName;
+
+    @Column(length = 20)
+    private String phone;
+    // ----------------------------
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
