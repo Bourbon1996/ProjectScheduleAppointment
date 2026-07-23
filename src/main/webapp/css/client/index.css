@@ -5,6 +5,7 @@
     --primary-blue: #0d68aa; 
     --text-color: #0d71ba;
     --footer-color: #ecfaff;
+    --bg-gray: #f3f5f7;
 }
 
 *{
@@ -150,6 +151,164 @@ header {
     align-items: center;
     height: 100%;
 }
+
+.hospital-navbar .mega-dropdown {
+    position: relative !important; 
+}
+
+.hospital-navbar .mega-menu-container {
+    display: none; /* Mặc định ẩn hoàn toàn */
+    position: absolute !important;
+    top: 100% !important; /* Nằm sát ngay bên dưới đáy navbar */
+    left: 0 !important; /* Căn thẳng mép trái với chữ Chuyên Khoa */
+    transform: none !important; /* Bỏ căn giữa màn hình */
+    
+    width: 750px !important; /* Chiều dài khung */
+    height: 450px !important; /* Chiều cao cố định */
+    background-color: var(--bg-gray) !important;
+    padding: 24px !important;
+    margin-top: 0 !important;
+    border-radius: 0 0 12px 12px !important;
+    z-index: 9999 !important;
+}
+
+.hospital-navbar .mega-menu-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hospital-navbar .parent-column {
+    width: 40%;
+    height: 100%;
+    border-right: 1px solid rgba(0,0,0,0.06);
+    padding-right: 16px;
+}
+
+.hospital-navbar .parent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hospital-navbar .parent-link {
+	position: relative !important;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333333;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.hospital-navbar .parent-link::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -30px; 
+    width: 30px;  
+    height: 100%;
+    background: transparent;
+    z-index: 10;
+}
+
+.hospital-navbar .parent-item:hover .parent-link,
+.hospital-navbar .parent-link.active {
+    background-color: var(--primary-blue) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(13, 104, 170, 0.25);
+}
+
+.hospital-navbar .child-column {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    padding-left: 24px;
+    background-color: var(--bg-gray);
+}
+
+.hospital-navbar .parent-item:hover .child-column {
+    display: block !important;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.hospital-navbar .child-scroll-box {
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-right: 12px;
+}
+
+.hospital-navbar .child-link {
+    display: block;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    color: #222222;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.hospital-navbar .child-link:hover {
+    color: var(--primary-blue);
+    background-color: var(--footer-color);
+    transform: translateX(4px);
+    font-weight: 600;
+}
+
+/* Chỗ trống giữ chỗ khi chưa hover */
+.hospital-navbar .child-column-placeholder {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hospital-navbar .parent-item:hover ~ .child-column-placeholder {
+    display: none !important;
+}
+
+/* --- THANH CUỘN --- */
+.hospital-navbar .child-scroll-box::-webkit-scrollbar {
+    width: 6px;
+}
+.hospital-navbar .child-scroll-box::-webkit-scrollbar-track {
+    background: #e1e5e9;
+    border-radius: 8px;
+}
+.hospital-navbar .child-scroll-box::-webkit-scrollbar-thumb {
+    background: var(--primary-blue);
+    border-radius: 8px;
+}
+.hospital-navbar .child-scroll-box::-webkit-scrollbar-thumb:hover {
+    background: var(--text-color);
+}
+
+/* --- KÍCH HOẠT HOVER HIỆN MEGA MENU --- */
+@media (min-width: 576px) {
+    .hospital-navbar .mega-dropdown:hover > .mega-menu-container {
+        display: block !important;
+        animation: fadeInDown 0.2s ease-in-out;
+    }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 /* END HEADER */
 
 
