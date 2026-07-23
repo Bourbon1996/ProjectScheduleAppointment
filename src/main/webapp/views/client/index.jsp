@@ -79,4 +79,4 @@
 </body>
 </html>
 
-<script src="${ctx}/js/auth.js"></script>
+<script src="${ctx}/JS/auth.js"></script>

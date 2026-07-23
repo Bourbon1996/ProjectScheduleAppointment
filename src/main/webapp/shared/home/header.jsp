@@ -152,7 +152,7 @@
 
             <!-- Tài khoản -->
             <li class="nav-item">
-                <a href=""
+                <a href="#"
 				   class="navbar-icon account-icon"
 				   id="openLoginPopup"
 				   title="Đăng nhập">
