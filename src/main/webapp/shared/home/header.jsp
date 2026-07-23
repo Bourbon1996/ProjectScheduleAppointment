@@ -145,7 +145,7 @@
             </li>
 
             <li class="nav-item ms-auto">
-                <a class="nav-link appointment-link" href="#">
+                <a class="nav-link appointment-link" href="${ctx}/views/appointment.jsp">
                     Đặt lịch khám
                 </a>
             </li>
