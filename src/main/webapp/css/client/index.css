@@ -152,6 +152,8 @@ header {
     height: 100%;
 }
 
+/* Về Chuyên Khoa */
+
 .hospital-navbar .mega-dropdown {
     position: relative !important; 
 }
@@ -275,7 +277,6 @@ header {
     display: none !important;
 }
 
-/* --- THANH CUỘN --- */
 .hospital-navbar .child-scroll-box::-webkit-scrollbar {
     width: 6px;
 }
@@ -291,7 +292,6 @@ header {
     background: var(--text-color);
 }
 
-/* --- KÍCH HOẠT HOVER HIỆN MEGA MENU --- */
 @media (min-width: 576px) {
     .hospital-navbar .mega-dropdown:hover > .mega-menu-container {
         display: block !important;
@@ -307,6 +307,97 @@ header {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+
+/* Về Bệnh Viện */
+
+.hospital-navbar .mega-dropdown {
+    position: relative !important;
+}
+
+.hospital-navbar .mega-menu {
+    display: none;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important; 
+    width: 750px !important;
+    min-height: 380px !important;
+    background-color: var(--bg-gray) !important;
+    border-radius: 0 0 12px 12px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    border: 1px solid rgba(13, 104, 170, 0.15) !important;
+    overflow: hidden;
+    z-index: 9999 !important;
+}
+
+.hospital-navbar .mega-menu-intro {
+    padding: 24px 28px !important;
+    background-color: #ffffff; 
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.hospital-navbar .mega-menu-title {
+    color: var(--primary-blue);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.hospital-navbar .mega-menu-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 45px;
+    height: 3px;
+    background-color: var(--primary-blue);
+    border-radius: 2px;
+}
+
+/* Tinh chỉnh đoạn văn bản (paragraph) */
+.hospital-navbar .mega-menu-intro p {
+    color: #444444;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+.hospital-navbar .about-links {
+    padding: 20px 16px !important;
+    background-color: var(--bg-gray);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+}
+
+.hospital-navbar .about-link {
+    display: block;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333333;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.hospital-navbar .about-link:hover {
+    background-color: var(--footer-color) !important;
+    color: var(--primary-blue) !important;
+    transform: translateX(5px);
+    box-shadow: 0 2px 6px rgba(13, 104, 170, 0.08);
+}
+
+@media (min-width: 576px) {
+    .hospital-navbar .mega-dropdown:hover > .mega-menu {
+        display: block !important;
+        animation: fadeInDown 0.2s ease-in-out;
+    }
 }
 
 /* END HEADER */

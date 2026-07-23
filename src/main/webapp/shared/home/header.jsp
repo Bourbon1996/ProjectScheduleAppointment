@@ -85,8 +85,59 @@
                 <a class="nav-link" href="#">Bác sĩ</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#">Về bệnh viện</a>
+            <li class="nav-item dropdown mega-dropdown">
+                <a class="nav-link dropdown-toggle-custom" href="#" role="button"
+                   aria-expanded="false">
+                   Về bệnh viện
+                   <i class="bi bi-chevron-down ms-1" style="font-size: 0.75rem;"></i>
+                </a>
+                
+                <div class="dropdown-menu mega-menu p-0">
+                     <div class="row g-0">
+                     
+		                  <div class="col-md-8 mega-menu-intro">
+		                  <h3 class="mega-menu-title">Về Bệnh viện</h3>
+		                  <p>
+		                    Bệnh viện Đại học Y Dược TP. Hồ Chí Minh là bệnh
+		                    viện công lập hạng I, đa khoa chuyên sâu kỹ thuật
+		                    cao, trực thuộc Đại học Y Dược TP. Hồ Chí Minh có
+		                    chất lượng hàng đầu cả nước. Sự kết hợp hài hòa giữa
+		                    người Thầy giáo - Thầy thuốc và Nhà khoa học, sự gắn
+		                    kết Trường - Viện đã tạo nên thế mạnh của Bệnh viện.
+		                  </p>
+		                  <p>
+		                    Những trụ cột quan trọng: Điều trị chuyên sâu - Đào
+		                    tạo chuẩn mực - Nghiên cứu đột phá - Quản trị hiện
+		                    đại tạo nền móng vững chắc để Bệnh viện khẳng
+		                    định vị thế trên bản đồ y khoa trong nước và quốc tế.
+		                  </p>
+		                  </div>
+		                  
+		                 <div class="col-md-4 about-links">
+		                    <a class="about-link" href="${pageContext.request.contextPath}/ve-benh-vien/gioi-thieu">
+		                        Giới thiệu tổng quan
+		                    </a>
+		                    <a class="about-link" href="${pageContext.request.contextPath}/ve-benh-vien/lich-su">
+		                       Lịch sử Bệnh viện
+		                    </a>
+		                    <a class="about-link" href="${pageContext.request.contextPath}/ve-benh-vien/tam-nhin">
+		                       Tầm nhìn - Sứ mệnh - Giá trị cốt lõi
+		                    </a>
+		                    <a class="about-link" href="${pageContext.request.contextPath}/ve-benh-vien/ban-lanh-dao">
+		                       Ban lãnh đạo
+		                    </a>
+		                    <a class="about-link" href="${pageContext.request.contextPath}/ve-benh-vien/don-vi">
+		                       Các đơn vị
+		                    </a>
+		                    <a class="about-link" href="${pageContext.request.contextPath}/ve-benh-vien/thanh-tuu">
+		                       Thành tựu và giải thượng
+		                    </a>
+		                    <a class="about-link" href="${pageContext.request.contextPath}/ve-benh-vien/lien-he">
+		                       Liên hệ
+		                    </a>
+		                 </div>
+					</div>
+		         </div>
             </li>
 
             <li class="nav-item">
