@@ -2,8 +2,11 @@
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!-- Lớp phủ toàn bộ màn hình -->
-<div class="auth-popup-overlay" id="loginPopup">
+<div class="auth-popup-overlay"
+     id="loginPopup"
+     data-has-login-error="${not empty loginError}">
 
     <!-- Khung đăng nhập -->
     <div class="auth-popup-box">
@@ -31,6 +34,12 @@
         <!-- Form đăng nhập -->
         <form action="${pageContext.request.contextPath}/user/login"
               method="post">
+              
+              <c:if test="${not empty loginError}">
+		        <div class="auth-server-error">
+		            ${loginError}
+		        </div>
+		    </c:if>
 
             <div class="auth-form-group">
                 <label for="loginPhone">
@@ -40,6 +49,7 @@
                 <input type="text"
                        id="loginPhone"
                        name="phone"
+                       value="${loginPhone}"
                        placeholder="Nhập số điện thoại"
                        required>
             </div>

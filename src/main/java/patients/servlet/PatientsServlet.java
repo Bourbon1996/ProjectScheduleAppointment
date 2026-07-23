@@ -38,7 +38,7 @@ public class PatientsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-	    User loggedInUser = (User) session.getAttribute("LOGIN_USER");
+	    User loggedInUser = (User) session.getAttribute("user");
 	    
 	    if (loggedInUser != null) {
 	        // Gọi DAO lấy toàn bộ danh sách Patient của User này từ SQL Server
@@ -47,7 +47,7 @@ public class PatientsServlet extends HttpServlet {
 	        request.setAttribute("patientList", patientList);
 	    }
 	    
-	    request.getRequestDispatcher("/views/booking.jsp").forward(request, response);
+	    request.getRequestDispatcher("/views/client/appointment.jsp").forward(request, response);
 	}
 
 	/**
@@ -60,10 +60,10 @@ public class PatientsServlet extends HttpServlet {
 
         try {
             // 2. Lấy User đang đăng nhập
-            User loggedInUser = (User) session.getAttribute("LOGIN_USER");
+            User loggedInUser = (User) session.getAttribute("user");
             if (loggedInUser == null) {
                 session.setAttribute("ERROR_MSG", "Vui lòng đăng nhập để tạo hồ sơ!");
-                response.sendRedirect(request.getContextPath() + "/login");
+                response.sendRedirect(request.getContextPath() + "/user/login");
                 return;
             }
 
