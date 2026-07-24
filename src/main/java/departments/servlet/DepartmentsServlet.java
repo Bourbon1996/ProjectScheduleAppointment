@@ -1,6 +1,8 @@
 package departments.servlet;
 
 import java.io.IOException;
+
+import departments.entity.Department;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,6 +29,9 @@ public class DepartmentsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+	
+		
 	}
 
 	/**

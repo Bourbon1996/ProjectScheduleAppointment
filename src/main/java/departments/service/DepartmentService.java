@@ -10,7 +10,7 @@ public class DepartmentService {
 	DepartmentDAO dao = new DepartmentDaoImpl();
 	
 	public List<Department> getAllDepartmentParent(){
-		
+	
 		return dao.findDepartmentsParent();
 	}
 	

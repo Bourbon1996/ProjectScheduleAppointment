@@ -9,7 +9,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    
+    <head>
+    <link rel="stylesheet" href="${ctx}/css/admin/style.css">
+    </head>
     <!-- Cài đặt Favicon cho web -->
 	<link rel="icon" type="image/png" href="${ctx}/img/logo.png">
 
