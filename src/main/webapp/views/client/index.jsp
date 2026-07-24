@@ -75,7 +75,12 @@
     
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<<<<<<< HEAD
 	<script src="${ctx}/js/auth.js"></script>
+=======
+
+	<script src="${ctx}/JS/auth.js"></script>
+>>>>>>> 3682a12c0ad4d9118eee9e25aae47513ee6ec071
 </body>
 </html>
 

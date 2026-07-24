@@ -237,6 +237,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+	
+	// Tự mở lại popup khi đăng nhập thất bại
+	if (
+	    loginPopup &&
+	    loginPopup.dataset.hasLoginError === "true"
+	) {
+	    showPopup(loginPopup);
+	}
 // =====================================
     // CÁC HÀM DÙNG CHUNG
     // =====================================

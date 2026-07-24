@@ -145,14 +145,14 @@
             </li>
 
             <li class="nav-item ms-auto">
-                <a class="nav-link appointment-link" href="#">
+                <a class="nav-link appointment-link" href="${ctx}/appointment">
                     Đặt lịch khám
                 </a>
             </li>
 
             <!-- Tài khoản -->
             <li class="nav-item">
-                <a href=""
+                <a href="#"
 				   class="navbar-icon account-icon"
 				   id="openLoginPopup"
 				   title="Đăng nhập">
@@ -164,7 +164,7 @@
             <!-- Tìm kiếm -->
             <li class="nav-item">
                 <a class="navbar-icon search-icon"
-                   href="${pageContext.request.contextPath}/search"
+                   href="${ctx}/search"
                    title="Tìm kiếm">
 
                     <i class="bi bi-search"></i>

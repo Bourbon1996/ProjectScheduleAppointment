@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class PaymentServlet
  */
-@WebServlet({"/department"})
+@WebServlet("/department")
 public class DepartmentsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -27,10 +27,13 @@ public class DepartmentsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<<<<<<< HEAD
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 	
+=======
+>>>>>>> 3682a12c0ad4d9118eee9e25aae47513ee6ec071
 		
 	}
 

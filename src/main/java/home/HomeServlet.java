@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import departments.entity.Department;
-import departments.service.DepartmentService;
+import departments.service.DepartmentServiceImpl;
 
 /**
  * Servlet implementation class HomeServlet
@@ -31,7 +31,7 @@ public class HomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		DepartmentService departmentService = new DepartmentService();
+		DepartmentServiceImpl departmentService = new DepartmentServiceImpl();
 		
 		List<Department> listDepartments = departmentService.getAllDepartmentParent();
 		

@@ -2,19 +2,16 @@ package departments.service;
 
 import java.util.List;
 
+import departments.dao.DepartmentDAO;
+import departments.dao.DepartmentDaoImpl;
 import departments.entity.Department;
 
-<<<<<<< HEAD
-public class DepartmentService {
+public class DepartmentServiceImpl implements DepartmentService{
 	DepartmentDAO dao = new DepartmentDaoImpl();
 	
 	public List<Department> getAllDepartmentParent(){
-	
+		
 		return dao.findDepartmentsParent();
 	}
 	
-=======
-public interface DepartmentService {
-	public List<Department> getAllDepartmentParent();
->>>>>>> 3682a12c0ad4d9118eee9e25aae47513ee6ec071
 }
