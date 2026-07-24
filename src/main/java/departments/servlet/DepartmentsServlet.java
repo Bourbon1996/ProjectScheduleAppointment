@@ -1,6 +1,8 @@
 package departments.servlet;
 
 import java.io.IOException;
+
+import departments.entity.Department;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
