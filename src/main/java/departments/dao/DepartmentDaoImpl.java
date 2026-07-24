@@ -29,6 +29,18 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	    }
 	}
 	
+	public List<Department> findAllDepartmentChild() {
+	    EntityManager em = JpaUtil.getEntityManager();
+	    try {
+	        
+	        String jpql = "SELECT d FROM Department d WHERE d.parent IS NOT NULL"; 
+	        
+	        return em.createQuery(jpql, Department.class).getResultList();
+	    } finally {
+	        em.close();
+	    }
+	}
+	
 
 	
 }

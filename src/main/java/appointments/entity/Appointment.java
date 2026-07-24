@@ -79,7 +79,4 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "booked_by")
     private User bookedBy;
-
-    @Enumerated(EnumType.STRING)
-    private Relationship relationship;
 }

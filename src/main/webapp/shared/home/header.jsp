@@ -10,7 +10,7 @@
         <ul class="navbar-nav w-100 align-items-stretch">
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="${ctx}/home/index">
                     <img
                         src="${pageContext.request.contextPath}/img/logo.png"
                         alt="Logo"

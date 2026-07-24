@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+/* 1. Header modal trắng, chữ xanh ở giữa */
+.umc-dept-header {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #f1f3f5;
+    padding: 20px 24px 12px 24px;
+    position: relative;
+}
+
+.umc-dept-title {
+    color: #0066cc;
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-align: center;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 2. Ô tìm kiếm chuyên khoa bo góc nhẹ */
+.umc-search-box .input-group-text {
+    background-color: #ffffff;
+    border-right: none;
+    color: #8c959f;
+    border-radius: 8px 0 0 8px;
+    padding-left: 16px;
+    border-color: #e2e8f0;
+}
+
+.umc-search-box .form-control {
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 16px 10px 0;
+    font-size: 0.95rem;
+    border-color: #e2e8f0;
+    box-shadow: none !important;
+}
+
+.umc-search-box .form-control:focus {
+    border-color: #0066cc;
+}
+
+/* 3. Thẻ Chuyên khoa chuẩn mẫu (Chỉ có Icon + Tên xanh + Giá tiền) */
+.umc-dept-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hiệu ứng khi rẽ chuột vào: Đổi màu viền xanh, nền hơi sáng */
+.umc-dept-card:hover {
+    border-color: #0066cc;
+    background-color: #f8fbff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.12);
+}
+
+/* Cụm bên trái: Icon + Tên khoa */
+.umc-dept-left {
+    display: flex;
+    align-items: center;
+}
+
+/* Icon chữ i màu xanh bên trái */
+.umc-dept-icon {
+    color: #0066cc;
+    font-size: 1.2rem;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+}
+
+/* Tên chuyên khoa: Chữ in hoa màu xanh đặc trưng */
+.umc-dept-name {
+    color: #0066cc;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    line-height: 1.4;
+}
+
+/* Giá tiền màu đen/xám đậm bên phải */
+.umc-dept-price {
+    color: #333333;
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    margin-left: 16px;
+}

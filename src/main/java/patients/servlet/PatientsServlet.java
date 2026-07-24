@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
 
+import enums.Relationship;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -37,17 +38,7 @@ public class PatientsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-	    User loggedInUser = (User) session.getAttribute("user");
-	    
-	    if (loggedInUser != null) {
-	        // Gọi DAO lấy toàn bộ danh sách Patient của User này từ SQL Server
-	        List<Patient> patientList = patientService.findPatientbyUserId(loggedInUser.getId());
-	        // Truyền danh sách sang cho trang JSP
-	        request.setAttribute("patientList", patientList);
-	    }
-	    
-	    request.getRequestDispatcher("/views/client/appointment.jsp").forward(request, response);
+		
 	}
 
 	/**
@@ -75,11 +66,22 @@ public class PatientsServlet extends HttpServlet {
             String address = request.getParameter("address");
             String bhyt = request.getParameter("bhyt");
             String emergency = request.getParameter("emergency");
+            String relStr = request.getParameter("relationship");
+            
+            Relationship relEnum = null;
+            if (relStr != null && !relStr.isEmpty()) {
+                try {
+                    relEnum = Relationship.valueOf(relStr);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Lỗi: Giá trị relationship không hợp lệ!");
+                }
+            }
 
             // 4. Tạo Entity Patient
             Patient newPatient = Patient.builder()
                     .user(loggedInUser)
                     .fullName(fullName)
+                    .relationship(relEnum)
                     .phone(phone)
                     .dateOfBirth(LocalDate.parse(dobStr))
                     .gender(gender)
@@ -88,11 +90,11 @@ public class PatientsServlet extends HttpServlet {
                     .emergencyContact(emergency != null && !emergency.isEmpty() ? emergency : null)
                     .build();
 
-            // 5. Gọi Service lưu vào SQL Server
+            
             boolean isSaved = patientService.createPatient(newPatient);
 
             if (isSaved) {
-                // Lưu thông báo thành công vào Session để trang /appointment hiện thông báo đẹp
+                
                 session.setAttribute("SUCCESS_MSG", "🎉 Thêm hồ sơ bệnh nhân thành công!");
             } else {
                 session.setAttribute("ERROR_MSG", "❌ Lỗi: Không thể lưu hồ sơ vào cơ sở dữ liệu!");

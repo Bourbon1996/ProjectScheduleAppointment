@@ -11,3 +11,8 @@ UPDATE users
 SET role = 'PATIENT',
     status = 'ACTIVE'
 WHERE phone = '0348853878';
+
+ALTER TABLE patients ADD relationship VARCHAR(50) NULL;
+
+ALTER TABLE appointments 
+DROP COLUMN relationship;

@@ -4,8 +4,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 import appointments.entity.Appointment;
+import enums.Relationship;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,6 +52,10 @@ public class Patient {
     private String gender;
 
     private String address;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "relationship", length = 50)
+    private Relationship relationship;
 
     @Column(name = "health_insurance_code")
     private String healthInsuranceCode;

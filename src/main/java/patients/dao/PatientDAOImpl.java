@@ -41,7 +41,7 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 		EntityManager em = JpaUtil.getEntityManager();
         
         try {
-            String jpql = "select o.patients from User o where o.id = :id";
+            String jpql = "SELECT p FROM Patient p WHERE p.user.id = :id";
 
             var query = em.createQuery(jpql, Patient.class);
             query.setParameter("id", id);

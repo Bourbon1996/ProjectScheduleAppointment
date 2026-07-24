@@ -87,3 +87,6 @@ SET image_url = REPLACE(image_url, '.jpg', '.png')
 WHERE image_url LIKE '%.jpg';
 
 go
+
+ALTER TABLE Departments 
+ADD base_price DECIMAL(10, 2) DEFAULT 150000.00;

@@ -7,5 +7,5 @@ import utils.GenericDAO;
 
 public interface DepartmentDAO extends GenericDAO<Department>{
 	public List<Department> findDepartmentsParent();
-
+	public List<Department> findAllDepartmentChild();
 }

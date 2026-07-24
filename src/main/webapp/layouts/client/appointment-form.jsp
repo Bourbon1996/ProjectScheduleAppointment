@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="enums.Relationship" %>
+    <%@ include file="/shared/home/page.jsp" %>
 
 
 <div class="modal fade umc-modal" id="createProfileModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
@@ -27,15 +29,17 @@
 				        </div>
 				
 				        <div class="col-md-6">
-				            <label class="umc-form-label">Mối quan hệ với bạn <span class="text-danger">*</span></label>
-				            <select class="form-select umc-input" name="relationship" required>
-				                <option value="BAN_THAN">Bản thân (Tài khoản chính)</option>
-				                <option value="CHA_ME">Cha / Mẹ</option>
-				                <option value="CON_CAI">Con cái</option>
-				                <option value="VO_CHONG">Vợ / Chồng</option>
-				                <option value="KHAC">Người thân khác</option>
-				            </select>
-				        </div>
+						    <label class="umc-form-label">Mối quan hệ với bạn <span class="text-danger">*</span></label>
+						    <select class="form-select umc-input" name="relationship" required>
+						        <option value="">-- Vui lòng chọn mối quan hệ --</option>
+						        
+						        
+						        <c:forEach var="rel" items="<%= Relationship.values() %>">
+						            <option value="${rel}">${rel.displayName}</option>
+						        </c:forEach>
+						        
+						    </select>
+						</div>
 				
 				        <div class="col-md-6">
 				            <label class="umc-form-label">Ngày sinh <span class="text-danger">*</span></label>
@@ -71,8 +75,9 @@
 				            <input type="text" class="form-control umc-input" name="address" required>
 				        </div>
 				    </div>
-				
-				    <!-- Đổi nút bấm thành type="submit" và đặt bên trong form (Hoặc dùng thuộc tính form="newProfileForm") -->
+					
+					<!-- FOOTER -->
+            		<!-- Đổi nút bấm thành type="submit" và đặt bên trong form (Hoặc dùng thuộc tính form="newProfileForm") -->
 				    <div class="modal-footer d-flex justify-content-between">
 				        <span class="text-muted small">(*) Là các thông tin bắt buộc</span>
 				        <div class="d-flex gap-2">
@@ -83,21 +88,11 @@
 				            </button>
 				        </div>
 				    </div>
+				    
 				</form>
             </div>
 
-            <!-- FOOTER -->
-            <div class="modal-footer d-flex justify-content-between">
-                <span class="text-muted small"><i class="bi bi-info-circle me-1"></i>(*) Là các thông tin bắt buộc</span>
-                <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-umc-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-lg me-1"></i> Hủy bỏ
-                    </button>
-                    <button type="button" class="btn btn-umc-primary" onclick="saveNewProfile()">
-                        <i class="bi bi-check2-circle me-1"></i> Lưu hồ sơ
-                    </button>
-                </div>
-            </div>
+            
 
         </div>
     </div>

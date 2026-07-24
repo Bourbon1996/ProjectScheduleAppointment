@@ -15,7 +15,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +44,9 @@ public class Department {
     @Column(name = "image_url")
     private String imageUrl;
     
+    @Column(name = "base_price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal basePrice = new BigDecimal("150000.00");
+    
     @OneToMany(mappedBy = "department")
     private List<Doctor> doctors;
 
@@ -57,18 +59,5 @@ public class Department {
 
     @OneToMany(mappedBy = "parent") 
     private List<Department> subDepartments;
-    
 
-    public BigDecimal getMinFee() {
-        if (this.doctors == null || this.doctors.isEmpty()) {
-            return BigDecimal.ZERO;
-        }
-        
-        return this.doctors.stream()
-                .map(Doctor::getExaminationFee)
-                .filter(Objects::nonNull)
-                .min(BigDecimal::compareTo)
-                .orElse(BigDecimal.ZERO);
-        
-    }
 }
