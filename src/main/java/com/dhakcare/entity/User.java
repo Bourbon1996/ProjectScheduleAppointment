@@ -41,7 +41,7 @@ public class User {
 
     @Column(unique = true)
     private String phone;
-    
+
     private String gender;
 
     @Column(name = "password_hash", nullable = false)
@@ -67,4 +67,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
+    
+    
 }
