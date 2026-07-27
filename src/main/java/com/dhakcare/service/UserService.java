@@ -6,8 +6,8 @@ import com.dhakcare.entity.User;
 
 public interface UserService {
 
-	List<User> findAll();
+	public User login(String phone, String password);
 	
-	User login(String phone, String password);
+	public List<User> findAll();
 
 }
