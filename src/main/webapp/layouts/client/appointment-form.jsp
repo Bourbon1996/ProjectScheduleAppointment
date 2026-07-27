@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="enums.Relationship" %>
+    <%@ page import="com.dhakcare.enums.Relationship" %>
     <%@ include file="/shared/home/page.jsp" %>
 
 
@@ -34,7 +34,7 @@
 						        <option value="">-- Vui lòng chọn mối quan hệ --</option>
 						        
 						        
-						        <c:forEach var="rel" items="<%= Relationship.values() %>">
+						        <c:forEach var="rel" items="<%=Relationship.values()%>">
 						            <option value="${rel}">${rel.displayName}</option>
 						        </c:forEach>
 						        
