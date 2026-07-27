@@ -31,7 +31,7 @@
 
     <li class="nav-item">
         <a class="nav-link"
-           href="${pageContext.request.contextPath}/admin/doctors">
+           href="${pageContext.request.contextPath}/admin/doctor">
             Quản lý Bác Sĩ
         </a>
     </li>

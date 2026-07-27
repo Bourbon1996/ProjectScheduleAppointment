@@ -8,17 +8,27 @@ import java.util.List;
 
 public class GenericDAOImpl<T> implements GenericDAO<T> {
 
-    private final EntityManager em = JpaUtil.getEntityManager();
     private final Class<T> entityClass;
 
     public GenericDAOImpl(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
+    protected EntityManager getEm() {
+        EntityManager em = JpaUtil.getEntityManager();
+        
+        if (em == null || !em.isOpen()) {
+            em = JpaUtil.getEntityManager();
+        }
+        return em;
+    }
+
     /**
      * Create
      */
+    @Override
     public boolean create(T entity) {
+        EntityManager em = getEm();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
@@ -37,7 +47,9 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
     /**
      * Update
      */
+    @Override
     public T update(T entity) {
+        EntityManager em = getEm();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
@@ -56,7 +68,9 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
     /**
      * Delete by id
      */
+    @Override
     public boolean delete(Object id) {
+        EntityManager em = getEm();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
@@ -80,14 +94,17 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
     /**
      * Find by id
      */
+    @Override
     public T findById(Object id) {
-        return em.find(entityClass, id);
+        return getEm().find(entityClass, id);
     }
 
     /**
      * Find all
      */
+    @Override
     public List<T> findAll() {
+        EntityManager em = getEm();
         String jpql = "FROM " + entityClass.getSimpleName();
         TypedQuery<T> query = em.createQuery(jpql, entityClass);
         return query.getResultList();
@@ -96,7 +113,9 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
     /**
      * Count
      */
+    @Override
     public long count() {
+        EntityManager em = getEm();
         String jpql = "SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e";
         return em.createQuery(jpql, Long.class).getSingleResult();
     }
@@ -104,6 +123,7 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
     /**
      * Check exists
      */
+    @Override
     public boolean exists(Object id) {
         return findById(id) != null;
     }
@@ -111,14 +131,16 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
     /**
      * Refresh entity
      */
+    @Override
     public void refresh(T entity) {
-        em.refresh(entity);
+        getEm().refresh(entity);
     }
 
     /**
      * Detach entity
      */
+    @Override
     public void detach(T entity) {
-        em.detach(entity);
+        getEm().detach(entity);
     }
 }

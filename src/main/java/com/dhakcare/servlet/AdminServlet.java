@@ -1,28 +1,24 @@
 package com.dhakcare.servlet;
 
-import java.io.IOException;
-
-import com.dhakcare.service.DoctorService;
-import com.dhakcare.service.impl.DoctorServiceImpl;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * Servlet implementation class PaymentServlet
+ * Servlet implementation class AdminServlet
  */
-@WebServlet({"/doctor"})
-public class DoctorsServlet extends HttpServlet {
+@WebServlet("/admin/*")
+public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DoctorService doctorservice = new DoctorServiceImpl();
-
+       
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public DoctorsServlet() {
+    public AdminServlet() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -30,8 +26,11 @@ public class DoctorsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String uri = request.getRequestURI();
 		
-		request.getRequestDispatcher("/views/client/doctor.jsp").forward(request, response);
+		if(uri.contains("/admin/doctor")) {
+			request.getRequestDispatcher("/views/admin/doctor-manager.jsp").forward(request, response);
+		}
 	}
 
 	/**

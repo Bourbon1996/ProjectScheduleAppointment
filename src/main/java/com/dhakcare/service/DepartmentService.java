@@ -10,5 +10,6 @@ import com.dhakcare.entity.Department;
 public interface DepartmentService {
 	
 	public List<Department> getAllDepartmentParent();
+	public List<Department> getAllDepartmentChild();
 	
 }
