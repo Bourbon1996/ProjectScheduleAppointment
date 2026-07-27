@@ -1,0 +1,155 @@
+@charset "UTF-8";
+/* Nền trang chung */
+.bg-light-custom {
+    background-color: #f8f9fb; 
+}
+
+/* Nút quay lại */
+.back-link {
+    color: #6c757d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #0056b3;
+}
+
+/* Khung viền chung cho các khối chi tiết */
+.detail-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    height: 100%;
+}
+
+/* --- CỘT TRÁI: AVATAR & THÔNG TIN --- */
+.avatar-large {
+    width: 160px;
+    height: 200px;
+    background-color: #d6f0fd; /* Nền xanh nhạt đồng bộ danh sách */
+    border: 2px solid #bce3fb;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.avatar-large img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.doctor-title-detail {
+    color: #0056b3;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.doctor-name-detail {
+    color: #212529;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.doctor-dept-badge {
+    display: inline-block;
+    background-color: #e9ecef;
+    color: #0056b3;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.divider {
+    border-top: 1px dashed #dee2e6;
+    margin: 24px 0;
+}
+
+/* Các mục thông tin nhanh (Kinh nghiệm, Giá) */
+.quick-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #f1f8ff;
+    color: #0056b3;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.info-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+}
+
+.info-label {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+/* Tái sử dụng class Nút đặt lịch từ trang danh sách */
+.btn-primary-custom {
+    color: #ffffff;
+    background-color: #0056b3;
+    border: 1px solid #0056b3;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary-custom:hover {
+    background-color: #004494;
+}
+
+/* --- CỘT PHẢI: CHI TIẾT --- */
+.section-title {
+    color: #0056b3;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 14px;
+}
+
+/* Gạch sọc xanh trang trí bên trái tiêu đề */
+.section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    background-color: #0056b3;
+    border-radius: 4px;
+}
+
+.description-content {
+    color: #495057;
+    font-size: 15px;
+    line-height: 1.8;
+}

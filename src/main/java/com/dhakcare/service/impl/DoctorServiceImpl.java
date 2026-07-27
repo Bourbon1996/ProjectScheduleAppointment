@@ -13,4 +13,10 @@ public class DoctorServiceImpl implements DoctorService {
 	public List<Doctor> getAll(){
 		return dao.findAll();
 	}
+
+	@Override
+	public Doctor getById(String id) {
+		// TODO Auto-generated method stub
+		return dao.findById(id);
+	}
 }
