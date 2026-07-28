@@ -15,8 +15,4 @@
     <link rel="stylesheet"
           href="${ctx}/css/client/index.css">
           
-    <!-- CSS popup đăng nhập -->
-    <link rel="stylesheet"
-          href="${ctx}/css/client/auth.css">
-          
      
