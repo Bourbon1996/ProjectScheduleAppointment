@@ -196,3 +196,69 @@
     color: #1e293b;
     transform: translateY(-2px);
 }
+
+/* ================= PASSWORD ================= */
+
+.password-wrapper{
+
+    position: relative;
+
+    width: 100%;
+}
+
+.password-wrapper .form-control{
+
+    width: 100%;
+
+    padding-right: 50px;
+}
+
+.password-toggle{
+
+    position: absolute;
+
+    top: 50%;
+
+    right: 12px;
+
+    transform: translateY(-50%);
+
+    width: 32px;
+
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    color: #6c757d;
+
+    padding: 0;
+
+    margin: 0;
+
+    z-index: 100;
+}
+
+.password-toggle:hover{
+
+    color: #0d68aa;
+}
+
+.password-toggle:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+.password-toggle i{
+    font-size: 18px;
+    line-height: 1;
+}
