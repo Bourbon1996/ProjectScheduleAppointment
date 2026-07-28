@@ -12,4 +12,6 @@ public interface PatientsDAO extends GenericDAO<Patient> {
 	public List<Patient> findByUserId(Long id);
 	
 	public Integer countTotalPatients();
+	
+
 }
