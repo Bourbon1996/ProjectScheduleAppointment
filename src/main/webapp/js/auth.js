@@ -239,7 +239,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 	
 	// Tự mở lại popup khi đăng nhập thất bại
+	// Ưu tiên mở popup đăng ký nếu đăng ký thất bại
 	if (
+	    registerPopup &&
+	    registerPopup.dataset.hasRegisterError === "true"
+	) {
+	    showPopup(registerPopup);
+
+	} else if (
 	    loginPopup &&
 	    loginPopup.dataset.hasLoginError === "true"
 	) {

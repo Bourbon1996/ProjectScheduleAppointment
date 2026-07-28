@@ -35,7 +35,7 @@
         </p>
 
         <!-- Form đăng nhập -->
-        <form action="${pageContext.request.contextPath}/user/login"
+        <form action="${pageContext.request.contextPath}/auth/login"
               method="post">
               
               <c:if test="${not empty loginError}">
@@ -104,7 +104,9 @@
 <!-- Popup đăng ký phải nằm ngoài popup đăng nhập       -->
 <!-- ================================================== -->
 
-<div class="auth-popup-overlay" id="registerPopup">
+<div class="auth-popup-overlay"
+     id="registerPopup"
+     data-has-register-error="${not empty registerError}">
 
     <div class="auth-popup-box auth-register-box">
 
@@ -133,14 +135,20 @@
         <p class="auth-description">
             Vui lòng nhập thông tin để tạo tài khoản đặt lịch khám.
         </p>
-
+	
+		<c:if test="${not empty registerError}">
+		    <div class="auth-server-error">
+		        ${registerError}
+		    </div>
+		</c:if>
+		
         <!-- Nơi hiển thị lỗi bằng JavaScript -->
         <p class="auth-error-message"
            id="registerClientError">
         </p>
 
         <!-- Form đăng ký -->
-        <form action="${pageContext.request.contextPath}/user/register"
+        <form action="${pageContext.request.contextPath}/auth/register"
               method="post"
               id="registerForm">
 
@@ -156,7 +164,24 @@
                        name="fullName"
                        placeholder="Nhập họ và tên"
                        maxlength="100"
-                       required>
+                       required
+                       value = ${registerFullName}>
+
+            </div>
+            
+            <div class="auth-form-group">
+
+                <label for="registerGender">
+                    Giới tính
+                </label>
+
+                <input type="text"
+                       id="registerGender"
+                       name="gender"
+                       placeholder="Nhập giới tính"
+                       maxlength="100"
+                       required
+                       value = ${registerGender}>
 
             </div>
 
@@ -168,13 +193,14 @@
                 </label>
 
                 <input type="tel"
-                       id="registerPhone"
-                       name="phone"
-                       placeholder="Nhập số điện thoại"
-                       maxlength="20"
-                       inputmode="numeric"
-                       required>
-
+				       id="registerPhone"
+				       name="phone"
+				       value="${registerPhone}"
+				       placeholder="Nhập số điện thoại"
+				       maxlength="20"
+				       inputmode="numeric"
+				       required
+				       value = ${registerPhone}>
             </div>
 
             <!-- Email -->
@@ -185,11 +211,13 @@
                 </label>
 
                 <input type="email"
-                       id="registerEmail"
-                       name="email"
-                       placeholder="Nhập địa chỉ email"
-                       maxlength="100"
-                       required>
+				       id="registerEmail"
+				       name="email"
+				       value="${registerEmail}"
+				       placeholder="Nhập địa chỉ email"
+				       maxlength="100"
+				       required
+				       value = ${registerEmail}>
 
             </div>
 

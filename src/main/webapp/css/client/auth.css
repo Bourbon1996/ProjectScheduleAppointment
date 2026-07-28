@@ -223,7 +223,7 @@
  */
 .auth-register-box {
     width: 420px;
-    max-height: 90vh;
+    max-height: 95vh;
     overflow-y: auto;
 }
 
