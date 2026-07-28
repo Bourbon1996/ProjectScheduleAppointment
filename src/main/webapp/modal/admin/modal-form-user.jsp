@@ -3,11 +3,7 @@
     <%@ include file="/shared/home/page.jsp" %>
     
 <link rel="stylesheet" type="text/css" href="${ctx}/css/admin/modal-form.css">
-<link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-<!-- =====================================================
-     MODAL CREATE / UPDATE USER
-===================================================== -->
+
 
 <div class="modal fade"
      id="userModal"
@@ -320,3 +316,4 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,168 +1,177 @@
 @charset "UTF-8";
-/* ==========================================================================
-   MODAL FORM CSS - MODERN & ROBUST LAYOUT
-   ========================================================================== */
 
-/* 1. Thiết kế tổng thể Modal */
+/* --- 0. BẢNG ĐIỀU KHIỂN MÀU SẮC (DESIGN TOKENS) --- */
+:root {
+    /* 👉 DÒNG QUAN TRỌNG NHẤT: Dán mã màu chủ đạo của web ông vào đây! */
+    --primary: #0d68aa;          /* Màu Xanh Y Tế chủ đạo */
+    --primary-hover: #0a5286;    /* Màu khi rờ chuột vào nút (đậm hơn 1 xíu) */
+    
+    /* Các hiệu ứng tự động phái sinh từ màu chủ đạo */
+    --primary-glow: 0 0 0 4px rgba(13, 104, 170, 0.18); /* Vầng sáng khi gõ input */
+    --primary-shadow: 0 8px 20px -4px rgba(13, 104, 170, 0.35); /* Bóng nút Lưu */
+    
+    /* Màu nền & Màu chữ chuẩn Y tế */
+    --modal-bg: #ffffff;
+    --modal-radius: 18px;
+    --text-main: #1e293b;        /* Slate 800 - Đen dịu không chói mắt */
+    --text-muted: #64748b;       /* Slate 500 */
+    --border-color: #cbd5e1;     /* Slate 300 - Viền rõ ràng hơn */
+    --input-bg: #f8fafc;         /* Slate 50 - Nền input sáng sạch */
+    --danger: #e11d48;           /* Rose 600 - Màu báo lỗi / dấu * */
+    
+    /* Đổ bóng 3D mượt mà */
+    --shadow-modal: 0 20px 40px -10px rgba(0, 0, 0, 0.15), 
+                    0 0 0 1px rgba(0, 0, 0, 0.05);
+    --ease-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- 1. KHUNG MODAL TỔNG THỂ --- */
 .modal-content {
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: none !important;
+    border-radius: var(--modal-radius);
+    box-shadow: var(--shadow-modal);
+    background-color: var(--modal-bg);
     overflow: hidden;
-    background-color: #ffffff;
     width: 100%;
 }
 
-/* 2. Modal Header */
+/* --- 2. MODAL HEADER --- */
 .modal-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-bottom: 1px solid #eaeaea;
-    padding: 1.25rem 1.5rem;
-    display: flex; /* Ép Flexbox để căn chỉnh 2 bên */
+    background: linear-gradient(to right, #ffffff, #f8fafc);
+    border-bottom: 2px solid #f1f5f9;
+    padding: 1.25rem 1.75rem;
+    display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .modal-header .modal-title {
     font-weight: 700;
-    color: #2c3e50;
-    font-size: 1.25rem;
+    color: var(--primary); /* Tiêu đề xài luôn màu chủ đạo cho đồng bộ */
+    font-size: 1.3rem;
+    letter-spacing: -0.015em;
     margin: 0;
 }
 
+/* Nút X đóng popup */
 .modal-header .btn-close {
-    background-color: white;
-    border: 1px solid #ddd;
+    background-color: transparent;
+    border: 1px solid transparent;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
+    transition: var(--ease-smooth);
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0.6;
 }
 
 .modal-header .btn-close:hover {
-    background-color: #ff6b6b;
-    border-color: #ff6b6b;
+    background-color: #ffe4e6;
+    color: var(--danger);
+    opacity: 1;
+    transform: rotate(90deg);
 }
 
-/* 3. Modal Body & Form Elements */
+/* --- 3. MODAL BODY & LABELS --- */
 .modal-body {
-    padding: 1.5rem;
+    padding: 1.75rem;
 }
 
 .form-label {
     font-weight: 600;
-    color: #4a5568;
+    color: var(--text-main);
     font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    display: block; /* Ép Label nằm trên Input */
+    margin-bottom: 0.45rem;
+    display: block;
     width: 100%;
 }
 
-/* 4. Input, Select & Textarea */
+.required {
+    color: var(--danger);
+    font-weight: 700;
+    margin-left: 3px;
+}
+
+/* --- 4. INPUT, SELECT (Sang xịn, dễ nhìn) --- */
 .form-control, 
 .form-select {
-    display: block; /* Ép chiếm chiều ngang */
+    display: block;
     width: 100%;
-    box-sizing: border-box; /* Tính cả padding vào width */
-    border-radius: 8px;
-    border: 1px solid #cbd5e1;
-    padding: 0.6rem 1rem;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    padding: 0.65rem 1rem;
     font-size: 0.95rem;
-    color: #334155;
-    background-color: #f8fafc;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    color: var(--text-main);
+    background-color: var(--input-bg);
+    transition: var(--ease-smooth);
 }
 
+.form-control::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+.form-control:hover, 
+.form-select:hover {
+    border-color: #94a3b8;
+    background-color: #ffffff;
+}
+
+/* Hiệu ứng phát sáng theo MÀU CHỦ ĐẠO khi bấm vào gõ */
 .form-control:focus, 
 .form-select:focus {
-    border-color: #3b82f6;
+    border-color: var(--primary);
     background-color: #ffffff;
     outline: none;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    box-shadow: var(--primary-glow);
 }
 
-/* 5. Input Group (Tiền tệ - VNĐ) */
-.input-group {
-    display: flex; /* Ép Input và Text nằm trên 1 hàng ngang */
-    align-items: stretch;
-    width: 100%;
-}
-
-.input-group .form-control {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    flex: 1; /* Cho input giãn hết phần trống */
-}
-
-.input-group-text {
-    border-radius: 0 8px 8px 0;
-    background-color: #f1f5f9;
-    border: 1px solid #cbd5e1;
-    border-left: none;
-    font-weight: 600;
-    color: #64748b;
-    padding: 0.6rem 1rem;
-    display: flex;
-    align-items: center;
-}
-
-/* 6. Custom Input File */
-.form-control[type="file"] {
-    padding: 0.4rem;
-}
-
-.image-note {
-    display: block;
-    margin-top: 0.5rem;
-    color: #94a3b8;
-    font-size: 0.85rem;
-    font-style: italic;
-}
-
-/* Fix lỗi chia cột nếu mở trang trực tiếp không ăn Bootstrap */
+/* --- 5. GRID FALLBACK (Chia cột 2 bên chuẩn chỉ) --- */
 .row {
     display: flex;
     flex-wrap: wrap;
     margin-left: -0.75rem;
     margin-right: -0.75rem;
 }
+
 .row > * {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 }
-/* Cột 50% cho màn hình lớn hơn */
+
+.col-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
 @media (min-width: 768px) {
     .col-md-6 {
         flex: 0 0 auto;
         width: 50%;
     }
 }
-.col-12 {
-    flex: 0 0 auto;
-    width: 100%;
-}
 
-/* 7. Modal Footer & Buttons */
+/* --- 6. MODAL FOOTER & NÚT BẤM --- */
 .modal-footer {
-    border-top: 1px solid #f1f5f9;
-    padding: 1.25rem 1.5rem;
-    background-color: #fafafa;
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    display: flex; /* Ép Flexbox cho Footer */
-    justify-content: flex-end; /* Đẩy 2 nút qua bên phải */
-    gap: 1rem; /* Khoảng cách giữa 2 nút */
+    border-top: 1px solid #e2e8f0;
+    padding: 1.25rem 1.75rem;
+    background-color: #f8fafc;
+    border-bottom-left-radius: var(--modal-radius);
+    border-bottom-right-radius: var(--modal-radius);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
 }
 
 .btn {
-    border-radius: 8px;
-    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    padding: 0.65rem 1.5rem;
     font-weight: 600;
     font-size: 0.95rem;
     display: inline-flex;
@@ -170,25 +179,31 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: var(--ease-smooth);
+    border: none;
 }
 
+/* Nút Lưu - Phủ màu chủ đạo của web & Đổ bóng rực rỡ */
 .btn-primary {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-    border: none;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    background-color: var(--primary);
+    color: #ffffff;
+    box-shadow: var(--primary-shadow);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    background-color: var(--primary-hover);
     transform: translateY(-2px);
+    box-shadow: 0 10px 22px -4px rgba(13, 104, 170, 0.45);
 }
 
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Nút Hủy */
 .btn-secondary {
     background-color: #e2e8f0;
     color: #475569;
-    border: none;
 }
 
 .btn-secondary:hover {
@@ -197,68 +212,52 @@
     transform: translateY(-2px);
 }
 
-/* ================= PASSWORD ================= */
+.btn-secondary:active {
+    transform: translateY(0);
+}
 
-.password-wrapper{
-
+/* --- 7. PASSWORD WRAPPER & CON MẮT --- */
+.password-wrapper {
     position: relative;
-
     width: 100%;
 }
 
-.password-wrapper .form-control{
-
+.password-wrapper .form-control {
     width: 100%;
-
-    padding-right: 50px;
+    padding-right: 48px;
 }
 
-.password-toggle{
-
+.password-toggle {
     position: absolute;
-
     top: 50%;
-
-    right: 12px;
-
+    right: 8px;
     transform: translateY(-50%);
-
-    width: 32px;
-
-    height: 32px;
-
+    width: 36px;
+    height: 36px;
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     border: none;
-
     background: transparent;
-
     cursor: pointer;
-
-    color: #6c757d;
-
-    padding: 0;
-
-    margin: 0;
-
+    color: #64748b;
+    border-radius: 8px;
+    transition: var(--ease-smooth);
     z-index: 100;
 }
 
-.password-toggle:hover{
-
-    color: #0d68aa;
+/* Khi rờ chuột vào icon mắt -> Đổi sang MÀU CHỦ ĐẠO */
+.password-toggle:hover {
+    color: var(--primary);
+    background-color: rgba(13, 104, 170, 0.08);
 }
 
-.password-toggle:focus{
+.password-toggle:focus {
     outline: none;
-    box-shadow: none;
+    color: var(--primary);
 }
 
-.password-toggle i{
-    font-size: 18px;
+.password-toggle i {
+    font-size: 1.15rem;
     line-height: 1;
 }

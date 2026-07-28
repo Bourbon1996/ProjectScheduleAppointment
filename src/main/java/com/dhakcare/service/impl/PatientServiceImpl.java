@@ -40,6 +40,16 @@ public class PatientServiceImpl implements PatientService {
 		
 		return patientsDAO.findByUserId(id);
 	}
+	@Override
+	public Integer getTotalPatient() {
+		
+		return patientsDAO.countTotalPatients();
+	}
+	@Override
+	public boolean deleteById(String id) {
+		// TODO Auto-generated method stub
+		return patientsDAO.delete(id);
+	}
 
 
 }

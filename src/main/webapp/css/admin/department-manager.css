@@ -62,6 +62,8 @@
     font-weight: 500;
 
     transition: 0.2s;
+    
+    border: none;
 }
 
 .btn-add:hover {
@@ -71,19 +73,33 @@
 
 
 /* ==============================
-   TABLE WRAPPER
+   TABLE WRAPPER (ĐÃ NÂNG CẤP: Chiều cao cố định + Ẩn thanh cuộn)
 ================================ */
 
 .department-table-wrapper {
     width: 100%;
+    
+    /* 👉 Chiều cao tối đa: Vượt quá 550px là bắt đầu cho phép cuộn */
+    max-height: 650px; 
 
     background-color: #ffffff;
 
     border-radius: 10px;
 
-    overflow-x: auto;
+    /* Kích hoạt cuộn cho cả chiều dọc lẫn ngang */
+    overflow: auto; 
 
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    position: relative;
+    
+    /* 👉 ẨN THANH CUỘN: Cho Firefox và IE/Edge cũ */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* 👉 ẨN THANH CUỘN: Cho Chrome, Safari, Opera, Edge mới */
+.department-table-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 
@@ -103,6 +119,7 @@
     background-color: #0d68aa;
 }
 
+/* 👉 ĐÃ NÂNG CẤP: Ghim cố định Header đứng yên lên sát trần */
 .department-table th {
     padding: 15px 16px;
 
@@ -114,6 +131,17 @@
     text-align: left;
 
     white-space: nowrap;
+    
+    /* Kỹ thuật Sticky Header */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+    /* Bắt buộc phải có màu nền để khi cuộn data ở dưới không bị nhìn xuyên thấu */
+    background-color: #0d68aa; 
+    
+    /* Bóng mờ nhẹ dưới vạch Header phân cách với phần cuộn */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .department-table td {

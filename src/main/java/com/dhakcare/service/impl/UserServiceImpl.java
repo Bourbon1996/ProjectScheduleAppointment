@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public User register(String fullName, String phone, String email, String password, String confirmPassword) {
 		
 		// kiem tra ho ten
@@ -128,4 +129,17 @@ public class UserServiceImpl implements UserService {
 		    //  Trả User vừa tạo
 		    return user;
 	}
+=======
+	public boolean deleteById(String id) {
+		
+		return dao.delete(id);
+	}
+
+	@Override
+	public Integer getTotalUser() {
+		
+		return dao.countTotalUser();
+	}
+
+>>>>>>> 12f953418b2d8d242e10879c36097ba87580b5b8
 }

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* Quỳnh Anh Làm ở đây */
+/* Quỳnh Anh Làm ở đây (Đã nâng cấp Sticky Header & Ẩn thanh cuộn) */
 /* =========================
    DOCTOR MANAGER
 ========================= */
@@ -52,6 +52,7 @@
     font-weight: 500;
 
     transition: 0.2s;
+    border: none;
 }
 
 .btn-add:hover {
@@ -61,15 +62,28 @@
 
 
 /* =========================
-   TABLE
+   TABLE WRAPPER (ĐÃ NÂNG CẤP: Chiều cao cố định + Ẩn thanh cuộn)
 ========================= */
 
 .doctor-table-wrapper {
     background-color: #fff;
     border-radius: 10px;
-    overflow-x: auto;
+    
+    /* 👉 Chiều cao tối đa cho phép cuộn */
+    max-height: 650px;
+    overflow: auto;
 
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    position: relative;
+    
+    /* 👉 ẨN THANH CUỘN: Cho Firefox và IE/Edge cũ */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* 👉 ẨN THANH CUỘN: Cho Chrome, Safari, Opera, Edge mới */
+.doctor-table-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .doctor-table {
@@ -82,16 +96,26 @@
     background-color: #0d68aa;
 }
 
+/* 👉 ĐÃ NÂNG CẤP: Ghim cố định Header đứng yên khi cuộn danh sách Bác sĩ */
 .doctor-table th {
     color: #fff;
     font-size: 14px;
     font-weight: 600;
 
     text-align: left;
-
     padding: 15px 13px;
-
     white-space: nowrap;
+    
+    /* Kỹ thuật Sticky Header */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+    /* Bắt buộc có màu nền để không bị nhìn xuyên thấu khi cuộn */
+    background-color: #0d68aa;
+    
+    /* Đổ bóng mờ nhẹ dưới vạch Header */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .doctor-table td {

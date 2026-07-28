@@ -15,5 +15,9 @@ public interface UserService {
 		            String confirmPassword);
 	
 	public List<User> findAll();
+	
+	public boolean deleteById(String id);
+		
+	public Integer getTotalUser();
 
 }

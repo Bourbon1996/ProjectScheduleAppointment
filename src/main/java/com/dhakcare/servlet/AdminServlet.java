@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.util.List;
 
 import com.dhakcare.entity.User;
+import com.dhakcare.service.PatientService;
 import com.dhakcare.service.UserService;
+import com.dhakcare.service.impl.PatientServiceImpl;
 import com.dhakcare.service.impl.UserServiceImpl;
 
 /**
@@ -19,6 +21,7 @@ import com.dhakcare.service.impl.UserServiceImpl;
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService userservice = new UserServiceImpl();
+	private PatientService patientservice = new PatientServiceImpl();
 	
        
     /**
@@ -46,6 +49,16 @@ public class AdminServlet extends HttpServlet {
 			request.getRequestDispatcher("/views/admin/account-manager.jsp").forward(request, response);
 		}if(uri.contains("/admin/dashboard")) {
 			request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
+		}if(uri.contains("/admin/account/delete")) {
+			String id = request.getParameter("id");
+			patientservice.deleteById(id);
+			System.out.println("Id: "+id);
+			userservice.deleteById(id);
+			request.getRequestDispatcher("/views/admin/account-manager.jsp").forward(request, response);
+
+
+	
+			
 		}
 	}
 
@@ -54,7 +67,7 @@ public class AdminServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		
 	}
 
 }

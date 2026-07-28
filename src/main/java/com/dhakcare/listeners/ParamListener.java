@@ -43,7 +43,7 @@ public class ParamListener implements ServletContextListener{
             application.setAttribute("listDoctor", listDoctor);
             
             
-            System.out.println("✅ [WebListener] Đã tải thành công " + listDepartments.size() + " chuyên khoa vào bộ nhớ!");
+            System.out.println("✅ [WebListener] Đã tải thành công danh sách chuyên khoa và bác sĩ vào bộ nhớ!");
         } catch (Exception e) {
             System.out.println("❌ [WebListener] Lỗi khi tải danh sách: " + e.getMessage());
             e.printStackTrace();

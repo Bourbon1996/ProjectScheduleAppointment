@@ -19,4 +19,12 @@ public class DoctorServiceImpl implements DoctorService {
 		// TODO Auto-generated method stub
 		return dao.findById(id);
 	}
+
+	@Override
+	public boolean deleteById(String id) {
+		// TODO Auto-generated method stub
+		return dao.delete(id);
+	}
+	
+	
 }
