@@ -32,6 +32,7 @@ public class ParamListener implements ServletContextListener{
             
             
             
+            
             ServletContext application = sce.getServletContext();
             
             // Tạo biến list chuyên khoa

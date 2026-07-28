@@ -8,6 +8,8 @@
 <title>Chi tiết bác sĩ | ${doctor.user.fullName}</title>
 
 <%@ include file="/shared/home/link.jsp" %>
+
+<link rel="stylesheet" type="text/css" href="${ctx}/css/client/doctor-detail.css">
 </head>
 <body class="bg-light-custom">
     <%@ include file="/shared/home/header.jsp" %>

@@ -6,10 +6,8 @@ import com.dhakcare.entity.User;
 import com.dhakcare.utils.GenericDAO;
 
 public interface UserDAO extends GenericDAO<User> {
-	
-	List<User> findAll();
 
-	 User findByPhone(String phone) ;
+	 public User findByPhone(String phone) ;
 	
-	 User findByEmail(String email);
+	 public User findByEmail(String email);
 }

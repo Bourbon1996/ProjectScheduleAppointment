@@ -109,21 +109,6 @@
     font-size: 13px;
 }
 
-/* Tái sử dụng class Nút đặt lịch từ trang danh sách */
-.btn-primary-custom {
-    color: #ffffff;
-    background-color: #0056b3;
-    border: 1px solid #0056b3;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 8px;
-    transition: all 0.2s ease-in-out;
-}
-
-.btn-primary-custom:hover {
-    background-color: #004494;
-}
 
 /* --- CỘT PHẢI: CHI TIẾT --- */
 .section-title {
@@ -152,4 +137,35 @@
     color: #495057;
     font-size: 15px;
     line-height: 1.8;
+}
+
+/* Đảm bảo nút đặt lịch khám hiển thị dạng khối rộng 100%, không bị gạch chân */
+.btn-primary-custom {
+    display: flex !important;         /* Biến thành flex container để căn giữa icon */
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100% !important;           /* Ép nút chiếm hết 100% chiều rộng của thẻ cha */
+    color: #ffffff !important;
+    background-color: #0056b3 !important;
+    border: 1px solid #0056b3;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none !important; /* Xóa bỏ hoàn toàn gạch chân link */
+    box-shadow: 0 4px 6px rgba(0, 86, 179, 0.15);
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary-custom:hover {
+    background-color: #004494 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 68, 148, 0.3);
+}
+
+/* Fix nhẹ cho phần icon trong nút không bị lệch */
+.btn-primary-custom i {
+    font-size: 18px;
+    line-height: 1;
 }
