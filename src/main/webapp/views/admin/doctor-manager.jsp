@@ -22,11 +22,12 @@
             <p>Danh sách bác sĩ trong hệ thống</p>
         </div>
 
-        <a href="${pageContext.request.contextPath}/admin/doctor/create"
-           class="btn-add">
-            <i class="bi bi-plus-lg"></i>
-            Thêm mới
-        </a>
+        <button class="btn-add"
+	        	 data-bs-toggle="modal" 
+	        	 data-bs-target="#doctorModal">
+	         	 <i class="bi bi-plus-lg"></i>
+	           	 Thêm mới
+	      </button>
     </div>
 
     <div class="doctor-table-wrapper">
@@ -72,22 +73,26 @@
                             ${doctor.examinationFee}
                         </td>
 
-                        <td class="action-buttons">
-
-                            <a href="${pageContext.request.contextPath}/admin/doctor/edit?id=${doctor.id}"
-                               class="btn-edit"
-                               title="Chỉnh sửa">
-                                <i class="bi bi-pencil-square"></i>
-                                Sửa
-                            </a>
-
-                            <a href="${pageContext.request.contextPath}/admin/doctor/delete?id=${doctor.id}"
-                               class="btn-delete"
-                               title="Xóa"
-                               onclick="return confirm('Bạn có chắc muốn xóa bác sĩ này không?');">
-                                <i class="bi bi-trash"></i>
-                                Xóa
-                            </a>
+                        <td>
+							<div class="action-buttons">
+	                            <a href="${pageContext.request.contextPath}/admin/doctor/edit?id=${doctor.id}"
+	                               class="btn-edit"
+	                               data-bs-toggle="modal" 
+		        	 			   data-bs-target="#doctorModal"
+	                               title="Chỉnh sửa">
+	                                <i class="bi bi-pencil-square"></i>
+	                                Sửa
+	                            </a>
+	
+	                            <a href="${pageContext.request.contextPath}/admin/doctor/delete?id=${doctor.id}"
+	                               class="btn-delete"
+	                               title="Xóa"
+	                               onclick="return confirm('Bạn có chắc muốn xóa bác sĩ này không?');">
+	                                <i class="bi bi-trash"></i>
+	                                Xóa
+	                            </a>
+							
+							</div>
 
                         </td>
                     </tr>
@@ -97,7 +102,11 @@
     </div>
 
 </main>
+
+	<%@ include file="/modal/admin/modal-form-doctor.jsp" %>
 	
-	
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+   

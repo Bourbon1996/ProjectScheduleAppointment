@@ -57,6 +57,7 @@
     font-weight: 500;
 
     transition: 0.2s;
+    border: none;
 }
 
 .btn-add:hover {
@@ -71,17 +72,28 @@
 
 .account-table-wrapper {
     width: 100%;
-
+    
+    max-height: 650px; 
+    
     background-color: #ffffff;
-
     border-radius: 10px;
-
-    overflow-x: auto;
-
+    
+    overflow: auto; 
+    
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    position: relative;
 }
 
+/* Ẩn trên Chrome, Safari, Edge mới, Opera */
+.account-table-wrapper::-webkit-scrollbar {
+    display: none;
+}
 
+/* Ẩn trên Firefox và IE/Edge cũ */
+.account-table-wrapper {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+}
 /* ==============================
    TABLE
 ================================ */
@@ -100,15 +112,22 @@
 
 .account-table th {
     padding: 15px 14px;
-
     color: #ffffff;
-
     font-size: 14px;
     font-weight: 600;
-
     text-align: left;
-
     white-space: nowrap;
+
+    /* 👉 KỸ THUẬT STICKY: Ghim Header đứng yên lên sát trần */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+    /* Bắt buộc phải có màu nền, nếu không chữ của tbody cuộn lên sẽ bị đè nhìn rất rối */
+    background-color: #0d68aa; 
+    
+    /* Thêm đường bóng mờ nhẹ bên dưới Header để phân cách với vùng cuộn */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .account-table td {
