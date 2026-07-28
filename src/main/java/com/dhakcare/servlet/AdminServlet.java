@@ -44,6 +44,8 @@ public class AdminServlet extends HttpServlet {
 			List<User> listUser = userservice.findAll();
 			request.setAttribute("listAccount", listUser);
 			request.getRequestDispatcher("/views/admin/account-manager.jsp").forward(request, response);
+		}if(uri.contains("/admin/dashboard")) {
+			request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
 		}
 	}
 
