@@ -516,7 +516,7 @@ header {
 }
 
 .menu-title {
-    color: var(--text-color); /* Tận dụng biến màu sẵn có của bro */
+    color: var(--text-color); 
     font-size: 32px;
     font-weight: 700;
     margin-bottom: 30px;
@@ -525,7 +525,7 @@ header {
 .menu-container {
     background-color: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(13, 104, 170, 0.1); /* Dùng mã đổ bóng theo tone xanh dự án */
+    box-shadow: 0 10px 30px rgba(13, 104, 170, 0.1);
     display: flex;
     justify-content: space-around;
     align-items: center;

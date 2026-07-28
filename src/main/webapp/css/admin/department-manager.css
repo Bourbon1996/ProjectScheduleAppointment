@@ -1,0 +1,274 @@
+@charset "UTF-8";
+/* ==============================
+   DEPARTMENT MANAGER
+================================ */
+
+.department-manager {
+    min-height: calc(100vh - 70px);
+    background-color: #f3f5f7;
+    padding: 35px 40px 60px;
+}
+
+
+/* ==============================
+   HEADER
+================================ */
+
+.department-manager-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.department-manager-header h1 {
+    margin: 0;
+
+    color: #0d68aa;
+
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.department-manager-header p {
+    margin: 6px 0 0;
+
+    color: #6c757d;
+
+    font-size: 14px;
+}
+
+
+/* ==============================
+   ADD BUTTON
+================================ */
+
+.btn-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 10px 18px;
+
+    background-color: #0d68aa;
+    color: #ffffff;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: 0.2s;
+}
+
+.btn-add:hover {
+    background-color: #09588f;
+    color: #ffffff;
+}
+
+
+/* ==============================
+   TABLE WRAPPER
+================================ */
+
+.department-table-wrapper {
+    width: 100%;
+
+    background-color: #ffffff;
+
+    border-radius: 10px;
+
+    overflow-x: auto;
+
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==============================
+   TABLE
+================================ */
+
+.department-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 900px;
+}
+
+.department-table thead {
+    background-color: #0d68aa;
+}
+
+.department-table th {
+    padding: 15px 16px;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-align: left;
+
+    white-space: nowrap;
+}
+
+.department-table td {
+    padding: 15px 16px;
+
+    color: #444444;
+
+    font-size: 14px;
+
+    vertical-align: middle;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+/* hover row */
+
+.department-table tbody tr {
+    transition: 0.2s;
+}
+
+.department-table tbody tr:hover {
+    background-color: #f5faff;
+}
+
+.department-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ==============================
+   DEPARTMENT NAME
+================================ */
+
+.department-name {
+    color: #0d68aa !important;
+
+    font-weight: 600;
+
+    min-width: 170px;
+}
+
+
+/* ==============================
+   DESCRIPTION
+================================ */
+
+.department-description {
+    max-width: 450px;
+
+    line-height: 1.5;
+
+    color: #555555;
+}
+
+
+/* ==============================
+   STATUS
+================================ */
+
+.status-badge {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    background-color: #e7f5ed;
+    color: #198754;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* ==============================
+   ACTION BUTTONS
+================================ */
+
+.action-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.btn-edit,
+.btn-delete {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 7px 11px;
+
+    border-radius: 5px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    white-space: nowrap;
+
+    transition: 0.2s;
+}
+
+
+/* EDIT */
+
+.btn-edit {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.btn-edit:hover {
+    background-color: #ffc107;
+    color: #ffffff;
+}
+
+
+/* DELETE */
+
+.btn-delete {
+    background-color: #f8d7da;
+    color: #b02a37;
+}
+
+.btn-delete:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+
+    .department-manager {
+        padding: 25px 15px;
+    }
+
+    .department-manager-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .department-manager-header h1 {
+        font-size: 24px;
+    }
+}

@@ -90,9 +90,9 @@
 
 
 	<!-- BƯỚC 2: CHỌN THÔNG TIN KHÁM (GIAO DIỆN CHUẨN UMC) -->
-        <jsp:include page="/modal/modal-date.jsp" />
-		<jsp:include page="/modal/modal-department.jsp" />
-		<jsp:include page="/modal/modal-doctor.jsp" />
+        <jsp:include page="/modal/client/modal-date.jsp" />
+		<jsp:include page="/modal/client/modal-department.jsp" />
+		<jsp:include page="/modal/client/modal-doctor.jsp" />
 
 		<div class="step-pane" id="step-pane-2">
 		    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">

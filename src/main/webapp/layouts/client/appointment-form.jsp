@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="enums.Relationship" %>
+    <%@ page import="com.dhakcare.enums.Relationship" %>
     <%@ include file="/shared/home/page.jsp" %>
 
 
@@ -22,7 +22,7 @@
 				<form id="newProfileForm" action="${pageContext.request.contextPath}/patient/create" method="POST">
 				    
 				    <div class="row g-3 mb-4">
-				        <!-- BẮT BUỘC THÊM THUỘC TÍNH name="..." CHO TẤT CẢ INPUT / SELECT -->
+				        
 				        <div class="col-md-6">
 				            <label class="umc-form-label">Họ và tên bệnh nhân <span class="text-danger">*</span></label>
 				            <input type="text" class="form-control umc-input umc-input-name" name="fullName" required style="text-transform: uppercase;">
@@ -34,7 +34,7 @@
 						        <option value="">-- Vui lòng chọn mối quan hệ --</option>
 						        
 						        
-						        <c:forEach var="rel" items="<%= Relationship.values() %>">
+						        <c:forEach var="rel" items="<%=Relationship.values()%>">
 						            <option value="${rel}">${rel.displayName}</option>
 						        </c:forEach>
 						        

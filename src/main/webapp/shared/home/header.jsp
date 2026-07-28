@@ -82,7 +82,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">Bác sĩ</a>
+                <a class="nav-link" href="${ctx}/doctor">Bác sĩ</a>
             </li>
 
             <li class="nav-item dropdown mega-dropdown">

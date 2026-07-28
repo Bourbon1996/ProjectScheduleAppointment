@@ -1,0 +1,48 @@
+package com.dhakcare.dao.impl;
+
+import java.util.List;
+
+import com.dhakcare.dao.DepartmentDAO;
+import com.dhakcare.entity.Department;
+import com.dhakcare.utils.GenericDAOImpl;
+import com.dhakcare.utils.JpaUtil;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+
+public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements DepartmentDAO {
+
+	public DepartmentDaoImpl() {
+		super(Department.class);
+	}
+
+	@Override
+	public List<Department> findDepartmentsParent() {
+	    EntityManager em = JpaUtil.getEntityManager();
+	    try {
+	    	String jpql = "SELECT DISTINCT d FROM Department d LEFT JOIN FETCH d.subDepartments WHERE d.parent IS NULL";
+	        
+	        TypedQuery<Department> query = em.createQuery(jpql, Department.class);
+	        
+	        return query.getResultList();
+	        
+	    } finally {
+	        em.close();
+	    }
+	}
+	
+	public List<Department> findAllDepartmentChild() {
+	    EntityManager em = JpaUtil.getEntityManager();
+	    try {
+	        
+	        String jpql = "SELECT d FROM Department d WHERE d.parent IS NOT NULL"; 
+	        
+	        return em.createQuery(jpql, Department.class).getResultList();
+	    } finally {
+	        em.close();
+	    }
+	}
+	
+
+	
+}

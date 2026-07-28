@@ -24,21 +24,21 @@
 
     <li class="nav-item">
         <a class="nav-link"
-           href="${pageContext.request.contextPath}/admin/departments">
+           href="${pageContext.request.contextPath}/admin/department">
             Quản lý Chuyên Khoa
         </a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link"
-           href="${pageContext.request.contextPath}/admin/doctors">
+           href="${pageContext.request.contextPath}/admin/doctor">
             Quản lý Bác Sĩ
         </a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link"
-           href="${pageContext.request.contextPath}/admin/accounts">
+           href="${pageContext.request.contextPath}/admin/account">
             Quản lý Tài Khoản
         </a>
     </li>

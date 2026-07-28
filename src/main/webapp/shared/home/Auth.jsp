@@ -101,7 +101,9 @@
 <!-- Popup đăng ký phải nằm ngoài popup đăng nhập       -->
 <!-- ================================================== -->
 
-<div class="auth-popup-overlay" id="registerPopup">
+<div class="auth-popup-overlay"
+     id="registerPopup"
+     data-has-register-error="${not empty registerError}">
 
     <div class="auth-popup-box auth-register-box">
 
@@ -130,7 +132,13 @@
         <p class="auth-description">
             Vui lòng nhập thông tin để tạo tài khoản đặt lịch khám.
         </p>
-
+	
+		<c:if test="${not empty registerError}">
+		    <div class="auth-server-error">
+		        ${registerError}
+		    </div>
+		</c:if>
+		
         <!-- Nơi hiển thị lỗi bằng JavaScript -->
         <p class="auth-error-message"
            id="registerClientError">
@@ -165,13 +173,13 @@
                 </label>
 
                 <input type="tel"
-                       id="registerPhone"
-                       name="phone"
-                       placeholder="Nhập số điện thoại"
-                       maxlength="20"
-                       inputmode="numeric"
-                       required>
-
+				       id="registerPhone"
+				       name="phone"
+				       value="${registerPhone}"
+				       placeholder="Nhập số điện thoại"
+				       maxlength="20"
+				       inputmode="numeric"
+				       required>
             </div>
 
             <!-- Email -->
@@ -182,11 +190,12 @@
                 </label>
 
                 <input type="email"
-                       id="registerEmail"
-                       name="email"
-                       placeholder="Nhập địa chỉ email"
-                       maxlength="100"
-                       required>
+				       id="registerEmail"
+				       name="email"
+				       value="${registerEmail}"
+				       placeholder="Nhập địa chỉ email"
+				       maxlength="100"
+				       required>
 
             </div>
 
