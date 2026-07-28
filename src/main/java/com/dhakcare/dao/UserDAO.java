@@ -9,5 +9,5 @@ public interface UserDAO extends GenericDAO<User> {
 	
 	 public User findByEmail(String email);
 	 
-	 public Integer countTotalUser();
+	 public Long countTotalUser();
 }

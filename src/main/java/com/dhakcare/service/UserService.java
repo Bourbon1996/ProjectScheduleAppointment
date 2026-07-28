@@ -12,6 +12,6 @@ public interface UserService {
 	
 	public boolean deleteById(String id);
 		
-	public Integer getTotalUser();
+	public Long getTotalUser();
 
 }
