@@ -20,11 +20,12 @@
             <p>Danh sách chuyên khoa trong hệ thống</p>
         </div>
 
-        <a href="${pageContext.request.contextPath}/admin/department/create"
-           class="btn-add">
-            <i class="bi bi-plus-lg"></i>
-            Thêm mới
-        </a>
+        <button class="btn-add"
+	        	 data-bs-toggle="modal" 
+	        	 data-bs-target="#departmentModal">
+	         	 <i class="bi bi-plus-lg"></i>
+	           	 Thêm mới
+	      </button>
     </div>
 
     <div class="department-table-wrapper">
@@ -68,10 +69,14 @@
 
                                 <a href="${pageContext.request.contextPath}/admin/department/edit?id=${department.id}"
                                    class="btn-edit"
+                                   data-bs-toggle="modal" 
+						           data-bs-target="#departmentModal"
                                    title="Chỉnh sửa">
                                     <i class="bi bi-pencil-square"></i>
                                     Sửa
                                 </a>
+                                
+                                
 
                                 <a href="${pageContext.request.contextPath}/admin/department/delete?id=${department.id}"
                                    class="btn-delete"
@@ -96,6 +101,9 @@
     </div>
 
 </main>
-	
+	<%@ include file="/modal/admin/modal-form-department.jsp" %>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+    

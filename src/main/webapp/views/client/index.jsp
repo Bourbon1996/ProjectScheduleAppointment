@@ -25,10 +25,6 @@
     <link rel="stylesheet"
           href="${ctx}/css/client/index.css">
           
-    <!-- CSS popup đăng nhập -->
-    <link rel="stylesheet"
-          href="${ctx}/css/client/auth.css">
-          
     
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,14 +64,8 @@
 		<jsp:include page="/shared/home/footer.jsp"/>
 	</footer>
 
-    <!-- Popup Auth -->
-    <jsp:include page="/shared/home/Auth.jsp"/>
-    
-    
-    
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="${ctx}/js/auth.js"></script>
+	
 
 </body>
 </html>

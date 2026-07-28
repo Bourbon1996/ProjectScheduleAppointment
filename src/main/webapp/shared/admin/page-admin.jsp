@@ -12,9 +12,5 @@
     <link rel="stylesheet"
           href="${ctx}/css/admin/style.css">
           
-              <!-- CSS popup đăng nhập -->
-    <link rel="stylesheet"
-          href="${ctx}/css/client/auth.css">
-          
               <!-- Cài đặt Favicon cho web -->
 	<link rel="icon" type="image/png" href="${ctx}/img/logo.png">

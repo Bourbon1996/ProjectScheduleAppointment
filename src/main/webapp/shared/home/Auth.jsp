@@ -3,6 +3,9 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    <!-- CSS popup đăng nhập -->
+    <link rel="stylesheet"
+          href="${ctx}/css/client/auth.css">
 <!-- Lớp phủ toàn bộ màn hình -->
 <div class="auth-popup-overlay"
      id="loginPopup"

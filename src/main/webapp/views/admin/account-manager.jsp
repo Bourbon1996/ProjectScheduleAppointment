@@ -20,11 +20,12 @@
             <p>Danh sách tài khoản trong hệ thống</p>
         </div>
 
-	     <a href="${pageContext.request.contextPath}/admin/account/create"
-	        class="btn-add">
-	         <i class="bi bi-plus-lg"></i>
-	           Thêm mới
-	      </a>
+	     <button class="btn-add"
+	        	 data-bs-toggle="modal" 
+	        	 data-bs-target="#userModal">
+	         	 <i class="bi bi-plus-lg"></i>
+	           	 Thêm mới
+	      </button>
     </div>
 
     <div class="account-table-wrapper">
@@ -86,7 +87,10 @@
                             <div class="action-buttons">
 
                                 <a href="${pageContext.request.contextPath}/admin/account/edit?id=${account.id}"
-                                   class="btn-edit">
+                                   class="btn-edit"
+                                   data-bs-toggle="modal" 
+	        	 				   data-bs-target="#userModal"
+                                   >
                                   <i class="bi bi-pencil-square"></i>
                                       Sửa
                                 </a>
@@ -110,6 +114,9 @@
         </table>
 
     </div>
+    
+    <%@ include file="/modal/admin/modal-form-user.jsp" %>
+    
 
 </main>
 </body>

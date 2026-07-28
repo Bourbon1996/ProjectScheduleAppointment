@@ -174,3 +174,6 @@
         </ul>
     </div>
 </nav>
+    <!-- Popup Auth -->
+    <jsp:include page="/shared/home/Auth.jsp"/>
+<script src="${ctx}/js/auth.js"></script>
