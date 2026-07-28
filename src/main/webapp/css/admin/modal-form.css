@@ -1,0 +1,198 @@
+@charset "UTF-8";
+/* ==========================================================================
+   MODAL FORM CSS - MODERN & ROBUST LAYOUT
+   ========================================================================== */
+
+/* 1. Thiết kế tổng thể Modal */
+.modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+/* 2. Modal Header */
+.modal-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #eaeaea;
+    padding: 1.25rem 1.5rem;
+    display: flex; /* Ép Flexbox để căn chỉnh 2 bên */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header .modal-title {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.modal-header .btn-close {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-header .btn-close:hover {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+/* 3. Modal Body & Form Elements */
+.modal-body {
+    padding: 1.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block; /* Ép Label nằm trên Input */
+    width: 100%;
+}
+
+/* 4. Input, Select & Textarea */
+.form-control, 
+.form-select {
+    display: block; /* Ép chiếm chiều ngang */
+    width: 100%;
+    box-sizing: border-box; /* Tính cả padding vào width */
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    color: #334155;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, 
+.form-select:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* 5. Input Group (Tiền tệ - VNĐ) */
+.input-group {
+    display: flex; /* Ép Input và Text nằm trên 1 hàng ngang */
+    align-items: stretch;
+    width: 100%;
+}
+
+.input-group .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    flex: 1; /* Cho input giãn hết phần trống */
+}
+
+.input-group-text {
+    border-radius: 0 8px 8px 0;
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-left: none;
+    font-weight: 600;
+    color: #64748b;
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+/* 6. Custom Input File */
+.form-control[type="file"] {
+    padding: 0.4rem;
+}
+
+.image-note {
+    display: block;
+    margin-top: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* Fix lỗi chia cột nếu mở trang trực tiếp không ăn Bootstrap */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+}
+.row > * {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    margin-bottom: 1rem;
+}
+/* Cột 50% cho màn hình lớn hơn */
+@media (min-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}
+.col-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+/* 7. Modal Footer & Buttons */
+.modal-footer {
+    border-top: 1px solid #f1f5f9;
+    padding: 1.25rem 1.5rem;
+    background-color: #fafafa;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    display: flex; /* Ép Flexbox cho Footer */
+    justify-content: flex-end; /* Đẩy 2 nút qua bên phải */
+    gap: 1rem; /* Khoảng cách giữa 2 nút */
+}
+
+.btn {
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #e2e8f0;
+    color: #475569;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #cbd5e1;
+    color: #1e293b;
+    transform: translateY(-2px);
+}

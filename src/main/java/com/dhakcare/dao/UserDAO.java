@@ -1,7 +1,5 @@
 package com.dhakcare.dao;
 
-import java.util.List;
-
 import com.dhakcare.entity.User;
 import com.dhakcare.utils.GenericDAO;
 

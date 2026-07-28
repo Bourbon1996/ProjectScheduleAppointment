@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Dashboard</title>
     <head>
     <link rel="stylesheet" href="${ctx}/css/admin/style.css">
     </head>
@@ -39,7 +39,7 @@
 	</header>
 
 	<main>
-		
+		<!-- Hùng làm ở đây -->
 		
 	</main>
     
