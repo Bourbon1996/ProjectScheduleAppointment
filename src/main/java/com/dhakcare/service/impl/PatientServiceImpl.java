@@ -40,6 +40,11 @@ public class PatientServiceImpl implements PatientService {
 		
 		return patientsDAO.findByUserId(id);
 	}
+	@Override
+	public Integer getTotalPatient() {
+		
+		return patientsDAO.countTotalPatients();
+	}
 
 
 }

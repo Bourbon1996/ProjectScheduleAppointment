@@ -50,4 +50,11 @@ public class UserDAOImpl extends GenericDAOImpl<User> implements UserDAO {
     	}
     	 return users.get(0);
     }
+
+	@Override
+	public Integer countTotalUser() {
+		String jpql = " select count(u.id) from User u ";
+		TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
+		return query.getSingleResult();
+	}
 }

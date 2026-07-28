@@ -9,11 +9,14 @@ import com.dhakcare.utils.JpaUtil;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsDAO{
 
+	private final EntityManager em;
 	public PatientDAOImpl() {
 		super(Patient.class);
+		this.em = JpaUtil.getEntityManager();
 		
 	}
 
@@ -53,6 +56,13 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
         } finally {
             em.close();
         }
+	}
+
+	@Override
+	public Integer countTotalPatients() {
+		String jpql = "Select count(p.id) from Patient p";
+		TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
+		return query.getSingleResult();
 	}
 	
 

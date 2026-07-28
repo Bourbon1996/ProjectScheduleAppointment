@@ -9,5 +9,9 @@ public interface UserService {
 	public User login(String phone, String password);
 	
 	public List<User> findAll();
+	
+	public boolean deleteById(String id);
+		
+	public Integer getTotalUser();
 
 }

@@ -58,4 +58,15 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	@Override
+	public boolean deleteById(String id) {
+		return dao.delete(id);
+	}
+
+	@Override
+	public Integer getTotalUser() {
+		
+		return dao.countTotalUser();
+	}
+
 }

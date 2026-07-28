@@ -8,4 +8,6 @@ public interface UserDAO extends GenericDAO<User> {
 	 public User findByPhone(String phone) ;
 	
 	 public User findByEmail(String email);
+	 
+	 public Integer countTotalUser();
 }

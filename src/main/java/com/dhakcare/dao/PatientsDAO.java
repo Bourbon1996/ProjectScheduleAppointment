@@ -10,4 +10,6 @@ public interface PatientsDAO extends GenericDAO<Patient> {
 	public boolean insert(Patient patient);
 	
 	public List<Patient> findByUserId(Long id);
+	
+	public Integer countTotalPatients();
 }
