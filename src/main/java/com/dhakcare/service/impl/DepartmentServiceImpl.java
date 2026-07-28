@@ -32,5 +32,12 @@ public class DepartmentServiceImpl implements DepartmentService{
 	    
 	    return department.getBasePrice();
 	}
+
+
+	@Override
+	public boolean deleteById(String id) {
+		
+		return dao.delete(id);
+	}
 	
 }
