@@ -17,7 +17,7 @@ import com.dhakcare.service.impl.UserServiceImpl;
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet("/admin/*")
+@WebServlet({"/admin/dashboard", "/admin/doctor", "/admin/account", "/admin/account/*", "/admin/department"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService userservice = new UserServiceImpl();
@@ -36,20 +36,20 @@ public class AdminServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String uri = request.getRequestURI();
+		String path = request.getServletPath();
 		
 		
-		if(uri.contains("/admin/doctor")) {
+		if(path.contains("/doctor")) {
 			request.getRequestDispatcher("/admin/views/doctor-manager.jsp").forward(request, response);
-		}if(uri.contains("/admin/department")) {
+		}if(path.contains("/department")) {
 			request.getRequestDispatcher("/admin/views/department-manager.jsp").forward(request, response);
-		}if(uri.contains("/admin/account")) {
+		}if(path.contains("/account")) {
 			List<User> listUser = userservice.findAll();
 			request.setAttribute("listAccount", listUser);
 			request.getRequestDispatcher("/admin/views/account-manager.jsp").forward(request, response);
-		}if(uri.contains("/admin/dashboard")) {
+		}if(path.contains("/dashboard")) {
 			request.getRequestDispatcher("/admin/views/dashboard.jsp").forward(request, response);
-		}if(uri.contains("/admin/account/delete")) {
+		}if(path.contains("/account/delete")) {
 			String id = request.getParameter("id");
 			patientservice.deleteById(id);
 			System.out.println("Id: "+id);

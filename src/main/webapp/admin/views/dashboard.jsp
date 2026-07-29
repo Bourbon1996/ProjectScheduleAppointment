@@ -69,7 +69,7 @@
 	                    <div class="stat-content">
 	                        <p>Tổng tài khoản</p>
 	                        <h2>${empty totalAccounts ? 0 : totalAccounts}</h2>
-	                        <a href="${ctx}/admin/accounts">
+	                        <a href="${ctx}/admin/account">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
 	                        </a>
@@ -87,7 +87,7 @@
 	                    <div class="stat-content">
 	                        <p>Tổng bác sĩ</p>
 	                        <h2>${empty totalDoctors ? 0 : totalDoctors}</h2>
-	                        <a href="${ctx}/admin/doctors">
+	                        <a href="${ctx}/admin/doctor">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
 	                        </a>
@@ -105,7 +105,7 @@
 	                    <div class="stat-content">
 	                        <p>Tổng bệnh nhân</p>
 	                        <h2>${empty totalPatients ? 0 : totalPatients}</h2>
-	                        <a href="${ctx}/admin/patients">
+	                        <a href="${ctx}/admin/patient">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
 	                        </a>
@@ -141,7 +141,7 @@
 	                    <div class="stat-content">
 	                        <p>Tổng lịch hẹn</p>
 	                        <h2>${empty totalAppointments ? 0 : totalAppointments}</h2>
-	                        <a href="${ctx}/admin/appointments">
+	                        <a href="${ctx}/admin/appointment">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
 	                        </a>
@@ -187,7 +187,7 @@
 	                            <p>Danh sách các lịch hẹn mới nhất.</p>
 	                        </div>
 	
-	                        <a href="${ctx}/admin/appointments"
+	                        <a href="${ctx}/admin/appointment"
 	                           class="btn-view-all">
 	                            Xem tất cả
 	                        </a>

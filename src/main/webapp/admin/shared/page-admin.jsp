@@ -10,7 +10,7 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
           
     <link rel="stylesheet"
-          href="${ctx}/css/admin/style.css">
+          href="${ctx}/assets/css/admin/style.css">
           
               <!-- Cài đặt Favicon cho web -->
-	<link rel="icon" type="image/png" href="${ctx}/img/logo.png">
+	<link rel="icon" type="image/png" href="${ctx}/assets/img/logo.png">

@@ -120,7 +120,7 @@
         <!-- Logo -->
         <div class="auth-logo-wrapper">
 
-            <img src="${pageContext.request.contextPath}/img/logo.png"
+            <img src="${pageContext.request.contextPath}/asssets/img/logo.png"
                  alt="Logo bệnh viện"
                  class="auth-logo">
 
