@@ -146,6 +146,69 @@ header {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* =====================================
+   DROPDOWN TÀI KHOẢN
+   ===================================== */
+
+.account-dropdown {
+    position: relative;
+}
+
+.account-dropdown-button {
+    padding: 0;
+    cursor: pointer;
+}
+
+.account-dropdown-menu {
+    min-width: 280px;
+    top: 100%;
+    right: 0;
+    left: auto;
+
+    margin-top: 0;
+
+    border: none;
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.account-dropdown-menu .dropdown-item-text {
+    padding: 12px 16px;
+}
+
+.account-dropdown-menu .dropdown-item {
+    padding: 11px 16px;
+    font-size: 14px;
+}
+
+.account-dropdown-menu .dropdown-item i {
+    width: 20px;
+    color: var(--primary-blue, #0d68aa);
+}
+
+.account-dropdown-menu .dropdown-item:hover {
+    color: var(--primary-blue, #0d68aa);
+    background-color: #eef7ff;
+}
+
+.account-dropdown-menu .dropdown-item.text-danger i {
+    color: #dc3545;
+}
+
+.account-dropdown-menu .dropdown-item.text-danger:hover {
+    color: #dc3545 !important;
+    background-color: #fff1f2;
+}
+
+/* Máy tính: di chuột vào icon thì mở menu */
+@media (min-width: 576px) {
+
+    .account-dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+}
+
 .hospital-navbar .nav-item {
     display: flex;
     align-items: center;
