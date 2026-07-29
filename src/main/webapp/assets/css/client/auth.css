@@ -247,3 +247,56 @@
 .auth-error-message.show {
     display: block;
 }
+
+/* ================================================== */
+/* RADIO GIỚI TÍNH DẠNG KHỐI (SEGMENTED BUTTON)       */
+/* ================================================== */
+.gender-toggle-group {
+    display: flex;
+    gap: 12px; /* Khoảng cách giữa nút Nam và nút Nữ */
+    width: 100%;
+}
+
+.gender-toggle-item {
+    flex: 1; /* Cho 2 nút chia đều 50/50 chiều rộng */
+    margin-bottom: 0 !important;
+    cursor: pointer;
+}
+
+/* Ẩn triệt để cái nút tròn mặc định của trình duyệt */
+.gender-toggle-item input[type="radio"] {
+    display: none;
+}
+
+/* Khung hiển thị thay thế */
+.gender-toggle-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px; /* Bằng đúng chiều cao các ô input khác */
+    
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8fafc; /* Nền xám nhạt nhẹ nhàng */
+    
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+    
+    transition: all 0.25s ease; /* Hiệu ứng chuyển màu mượt mà */
+}
+
+/* Hiệu ứng khi lướt chuột qua */
+.gender-toggle-item:hover .gender-toggle-text {
+    border-color: #147fc3;
+    background-color: #f0f7fb;
+    color: #147fc3;
+}
+
+/* KHI NÚT ĐƯỢC CHỌN (Tỏa sáng màu xanh chủ đạo) */
+.gender-toggle-item input[type="radio"]:checked + .gender-toggle-text {
+    background-color: #147fc3;
+    border-color: #147fc3;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(20, 127, 195, 0.2); /* Đổ bóng nhẹ cho nút nổi lên */
+}

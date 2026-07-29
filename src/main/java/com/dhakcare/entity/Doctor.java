@@ -16,6 +16,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -44,6 +45,7 @@ public class Doctor {
     @Column(name = "avt_url")
     private String avtUrl;
     
+    @Builder.Default
     @Column(name = "examination_fee", nullable = false, precision = 18, scale = 2)
     private BigDecimal examinationFee = new BigDecimal("150000.00");
 

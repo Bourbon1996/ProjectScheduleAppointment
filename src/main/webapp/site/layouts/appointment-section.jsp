@@ -198,7 +198,7 @@
 		        <!-- THANH TỔNG TIỀN KHÁM -->
 		        <div class="umc-total-bar d-flex justify-content-between align-items-center mb-5">
 		            <span class="fs-6 text-uppercase fw-bold"><i class="bi bi-wallet2 me-2"></i>TỔNG TIỀN KHÁM:</span>
-		            <span class="fs-4 fw-bold" id="display-total-price">0 đồng</span>
+		            <span class="fs-4 fw-bold" id="display-total-price"></span>
 		        </div>
 		
 		        <!-- NÚT ĐIỀU HƯỚNG BƯỚC -->

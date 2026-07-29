@@ -169,23 +169,35 @@
 
             </div>
             
+            <!-- Giới tính -->
             <div class="auth-form-group">
-
-                <label for="registerGender">
+                <label>
                     Giới tính
                 </label>
-
-                <input type="text"
-                       id="registerGender"
-                       name="gender"
-                       placeholder="Nhập giới tính"
-                       maxlength="100"
-                       value = "${registerGender}"
-                       required>
-                       
-
+                
+                <div class="gender-toggle-group">
+                    <label class="gender-toggle-item">
+                        <input type="radio" 
+                               name="gender" 
+                               value="MALE" 
+                               required
+                               ${registerGender == 'MALE' ? 'checked' : ''}>
+                        <span class="gender-toggle-text">Nam</span>
+                    </label>
+                    
+                    <label class="gender-toggle-item">
+                        <input type="radio" 
+                               name="gender" 
+                               value="FEMALE" 
+                               required
+                               ${registerGender == 'FEMALE' ? 'checked' : ''}>
+                        <span class="gender-toggle-text">Nữ</span>
+                    </label>
+                </div>
             </div>
-
+            
+            
+            
             <!-- Số điện thoại -->
             <div class="auth-form-group">
 

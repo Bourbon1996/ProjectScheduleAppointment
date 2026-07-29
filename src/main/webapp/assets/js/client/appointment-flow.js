@@ -1,17 +1,13 @@
-// ==========================================================================
-// QUẢN LÝ LUỒNG POPUP TUẦN TỰ (NGÀY -> KHOA -> BÁC SĨ/GIỜ) CHUẨN UMC
-// ==========================================================================
 
-// Kho chứa dữ liệu tạm thời trong lúc bấm chọn qua các Popup
 let bookingData = {
-    dateValue: "",       // Lấy ID: "2026-08-04" (Gửi về DB)
-    dateDisplay: "",     // Lấy chữ: "04/08/2026 (Thứ 4)" (Hiện lên form)
-    deptId: "",          // Lấy ID: "1" (Gửi về DB)
-    deptName: "",        // Lấy chữ: "KHOA TIM MẠCH"
-    doctorId: "",        // Lấy ID: "DOC01"
-    doctorName: "",      // Lấy chữ: "BSCKII. Nguyễn Thành Luân"
-    timeSlot: "",        // Lấy giờ: "07:30 - 08:30"
-    price: "150.000 đồng"
+    dateValue: "",       
+    dateDisplay: "",     
+    deptId: "",          
+    deptName: "",        
+    doctorId: "",        
+    doctorName: "",      
+    timeSlot: "",        
+    price: ""
 };
 
 // 1. KÍCH HOẠT MỞ POPUP ĐẦU TIÊN (CHỌN NGÀY)
@@ -34,7 +30,6 @@ function safeSwitchModal(hideModalId, showModalId) {
         hideInstance.hide();
     }
 
-    // 3. Đợi 400ms cho Bootstrap dọn sạch nền đen (backdrop) rồi mới mở Modal mới -> Chống lỗi đỏ!
     setTimeout(() => {
         const showEl = document.getElementById(showModalId);
         const showInstance = bootstrap.Modal.getOrCreateInstance(showEl);
@@ -42,10 +37,13 @@ function safeSwitchModal(hideModalId, showModalId) {
     }, 400); 
 }
 
+
 // 1. Khách bấm chọn NGÀY -> Chuyển sang Popup KHOA
 function selectDate(dateVal, dateStr) {
     bookingData.dateValue = dateVal;
     bookingData.dateDisplay = dateStr;
+	
+	document.querySelector("#input-display-date").value = dateStr;
 
     // Dùng hàm chuyển Modal an toàn
     safeSwitchModal('modalDate', 'modalDept');
@@ -56,9 +54,12 @@ function selectDept(id, name, priceStr) {
     bookingData.deptId = id;
     bookingData.deptName = name;
     bookingData.price = priceStr;
+	
+	document.querySelector("#input-display-dept").value = name;
+	document.querySelector("#display-total-price").textContent = parseFloat(priceStr).toLocaleString('vi-VN') + " đồng";
 
     // Cập nhật text nhắc nhở
-    document.getElementById('lbl-selected-info').textContent = `${bookingData.deptName} - Ngày ${bookingData.dateDisplay}`;
+    // document.getElementById('lbl-selected-info').textContent = `${bookingData.deptName} - Ngày ${bookingData.dateDisplay}`;
 
     // Dùng hàm chuyển Modal an toàn
     safeSwitchModal('modalDept', 'modalDoctor');

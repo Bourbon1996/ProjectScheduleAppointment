@@ -14,6 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,6 +41,7 @@ public class Department {
     @Column(name = "image_url")
     private String imageUrl;
     
+    @Builder.Default
     @Column(name = "base_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal basePrice = new BigDecimal("150000.00");
     
