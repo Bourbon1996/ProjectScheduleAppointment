@@ -9,9 +9,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    
     <head>
     <link rel="stylesheet" href="${ctx}/assets/css/admin/style.css">
     </head>
+    
     <!-- Cài đặt Favicon cho web -->
 	<link rel="icon" type="image/png" href="${ctx}/assets/img/logo.png">
 
@@ -68,7 +70,7 @@
 	
 	                    <div class="stat-content">
 	                        <p>Tổng tài khoản</p>
-	                        <h2>${empty totalAccounts ? 0 : totalAccounts}</h2>
+	                        <h2>${empty totalUser ? 0 : totalUser}</h2>
 	                        <a href="${ctx}/admin/account">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
@@ -86,7 +88,7 @@
 	
 	                    <div class="stat-content">
 	                        <p>Tổng bác sĩ</p>
-	                        <h2>${empty totalDoctors ? 0 : totalDoctors}</h2>
+	                        <h2>${empty totalDoctor ? 0 : totalDoctor}</h2>
 	                        <a href="${ctx}/admin/doctor">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
@@ -104,7 +106,7 @@
 	
 	                    <div class="stat-content">
 	                        <p>Tổng bệnh nhân</p>
-	                        <h2>${empty totalPatients ? 0 : totalPatients}</h2>
+	                        <h2>${empty totalPatient ? 0 : totalPatient}</h2>
 	                        <a href="${ctx}/admin/patient">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
@@ -112,6 +114,24 @@
 	                    </div>
 	                </div>
 	            </div>
+	            
+	            <!-- Tổng chuyên khoa -->
+				<div class="col-xl-4 col-md-6">
+				    <div class="stat-card">
+				        <div class="stat-icon icon-department">
+				            <i class="bi bi-diagram-3-fill"></i>
+				        </div>
+				        
+				        <div class="stat-content">
+				            <p>Tổng chuyên khoa</p>
+				            <h2>${empty totalDepartment ? 0 : totalDepartment}</h2>
+				            <a href="${ctx}/admin/department">
+				                Xem chi tiết
+				                <i class="bi bi-arrow-right"></i>
+				            </a>
+				        </div>
+				    </div>
+				</div>
 	
 	            <!-- Tổng lịch khám -->
 	            <div class="col-xl-4 col-md-6">

@@ -1,5 +1,6 @@
 package com.dhakcare.dao.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.dhakcare.dao.PatientsDAO;
@@ -59,16 +60,36 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 	}
 
 	@Override
-	public Integer countTotalPatients() {
+	public Long countTotalPatients() {
 		String jpql = "Select count(p.id) from Patient p";
-		TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
+		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
 		return query.getSingleResult();
 	}
 
 	@Override
 	public boolean deleteByUserId(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		
+		String jpql = "DELETE FROM Patient p WHERE p.user.id = :userId ";
+		try {
+			em.getTransaction().begin();
+			var query = em.createQuery(jpql);
+			query.setParameter("userId",id);
+			int result = query.executeUpdate();
+			if(result > 0) {
+				return true;	
+			}
+			return false;
+			
+		} catch (Exception e){
+			em.getTransaction().rollback();
+			return false;
+			
+		} finally {
+			em.close();
+		}
+		
+		
 	}
 	
 

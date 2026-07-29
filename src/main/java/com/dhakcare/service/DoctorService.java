@@ -8,4 +8,5 @@ public interface DoctorService {
 	public List<Doctor> getAll();
 	public Doctor getById(String id);
 	public boolean deleteById(String id);
+	public Long getTotalDoctor();
 }

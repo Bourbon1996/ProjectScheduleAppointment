@@ -41,13 +41,12 @@ public class PatientServiceImpl implements PatientService {
 		return patientsDAO.findByUserId(id);
 	}
 	@Override
-	public Integer getTotalPatient() {
-		
+	public Long getTotalPatient() {
 		return patientsDAO.countTotalPatients();
 	}
 	@Override
 	public boolean deleteByUserId(String id) {
-		// TODO Auto-generated method stub
+		
 		return patientsDAO.deleteByUserId(id);
 	}
 

@@ -9,8 +9,12 @@ import java.io.IOException;
 import java.util.List;
 
 import com.dhakcare.entity.User;
+import com.dhakcare.service.DepartmentService;
+import com.dhakcare.service.DoctorService;
 import com.dhakcare.service.PatientService;
 import com.dhakcare.service.UserService;
+import com.dhakcare.service.impl.DepartmentServiceImpl;
+import com.dhakcare.service.impl.DoctorServiceImpl;
 import com.dhakcare.service.impl.PatientServiceImpl;
 import com.dhakcare.service.impl.UserServiceImpl;
 
@@ -22,6 +26,9 @@ public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService userservice = new UserServiceImpl();
 	private PatientService patientservice = new PatientServiceImpl();
+	
+	private DoctorService doctorservice = new DoctorServiceImpl();
+	private DepartmentService departmentservice = new DepartmentServiceImpl();
 	
        
     /**
@@ -48,6 +55,10 @@ public class AdminServlet extends HttpServlet {
 			request.setAttribute("listAccount", listUser);
 			request.getRequestDispatcher("/admin/views/account-manager.jsp").forward(request, response);
 		}if(path.contains("/dashboard")) {
+			request.setAttribute("totalUser", userservice.getTotalUser());
+			request.setAttribute("totalDoctor", doctorservice.getTotalDoctor());
+			request.setAttribute("totalPatient", patientservice.getTotalPatient());
+			request.setAttribute("totalDepartment", departmentservice.getTotalDepartment());
 			request.getRequestDispatcher("/admin/views/dashboard.jsp").forward(request, response);
 		}if(path.contains("/account/delete")) {
 			String id = request.getParameter("id");

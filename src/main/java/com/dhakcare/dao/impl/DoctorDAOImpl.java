@@ -18,9 +18,9 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 	}
 
 	@Override
-	public Integer countTotalDoctor() {
+	public Long countTotalDoctor() {
 		String jpql = "select count(d.id) from Doctor d";
-		TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
+		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
 		return query.getSingleResult();
 	}
 	

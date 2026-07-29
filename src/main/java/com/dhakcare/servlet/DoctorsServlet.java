@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class PaymentServlet
  */
-@WebServlet({"/doctor", "/doctor/detail/*"})
+@WebServlet({"/doctor", "/doctor/detail/*","/doctor/delete/*"})
 public class DoctorsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DoctorService doctorservice = new DoctorServiceImpl();
@@ -58,6 +58,10 @@ public class DoctorsServlet extends HttpServlet {
 	        
 	        response.sendRedirect(request.getContextPath() + "/doctor");
 	        return;
+	    }else if (path.contains("/doctor/delete")) {
+	    	String id = request.getParameter("id");
+	    	doctorservice.deleteById(id);
+	    	response.sendRedirect(request.getContextPath()+"/admin/doctor");
 	    }
 	   
 	    request.getRequestDispatcher("/site/views/doctor.jsp").forward(request, response);

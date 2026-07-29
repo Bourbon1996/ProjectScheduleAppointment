@@ -119,11 +119,10 @@
 
         <!-- Logo -->
         <div class="auth-logo-wrapper">
-
-            <img src="${pageContext.request.contextPath}/asssets/img/logo.png"
-                 alt="Logo bệnh viện"
-                 class="auth-logo">
-
+            <img
+                src="${pageContext.request.contextPath}/assets/img/logo.png"
+                alt="Logo bệnh viện"
+                class="auth-logo">
         </div>
 
         <!-- Tiêu đề -->
@@ -164,8 +163,9 @@
                        name="fullName"
                        placeholder="Nhập họ và tên"
                        maxlength="100"
-                       required
-                       value = ${registerFullName}>
+                       value = "${registerFullName}"
+                       required>
+                       
 
             </div>
             
@@ -180,8 +180,9 @@
                        name="gender"
                        placeholder="Nhập giới tính"
                        maxlength="100"
-                       required
-                       value = ${registerGender}>
+                       value = "${registerGender}"
+                       required>
+                       
 
             </div>
 
@@ -193,14 +194,13 @@
                 </label>
 
                 <input type="tel"
-				       id="registerPhone"
-				       name="phone"
-				       value="${registerPhone}"
-				       placeholder="Nhập số điện thoại"
-				       maxlength="20"
-				       inputmode="numeric"
-				       required
-				       value = ${registerPhone}>
+			       id="registerPhone"
+			       name="phone"
+			       value="${registerPhone}"
+			       placeholder="Nhập số điện thoại"
+			       maxlength="20"
+			       inputmode="numeric"
+			       required>
             </div>
 
             <!-- Email -->
@@ -211,14 +211,12 @@
                 </label>
 
                 <input type="email"
-				       id="registerEmail"
-				       name="email"
-				       value="${registerEmail}"
-				       placeholder="Nhập địa chỉ email"
-				       maxlength="100"
-				       required
-				       value = ${registerEmail}>
-
+			       id="registerEmail"
+			       name="email"
+			       value="${registerEmail}"
+			       placeholder="Nhập địa chỉ email"
+			       maxlength="100"
+			       required>
             </div>
 
             <!-- Mật khẩu -->
