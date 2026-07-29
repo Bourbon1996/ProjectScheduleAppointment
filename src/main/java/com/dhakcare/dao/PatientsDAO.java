@@ -11,7 +11,7 @@ public interface PatientsDAO extends GenericDAO<Patient> {
 	
 	public List<Patient> findByUserId(Long id);
 	
-	public Integer countTotalPatients();
+	public Long countTotalPatients();
 	
 	public boolean deleteByUserId(String id);
 	

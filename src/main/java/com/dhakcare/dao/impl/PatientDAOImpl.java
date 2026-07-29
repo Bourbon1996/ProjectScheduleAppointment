@@ -60,9 +60,9 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 	}
 
 	@Override
-	public Integer countTotalPatients() {
+	public Long countTotalPatients() {
 		String jpql = "Select count(p.id) from Patient p";
-		TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
+		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
 		return query.getSingleResult();
 	}
 

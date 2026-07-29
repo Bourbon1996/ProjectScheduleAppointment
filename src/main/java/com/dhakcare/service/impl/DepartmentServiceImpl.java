@@ -39,5 +39,11 @@ public class DepartmentServiceImpl implements DepartmentService{
 		
 		return dao.delete(id);
 	}
+
+
+	@Override
+	public Long getTotalDepartment() {
+		return dao.countTotalDepartment();
+	}
 	
 }
