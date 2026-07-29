@@ -8,10 +8,17 @@ public interface UserService {
 
 	public User login(String phone, String password);
 	
+	User register( String fullName,
+					String gender,
+		            String phone,
+		            String email,
+		            String password,
+		            String confirmPassword);
+	
 	public List<User> findAll();
 	
 	public boolean deleteById(String id);
 		
-	public Integer getTotalUser();
+	public Long getTotalUser();
 
 }

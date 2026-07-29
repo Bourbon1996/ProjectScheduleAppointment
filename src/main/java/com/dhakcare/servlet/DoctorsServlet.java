@@ -46,7 +46,7 @@ public class DoctorsServlet extends HttpServlet {
 
 	                if (doctor != null) {
 	                    request.setAttribute("doctor", doctor);
-	                    request.getRequestDispatcher("/views/client/doctor-detail.jsp").forward(request, response);
+	                    request.getRequestDispatcher("/site/views/doctor-detail.jsp").forward(request, response);
 	                    return;
 	                }
 	            } catch (NumberFormatException e) {
@@ -60,7 +60,7 @@ public class DoctorsServlet extends HttpServlet {
 	        return;
 	    }
 	   
-	    request.getRequestDispatcher("/views/client/doctor.jsp").forward(request, response);
+	    request.getRequestDispatcher("/site/views/doctor.jsp").forward(request, response);
 	}
 
 	/**

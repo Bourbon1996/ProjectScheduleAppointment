@@ -1,15 +1,12 @@
 package com.dhakcare.servlet;
 
+import java.io.IOException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-
-import com.dhakcare.entity.Department;
-import com.dhakcare.service.impl.DepartmentServiceImpl;
 
 /**
  * Servlet implementation class HomeServlet
@@ -32,7 +29,7 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		request.getRequestDispatcher("/views/client/index.jsp").forward(request, response);
+		request.getRequestDispatcher("/site/views/index.jsp").forward(request, response);
 	}
 
 	/**

@@ -1,10 +1,12 @@
 package com.dhakcare.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.dhakcare.dao.UserDAO;
 import com.dhakcare.dao.impl.UserDAOImpl;
 import com.dhakcare.entity.User;
+import com.dhakcare.enums.UserRole;
 import com.dhakcare.enums.UserStatus;
 import com.dhakcare.service.UserService;
 
@@ -59,13 +61,82 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User register(String fullName, String gender, String phone, String email, String password, String confirmPassword) {
+		
+		// kiem tra ho ten
+		if(fullName == null || fullName.trim().isEmpty()) {
+			return null;
+		}
+		
+		// kiem tra sdt 
+		if(phone == null || phone.trim().isEmpty()) {
+			return null;
+		}
+		
+		// kiem tra email 
+		if(email ==  null || email.trim().isEmpty()) {
+			return null;
+		}
+		
+		// kiem tra mat khau 
+		if(password == null || password.length() < 6) {
+			return null;
+		}
+		
+		// kiem tra mat khau xac nhan
+		if(!password.equals(confirmPassword)) {
+			return null;
+		}
+		
+		//chuan hoa du lieu 
+		fullName = fullName.trim();
+	    phone = phone.trim();
+	    email = email.trim().toLowerCase();
+
+	    // kiem tra  dinh dang sdt vietnam
+	    if (!phone.matches("^0\\d{9}$")) {
+	        return null;
+	    }
+	    
+	    //kiem tra so dt da ton tai
+	    if(dao.findByPhone(phone) != null) {
+	    	return null;
+	    }
+	    
+	    //kiem tra email da ton tai
+	    if(dao.findByEmail(email) != null) {
+	    	return null;
+	    }
+	    
+	    // tao tai khoan moi 
+	    User user = User.builder()
+	    		.fullName(fullName)
+	            .phone(phone)
+	            .email(email)
+	            .gender(gender)
+	            .passwordHash(password)
+	            .role(UserRole.PATIENT)
+	            .status(UserStatus.ACTIVE)
+	            .createdAt(LocalDateTime.now())
+	            .build();
+	    
+	    //luu xuong database
+	    boolean created = dao.create(user);
+		    if (!created) {
+		        return null;
+		    }
+	
+		    //  Trả User vừa tạo
+		    return user;
+	}
+	
 	public boolean deleteById(String id) {
 		
 		return dao.delete(id);
 	}
 
 	@Override
-	public Integer getTotalUser() {
+	public Long getTotalUser() {
 		
 		return dao.countTotalUser();
 	}

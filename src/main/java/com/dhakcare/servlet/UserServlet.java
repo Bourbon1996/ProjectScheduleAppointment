@@ -12,13 +12,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet({"/user/index","/user/login"})
+@WebServlet({"/user/index","/user/create","/user/edit","/user/delete"})
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -42,7 +41,7 @@ public class UserServlet extends HttpServlet {
 			
 			List<User> list = service.findAll();
 			request.setAttribute("list", list);
-			request.getRequestDispatcher("views/client/index.jsp").forward(request, response);
+			request.getRequestDispatcher("/site/views/index.jsp").forward(request, response);
 		}
 		
 	}
@@ -54,30 +53,7 @@ public class UserServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		// doGet(request, response);
 		
-		String path = request.getServletPath();
-		if("/user/login".equals(path)) {
-			String phone = request.getParameter("phone");
-			String password = request.getParameter("password");
-			 // Gọi Service kiểm tra đăng nhập
-	        // Thành công trả về User, thất bại trả về null
-			User user = service.login(phone, password);
-			
-			if(user == null) {
-				request.setAttribute("loginError","Số điện thoại hoặc mật khẩu không chính xác." );
-				
-				request.setAttribute("loginPhone", phone);
-				
-				 request.getRequestDispatcher("/home/index").forward(request, response);
-
-	          return;
-			}
-
-		      HttpSession session = request.getSession();
-		
-		      session.setAttribute("user", user);
-		
-		      response.sendRedirect( request.getContextPath() + "/home/index" );
-		  }
-			}
 
 	}
+
+}

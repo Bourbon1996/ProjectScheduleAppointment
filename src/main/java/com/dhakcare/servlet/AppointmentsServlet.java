@@ -97,7 +97,7 @@ public class AppointmentsServlet extends HttpServlet {
 	    
 	    request.setAttribute("fourMonthsList", fourMonthsList);
 	    
-	    request.getRequestDispatcher("/views/client/appointment.jsp").forward(request, response);
+	    request.getRequestDispatcher("/site/views/appointment.jsp").forward(request, response);
 	}
 
 	/**
