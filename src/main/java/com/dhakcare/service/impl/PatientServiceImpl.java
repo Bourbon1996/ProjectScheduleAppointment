@@ -47,7 +47,7 @@ public class PatientServiceImpl implements PatientService {
 	}
 	@Override
 	public boolean deleteByUserId(String id) {
-		// TODO Auto-generated method stub
+		
 		return patientsDAO.deleteByUserId(id);
 	}
 

@@ -5,5 +5,6 @@ import com.dhakcare.utils.GenericDAO;
 
 public interface DoctorDAO extends GenericDAO<Doctor>{
 	public Integer countTotalDoctor();
+	
   
 }

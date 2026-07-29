@@ -86,7 +86,7 @@
                         <td>
                             <div class="action-buttons">
 
-                                <a href="${pageContext.request.contextPath}/admin/account/edit?id=${account.id}"
+                                <a href="${pageContext.request.contextPath}/admin/user/edit?id=${account.id}"
                                    class="btn-edit"
                                    data-bs-toggle="modal" 
 	        	 				   data-bs-target="#userModal"
@@ -95,7 +95,7 @@
                                       Sửa
                                 </a>
 
-                                <a href="${pageContext.request.contextPath}/admin/account/delete?id=${account.id}"
+                                <a href="${pageContext.request.contextPath}/user/delete?id=${account.id}"
                                     class="btn-delete"
                                       onclick="return confirm('Bạn có chắc muốn xóa tài khoản này không?');">
                                    <i class="bi bi-trash"></i>

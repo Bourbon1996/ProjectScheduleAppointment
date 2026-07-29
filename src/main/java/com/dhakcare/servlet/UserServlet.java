@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import com.dhakcare.entity.User;
+import com.dhakcare.service.PatientService;
 import com.dhakcare.service.UserService;
+import com.dhakcare.service.impl.PatientServiceImpl;
 import com.dhakcare.service.impl.UserServiceImpl;
 
 import jakarta.servlet.ServletException;
@@ -17,12 +19,12 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet({"/user/index","/user/create","/user/edit","/user/delete"})
+@WebServlet({"/user/index","/user/create","/user/edit","/user/delete", "/user/delete/*"})
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private PatientService patientservice = new PatientServiceImpl();
+	private UserService userservice = new UserServiceImpl();
 	
-	UserService service = new UserServiceImpl();
-
     /**
      * Default constructor. 
      */
@@ -37,11 +39,11 @@ public class UserServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String path = request.getServletPath();
 		
-		if("/user/index".equals(path)) {
-			
-			List<User> list = service.findAll();
-			request.setAttribute("list", list);
-			request.getRequestDispatcher("/site/views/index.jsp").forward(request, response);
+		if(path.equals("/user/delete")) {
+			String id = request.getParameter("id");
+			patientservice.deleteByUserId(id);
+			userservice.deleteById(id);
+			response.sendRedirect(request.getContextPath() + "/admin/account");
 		}
 		
 	}

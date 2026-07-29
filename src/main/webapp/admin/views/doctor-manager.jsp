@@ -84,7 +84,7 @@
 	                                Sửa
 	                            </a>
 	
-	                            <a href="${pageContext.request.contextPath}/admin/doctor/delete?id=${doctor.id}"
+	                            <a href="${pageContext.request.contextPath}/doctor/delete?id=${doctor.id}"
 	                               class="btn-delete"
 	                               title="Xóa"
 	                               onclick="return confirm('Bạn có chắc muốn xóa bác sĩ này không?');">
