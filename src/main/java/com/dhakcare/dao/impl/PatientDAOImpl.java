@@ -64,6 +64,12 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 		TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
 		return query.getSingleResult();
 	}
+
+	@Override
+	public boolean deleteByUserId(String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
 }
