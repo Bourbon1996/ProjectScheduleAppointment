@@ -10,5 +10,6 @@ public interface DepartmentService {
 	public List<Department> getAllDepartmentParent();
 	public List<Department> getAllDepartmentChild();
 	public boolean deleteById(String id);
+	public Long getTotalDepartment();
 	
 }

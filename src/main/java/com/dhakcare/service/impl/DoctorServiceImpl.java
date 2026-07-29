@@ -25,6 +25,11 @@ public class DoctorServiceImpl implements DoctorService {
 		// TODO Auto-generated method stub
 		return dao.delete(id);
 	}
+
+	@Override
+	public Long getTotalDoctor() {
+		return dao.countTotalDoctor();
+	}
 	
 	
 }
