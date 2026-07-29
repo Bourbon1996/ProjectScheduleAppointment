@@ -40,21 +40,21 @@ public class AdminServlet extends HttpServlet {
 		
 		
 		if(uri.contains("/admin/doctor")) {
-			request.getRequestDispatcher("/views/admin/doctor-manager.jsp").forward(request, response);
+			request.getRequestDispatcher("/admin/views/doctor-manager.jsp").forward(request, response);
 		}if(uri.contains("/admin/department")) {
-			request.getRequestDispatcher("/views/admin/department-manager.jsp").forward(request, response);
+			request.getRequestDispatcher("/admin/views/department-manager.jsp").forward(request, response);
 		}if(uri.contains("/admin/account")) {
 			List<User> listUser = userservice.findAll();
 			request.setAttribute("listAccount", listUser);
-			request.getRequestDispatcher("/views/admin/account-manager.jsp").forward(request, response);
+			request.getRequestDispatcher("/admin/views/account-manager.jsp").forward(request, response);
 		}if(uri.contains("/admin/dashboard")) {
-			request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
+			request.getRequestDispatcher("/admin/views/dashboard.jsp").forward(request, response);
 		}if(uri.contains("/admin/account/delete")) {
 			String id = request.getParameter("id");
 			patientservice.deleteById(id);
 			System.out.println("Id: "+id);
 			userservice.deleteById(id);
-			request.getRequestDispatcher("/views/admin/account-manager.jsp").forward(request, response);
+			request.getRequestDispatcher("/admin/views/account-manager.jsp").forward(request, response);
 
 
 	

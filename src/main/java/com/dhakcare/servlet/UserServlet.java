@@ -41,7 +41,7 @@ public class UserServlet extends HttpServlet {
 			
 			List<User> list = service.findAll();
 			request.setAttribute("list", list);
-			request.getRequestDispatcher("views/client/index.jsp").forward(request, response);
+			request.getRequestDispatcher("/site/views/index.jsp").forward(request, response);
 		}
 		
 	}

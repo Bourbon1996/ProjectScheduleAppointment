@@ -29,7 +29,7 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		request.getRequestDispatcher("/views/client/index.jsp").forward(request, response);
+		request.getRequestDispatcher("/site/views/index.jsp").forward(request, response);
 	}
 
 	/**
