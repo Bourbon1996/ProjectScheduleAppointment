@@ -51,7 +51,7 @@ public class AdminServlet extends HttpServlet {
 			request.getRequestDispatcher("/admin/views/dashboard.jsp").forward(request, response);
 		}if(path.contains("/account/delete")) {
 			String id = request.getParameter("id");
-			patientservice.deleteById(id);
+			patientservice.deleteByUserId(id);
 			System.out.println("Id: "+id);
 			userservice.deleteById(id);
 			request.getRequestDispatcher("/admin/views/account-manager.jsp").forward(request, response);

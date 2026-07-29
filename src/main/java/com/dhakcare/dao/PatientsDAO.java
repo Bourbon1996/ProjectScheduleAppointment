@@ -13,5 +13,8 @@ public interface PatientsDAO extends GenericDAO<Patient> {
 	
 	public Integer countTotalPatients();
 	
+	public boolean deleteByUserId(String id);
+	
+	
 
 }
