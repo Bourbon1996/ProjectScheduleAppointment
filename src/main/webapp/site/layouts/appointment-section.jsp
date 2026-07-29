@@ -26,7 +26,6 @@
             </div>
         </div>
     </div>
-</div>
 
     <!-- 2. KHUNG NỘI DUNG FORM -->
     <div class="step-content-box">
@@ -295,5 +294,6 @@
             </div>
         </div>
 
+    </div>
     </div>
 <script src="${ctx}/assets/js/client/appointment-flow.js"></script>
