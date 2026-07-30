@@ -131,14 +131,22 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public boolean deleteById(String id) {
-		
 		return dao.delete(id);
 	}
 
 	@Override
 	public Long getTotalUser() {
-		
 		return dao.countTotalUser();
+	}
+
+	@Override
+	public User findById(Long id) {
+		return dao.findById(id);
+	}
+
+	@Override
+	public boolean update(User user) {
+		return dao.update(user) != null;
 	}
 
 }

@@ -282,38 +282,70 @@
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-document.addEventListener("DOMContentLoaded",function(){
+    const userForm = document.getElementById("userForm");
+    const modalTitle = document.getElementById("userModalLabel");
 
-    const password=document.getElementById("userPassword");
+    const userId = document.getElementById("userId");
+    const userFullName = document.getElementById("userFullName");
+    const userGender = document.getElementById("userGender");
+    const userEmail = document.getElementById("userEmail");
+    const userPhone = document.getElementById("userPhone");
+    const userPassword = document.getElementById("userPassword");
+    const userRole = document.getElementById("userRole");
+    const userStatus = document.getElementById("userStatus");
 
-    const toggle=document.getElementById("toggleUserPassword");
+    // Chỉ xử lý nút Sửa
+    document.querySelectorAll(".btn-edit-user").forEach(function (button) {
 
-    const icon=document.getElementById("userPasswordIcon");
+        button.addEventListener("click", function () {
 
-    toggle.addEventListener("click",function(){
+            modalTitle.textContent = "Sửa thông tin tài khoản";
 
-        if(password.type==="password"){
+            // Khi nhấn Lưu sẽ gửi POST tới UserServlet
+            userForm.action = "${ctx}/user/edit";
 
-            password.type="text";
+            // Hiện thông tin cũ
+            userId.value = this.dataset.id;
+            userFullName.value = this.dataset.fullName;
+            userGender.value = this.dataset.gender;
+            userEmail.value = this.dataset.email;
+            userPhone.value = this.dataset.phone;
+            userRole.value = this.dataset.role;
+            userStatus.value = this.dataset.status;
 
-            icon.classList.remove("bi-eye");
-
-            icon.classList.add("bi-eye-slash");
-
-        }else{
-
-            password.type="password";
-
-            icon.classList.remove("bi-eye-slash");
-
-            icon.classList.add("bi-eye");
-
-        }
-
+            // Không hiện mật khẩu cũ
+            userPassword.value = "";
+            userPassword.required = false;
+            userPassword.placeholder =
+                "Bỏ trống nếu không muốn đổi mật khẩu";
+        });
     });
 
-});
+    // Hiện hoặc ẩn mật khẩu
+    const toggle = document.getElementById("toggleUserPassword");
+    const icon = document.getElementById("userPasswordIcon");
 
+    if (toggle && userPassword && icon) {
+
+        toggle.addEventListener("click", function () {
+
+            if (userPassword.type === "password") {
+
+                userPassword.type = "text";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+
+            } else {
+
+                userPassword.type = "password";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            }
+        });
+    }
+});
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
