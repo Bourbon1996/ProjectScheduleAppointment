@@ -37,8 +37,6 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
             }
             e.printStackTrace();
             return false;
-        } finally {
-            em.close();
         }
 	}
 
@@ -54,8 +52,9 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
             
             return query.getResultList();
             
-        } finally {
-            em.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
         }
 	}
 
@@ -86,10 +85,7 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 			em.getTransaction().rollback();
 			return false;
 			
-		} finally {
-			em.close();
 		}
-		
 		
 	}
 	
