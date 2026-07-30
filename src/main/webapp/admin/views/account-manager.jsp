@@ -86,14 +86,22 @@
                         <td>
                             <div class="action-buttons">
 
-                                <a href="${pageContext.request.contextPath}/admin/user/edit?id=${account.id}"
-                                   class="btn-edit"
-                                   data-bs-toggle="modal" 
-	        	 				   data-bs-target="#userModal"
-                                   >
-                                  <i class="bi bi-pencil-square"></i>
-                                      Sửa
-                                </a>
+                                <button type="button"
+						                class="btn-edit btn-edit-user"
+						                data-bs-toggle="modal"
+						                data-bs-target="#userModal"
+						
+						                data-id="${account.id}"
+						                data-full-name="${account.fullName}"
+						                data-gender="${account.gender}"
+						                data-email="${account.email}"
+						                data-phone="${account.phone}"
+						                data-role="${account.role}"
+						                data-status="${account.status}">
+						
+						            <i class="bi bi-pencil-square"></i>
+						            Sửa
+						        </button>
 
                                 <a href="${pageContext.request.contextPath}/user/delete?id=${account.id}"
                                     class="btn-delete"

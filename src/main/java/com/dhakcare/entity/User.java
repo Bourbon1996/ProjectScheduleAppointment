@@ -1,4 +1,4 @@
-	package com.dhakcare.entity;
+package com.dhakcare.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,7 +64,6 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Doctor doctor;
     
-
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
     

@@ -20,5 +20,9 @@ public interface UserService {
 	public boolean deleteById(String id);
 		
 	public Long getTotalUser();
+	
+	public User findById(Long id);
+
+	public boolean update(User user);
 
 }
