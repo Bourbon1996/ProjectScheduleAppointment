@@ -23,13 +23,15 @@ public class DoctorServiceImpl implements DoctorService {
 	@Override
 	public boolean deleteById(String id) {
 		// TODO Auto-generated method stub
-		return dao.delete(id);
+		return dao.deleteById(id);
 	}
 
 	@Override
 	public Long getTotalDoctor() {
 		return dao.countTotalDoctor();
 	}
+
+	
 	
 	
 }

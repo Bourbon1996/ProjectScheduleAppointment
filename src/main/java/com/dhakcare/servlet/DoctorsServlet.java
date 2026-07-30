@@ -62,9 +62,11 @@ public class DoctorsServlet extends HttpServlet {
 	    	String id = request.getParameter("id");
 	    	doctorservice.deleteById(id);
 	    	response.sendRedirect(request.getContextPath()+"/admin/doctor");
+	    	return;
 	    }
 	   
 	    request.getRequestDispatcher("/site/views/doctor.jsp").forward(request, response);
+	   
 	}
 
 	/**
