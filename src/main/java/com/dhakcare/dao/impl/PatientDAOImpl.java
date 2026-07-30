@@ -73,13 +73,14 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 		String jpql = "DELETE FROM Patient p WHERE p.user.id = :userId ";
 		try {
 			em.getTransaction().begin();
+			
 			var query = em.createQuery(jpql);
 			query.setParameter("userId",id);
 			int result = query.executeUpdate();
-			if(result > 0) {
-				return true;	
-			}
-			return false;
+			
+			em.getTransaction().commit();
+			
+			return result > 0;
 			
 		} catch (Exception e){
 			em.getTransaction().rollback();

@@ -1,6 +1,14 @@
 package com.dhakcare.servlet;
 
 import java.io.IOException;
+import java.util.List;
+
+import com.dhakcare.entity.Department;
+import com.dhakcare.entity.Doctor;
+import com.dhakcare.service.DepartmentService;
+import com.dhakcare.service.DoctorService;
+import com.dhakcare.service.impl.DepartmentServiceImpl;
+import com.dhakcare.service.impl.DoctorServiceImpl;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +22,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet({"/home/index", "/home/about", "/home/contact", "/home/departments", "/home/doctor"})
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private DepartmentService departmentService = new DepartmentServiceImpl();
+	private DoctorService doctorservice = new DoctorServiceImpl();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -28,7 +39,28 @@ public class HomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
+		String path = request.getServletPath();
+        
+        List<Department> listDepartments = departmentService.getAllDepartmentParent();
+        List<Department> listChildren = departmentService.getAllDepartmentChild();
+        
+        
+
+        // Tạo biến list chuyên khoa
+        request.setAttribute("listDepartmentsParent", listDepartments);
+        request.setAttribute("listDepartmentsChild", listChildren);
+        
+        if(path.equals("/home/doctor")) {
+        	
+        	List<Doctor> listDoctor = doctorservice.getAll();
+        	// Tạo biến list bác sĩ
+            request.setAttribute("listDoctor", listDoctor);
+            
+        	 request.getRequestDispatcher("/site/views/doctor.jsp").forward(request, response);
+        	 return;
+        }
+        
+        
 		request.getRequestDispatcher("/site/views/index.jsp").forward(request, response);
 	}
 

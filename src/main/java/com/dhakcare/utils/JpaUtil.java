@@ -10,7 +10,7 @@ public class JpaUtil {
 	
 	public static EntityManager getEntityManager() {
 		if(factory == null || !factory.isOpen()) {
-			factory = Persistence.createEntityManagerFactory("ScheduleappointmentSomee");
+			factory = Persistence.createEntityManagerFactory("scheduleappointment");
 		}
 		if(manager == null || !manager.isOpen()) {
 			manager = factory.createEntityManager();

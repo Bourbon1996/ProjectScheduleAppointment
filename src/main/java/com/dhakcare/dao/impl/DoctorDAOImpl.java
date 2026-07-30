@@ -31,21 +31,19 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 
 		String jpql = "DELETE FROM Doctor d WHERE d.id = :doctorId";
 		try {
-			em.getTransaction().begin();
+			transaction.begin();
+			
 			var query = em.createQuery(jpql);
-			query.setParameter("doctorId",Long.parseLong(id));
+			query.setParameter("doctorId", Long.parseLong(id));
 			int result = query.executeUpdate();
-			if(result > 0) {
-				return true;	
-			}
-			return false;
+			
+			transaction.commit();
+			return result > 0;
 			
 		} catch (Exception e){
-			em.getTransaction().rollback();
+			e.printStackTrace();
+			transaction.rollback();
 			return false;
-			
-		} finally {
-			em.close();
 		}
 	}
 	

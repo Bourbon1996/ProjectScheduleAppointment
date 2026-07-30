@@ -68,7 +68,7 @@
 					</div>
 				</div></li>
 
-			<li class="nav-item"><a class="nav-link" href="${ctx}/doctor">Bác
+			<li class="nav-item"><a class="nav-link" href="${ctx}/home/doctor">Bác
 					sĩ</a></li>
 
 			<li class="nav-item dropdown mega-dropdown"><a

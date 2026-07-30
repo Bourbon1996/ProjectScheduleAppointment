@@ -21,7 +21,7 @@ import com.dhakcare.enums.UserStatus;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet({"/user/index","/user/create","/user/edit","/user/delete", "/user/delete/*"})
+@WebServlet({"/user/index","/user/create","/user/edit/*","/user/delete", "/user/delete/*"})
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PatientService patientservice = new PatientServiceImpl();
@@ -118,7 +118,7 @@ public class UserServlet extends HttpServlet {
 
 	        // Quay lại danh sách, dữ liệu mới sẽ được tải lại
 	        response.sendRedirect(
-	            request.getContextPath() + "/admin/account"
+	            request.getContextPath() + "/admin/user"
 	        );
 
 	    } catch (NumberFormatException e) {
