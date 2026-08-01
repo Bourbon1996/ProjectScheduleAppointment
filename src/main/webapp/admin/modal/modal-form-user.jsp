@@ -41,13 +41,30 @@
 
                 <div class="modal-body">
 
-                    <input type="hidden"
-                           id="userId"
-                           name="id">
-
+                    
                     <div class="row g-3">
+                    
+                    <!-- ID -->
+                    
+                     <div class="col-md-6">
 
-                        <!-- HỌ TÊN -->
+                            <label class="form-label">
+
+                                ID
+                                <span class="required">*</span>
+
+                            </label>
+
+                             <input class="form-control"
+	                    	   type="text"
+	                           id="userId"
+	                           name="id" 
+	                           readonly>
+
+                        </div>
+                    
+                   
+						<!-- HỌ TÊN -->
 
                         <div class="col-md-6">
 
