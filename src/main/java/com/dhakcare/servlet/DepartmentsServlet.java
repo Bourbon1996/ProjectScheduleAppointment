@@ -19,7 +19,7 @@ import jakarta.servlet.http.Part;
  * Servlet implementation class PaymentServlet
  */
 @MultipartConfig
-@WebServlet({"/department", "/department/update"})
+@WebServlet({"/department", "/department/update", "/department/create"})
 public class DepartmentsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DepartmentService departmentservice = new DepartmentServiceImpl();
@@ -91,18 +91,9 @@ public class DepartmentsServlet extends HttpServlet {
 			
 			//6.Quay lại trang
 			response.sendRedirect(request.getContextPath() + "/admin/department");
-		} esle if (path.equals("/department/create")) {
+		} else if (path.equals("/department/create")) {
 			
-			//1. Lấy id từ From
-			Long id = Long.parseLong(request.getParameter("id"));
-			
-			//2. Tìm department cũ trong database
-			Department department = departmentservice.findById(id);
-			if (department == null) {
-				response.sendRedirect(request.getContextPath() + "/admin/department");
-				return;
-			}
-			
+			Department department = new Department();
 			//3. Lấy dữ liệu mới từ From
 			String name = request.getParameter("name");
 			String description = request.getParameter("description");

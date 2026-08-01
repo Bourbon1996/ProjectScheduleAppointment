@@ -59,5 +59,12 @@ public class DepartmentServiceImpl implements DepartmentService{
 		// TODO Auto-generated method stub
 		return dao.update(department) != null;
 	}
+
+
+	@Override
+	public boolean create(Department department) {
+		// TODO Auto-generated method stub
+		return dao.create(department);
+	}
 	
 }

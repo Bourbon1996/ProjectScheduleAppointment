@@ -20,7 +20,7 @@
             <p>Danh sách tài khoản trong hệ thống</p>
         </div>
 
-	     <button class="btn-add"
+	     <button class="btn-add btn-create-user"
 	        	 data-bs-toggle="modal" 
 	        	 data-bs-target="#userModal">
 	         	 <i class="bi bi-plus-lg"></i>

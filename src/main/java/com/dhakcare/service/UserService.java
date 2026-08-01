@@ -24,5 +24,7 @@ public interface UserService {
 	public User findById(Long id);
 
 	public boolean update(User user);
+	
+	public boolean create(User user);
 
 }

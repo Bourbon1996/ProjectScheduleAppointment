@@ -1,6 +1,8 @@
 package com.dhakcare.servlet;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.dhakcare.entity.User;
@@ -22,7 +24,7 @@ import com.dhakcare.enums.UserStatus;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet({"/user/index","/user/create","/user/edit/*","/user/delete", "/user/delete/*"})
+@WebServlet({"/user/index","/user/create","/user/edit/*","/user/delete"})
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PatientService patientservice = new PatientServiceImpl();
@@ -46,7 +48,7 @@ public class UserServlet extends HttpServlet {
 			String id = request.getParameter("id");
 			patientservice.deleteByUserId(id);
 			userservice.deleteById(id);
-			response.sendRedirect(request.getContextPath() + "/admin/account");
+			response.sendRedirect(request.getContextPath() + "/admin/user");
 		}
 	}
 		
@@ -92,19 +94,11 @@ public class UserServlet extends HttpServlet {
 	        userservice.update(user);
 	        
 	        //6.Quay lại trang
-	        response.sendRedirect(request.getContextPath() + "/admin/account");
+	        response.sendRedirect(request.getContextPath() + "/admin/user");
 	        
 		} else if (path.equals("/user/create")) {
 			
-			//1. Lấy id từ From
-			Long id = Long.parseLong(request.getParameter("id"));
-			
-			//2. Tìm user cũ trong database
-			User user = userservice.findById(id);
-			if (user == null) {
-				response.sendRedirect(request.getContextPath() + "/admin/accont");
-				return;
-			}
+			User user = new User();
 			
 			//3. Lấy dữ liệu mới từ From
 			String fullName = request.getParameter("fullName");
@@ -115,6 +109,7 @@ public class UserServlet extends HttpServlet {
 	        String role = request.getParameter("role");
 	        String status = request.getParameter("status");
 	        
+	        
 	        //4. Gán dữ liệu mới vào user cũ
 	        user.setFullName(fullName);
 	        user.setGender(gender);
@@ -123,12 +118,13 @@ public class UserServlet extends HttpServlet {
 	        user.setPasswordHash(password);
 	        user.setRole(UserRole.valueOf(role));
 	        user.setStatus(UserStatus.valueOf(status));
+	        user.setCreatedAt(LocalDateTime.now());
 	        
 	        //5. Cập nhật database
 	        userservice.create(user);
 	        
 	        //6.Quay lại trang
-	        response.sendRedirect(request.getContextPath() + "/admin/account");
+	        response.sendRedirect(request.getContextPath() + "/admin/user");
 	        
 		}				
 	}

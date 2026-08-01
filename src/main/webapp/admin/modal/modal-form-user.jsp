@@ -46,7 +46,7 @@
                     
                     <!-- ID -->
                     
-                     <div class="col-md-6">
+                     <div id = "user-id" class="col-md-6">
 
                             <label class="form-label">
 
@@ -297,6 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalTitle = document.getElementById("userModalLabel");
 
     const userId = document.getElementById("userId");
+    const userIdCreate = document.getElementById("user-id");
     const userFullName = document.getElementById("userFullName");
     const userGender = document.getElementById("userGender");
     const userEmail = document.getElementById("userEmail");
@@ -329,6 +330,26 @@ document.addEventListener("DOMContentLoaded", function () {
             userPassword.required = false;
             userPassword.placeholder =
                 "Bỏ trống nếu không muốn đổi mật khẩu";
+        });
+    });
+    
+ // Chỉ xử lý nút thêm mới
+    document.querySelectorAll(".btn-create-user").forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            modalTitle.textContent = "Tạo mới thông tin tài khoản";
+
+            // Khi nhấn Lưu sẽ gửi POST tới UserServlet
+            userForm.action = "${ctx}/user/create";
+
+           userIdCreate.style.display = "none";
+
+            // Không hiện mật khẩu cũ
+            userPassword.value = "";
+            userPassword.required = false;
+            userPassword.placeholder =
+                "Nhập mật khẩu";
         });
     });
 
