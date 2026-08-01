@@ -14,4 +14,5 @@ public interface DepartmentService {
 	public Department findById(Long id);
 	public boolean update(Department department);
 	public boolean create(Department department);
+	public boolean removeParentByParentId(Long id);
 }

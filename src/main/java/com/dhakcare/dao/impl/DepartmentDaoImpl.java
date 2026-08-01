@@ -59,19 +59,19 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	}
 
 	@Override
-	public boolean removeParentByParentId(String id) {
+	public boolean removeParentByParentId(Long id) {
        EntityTransaction transaction = em.getTransaction();
 		
 		String jpql = """
 				UPDATE Department d
                 SET d.parent = NULL
-                WHERE d.parent.id = :parentId
+                WHERE d.id = :id
 				""";
 		try {
 			transaction.begin();
 			
 			var query = em.createQuery(jpql);
-			query.setParameter("parentId", Long.parseLong(id));
+			query.setParameter("id", id);
 			int result = query.executeUpdate();
 			
 			transaction.commit();

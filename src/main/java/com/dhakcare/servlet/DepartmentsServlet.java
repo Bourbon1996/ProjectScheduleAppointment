@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import com.dhakcare.entity.Department;
+import com.dhakcare.service.AppointmentService;
 import com.dhakcare.service.DepartmentService;
+import com.dhakcare.service.DoctorService;
+import com.dhakcare.service.impl.AppointmentServiceImpl;
 import com.dhakcare.service.impl.DepartmentServiceImpl;
+import com.dhakcare.service.impl.DoctorServiceImpl;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -19,10 +23,12 @@ import jakarta.servlet.http.Part;
  * Servlet implementation class PaymentServlet
  */
 @MultipartConfig
-@WebServlet({"/department", "/department/update", "/department/create"})
+@WebServlet({"/department", "/department/update", "/department/create", "/department/delete"})
 public class DepartmentsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DepartmentService departmentservice = new DepartmentServiceImpl();
+	private DoctorService doctorService = new DoctorServiceImpl();
+	private AppointmentService appointmentService = new AppointmentServiceImpl();
 
     /**
      * Default constructor. 
@@ -36,6 +42,21 @@ public class DepartmentsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		request.setCharacterEncoding("UTF-8");
+		String path = request.getServletPath();
+		
+		if (path.equals("/department/delete")) {
+			String id = request.getParameter("id");
+			
+			
+			doctorService.removeDepartmentByDepartmentId(id);
+			appointmentService.removeDepartmentByDepartmentId(id);
+			departmentservice.removeParentByParentId(Long.parseLong(id));
+			departmentservice.deleteById(id);
+			
+			response.sendRedirect(request.getContextPath() + "/admin/department");
+			return;
+		}
 		
 		
 	}
@@ -120,14 +141,14 @@ public class DepartmentsServlet extends HttpServlet {
 
 			    department.setImageUrl(newImageUrl);
 			}
-			
-			
+
 			//5. Cập nhật database
 			departmentservice.create(department);
 			
 			//6.Quay lại trang
 			response.sendRedirect(request.getContextPath() + "/admin/department");
-		}
+			
+		} 
 	}
 	
 	private String saveDepartmentImage(Part imagePart)

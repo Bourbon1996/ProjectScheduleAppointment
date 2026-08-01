@@ -90,7 +90,7 @@
 								                                
                                 
 
-                                <a href="${pageContext.request.contextPath}/admin/department/delete?id=${department.id}"
+                                <a href="${pageContext.request.contextPath}/department/delete?id=${department.id}"
                                    class="btn-delete"
                                    title="Xóa"
                                    onclick="return confirm('Bạn có chắc muốn xóa chuyên khoa này không?');">
