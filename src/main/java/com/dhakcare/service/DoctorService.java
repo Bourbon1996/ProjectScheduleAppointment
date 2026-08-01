@@ -9,5 +9,7 @@ public interface DoctorService {
 	public Doctor getById(String id);
 	public boolean deleteById(String id);
 	public Long getTotalDoctor();
+	public boolean removeDepartmentByDepartmentId(String id);
+
 
 }
