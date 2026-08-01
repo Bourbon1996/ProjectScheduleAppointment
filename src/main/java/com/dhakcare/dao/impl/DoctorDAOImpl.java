@@ -1,5 +1,6 @@
 package com.dhakcare.dao.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.dhakcare.dao.DoctorDAO;
@@ -90,9 +91,24 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 	}
 
 	@Override
-	public List<Doctor> findByDepartmentId(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Doctor> finDoctorbyDeptId(String id) {
+	    EntityManager em = JpaUtil.getEntityManager();
+	    try {
+	        String jpql = "SELECT doc FROM Doctor doc WHERE doc.department.id = :id";
+	        
+	        var query = em.createQuery(jpql, Doctor.class);
+	        
+	        query.setParameter("id", Long.parseLong(id));
+	        
+	        return query.getResultList();
+	    } catch (Exception e){
+	        e.printStackTrace();
+	        return Collections.emptyList();
+	    } finally {
+	        if (em != null && em.isOpen()) {
+	            em.close();
+	        }
+	    }
 	}
 
 	

@@ -1,5 +1,9 @@
 package com.dhakcare.dao.impl;
 
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
 import com.dhakcare.dao.DoctorscheduleslotsDAO;
 import com.dhakcare.entity.DoctorScheduleSlot;
 import com.dhakcare.utils.GenericDAOImpl;
@@ -37,6 +41,35 @@ public class DoctorscheduleslotsDAOImpl extends GenericDAOImpl<DoctorScheduleSlo
 		
 	
 		
+	}
+
+
+	@Override
+	public List<DoctorScheduleSlot> findSlotsByDoctorAndDate(String doctorId, LocalDate workDate) {
+	    EntityManager em = JpaUtil.getEntityManager();
+	    
+	    try {
+
+	        String jpql = "SELECT s FROM DoctorScheduleSlot s " +
+	                      "WHERE s.doctor.id = :id AND s.workDate = :date " +
+	                      "ORDER BY s.startTime ASC";
+	        
+	        var query = em.createQuery(jpql, DoctorScheduleSlot.class);
+	        
+	        query.setParameter("id", Long.parseLong(doctorId));
+	        query.setParameter("date", workDate); 
+	        
+	        return query.getResultList();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return Collections.emptyList();
+	    } finally {
+	        
+	        if (em != null && em.isOpen()) {
+	            em.close();
+	        }
+	    }
 	}
 
 }
