@@ -1,5 +1,8 @@
 package com.dhakcare.dao;
 
-public class DoctorscheduleslotsDAO {
+import com.dhakcare.entity.DoctorScheduleSlot;
+import com.dhakcare.utils.GenericDAO;
+
+public interface DoctorscheduleslotsDAO extends GenericDAO<DoctorScheduleSlot> {
 
 }

@@ -12,11 +12,9 @@ import jakarta.persistence.TypedQuery;
 
 public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements DepartmentDAO {
 	
-	private final EntityManager em;
 
 	public DepartmentDaoImpl() {
 		super(Department.class);
-		this.em = JpaUtil.getEntityManager();
 	}
 
 	@Override
@@ -33,6 +31,8 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	    	
 			e.printStackTrace();
 			return null;
+		} finally {
+			em.close();
 		}
 	}
 	
@@ -47,14 +47,24 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	    	
 			e.printStackTrace();
 			return null;
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
 	public Long countTotalDepartment() {
-		String jpql = "Select count(d.id) from Department d";
-		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-		return query.getSingleResult();
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "Select count(d.id) from Department d";
+			TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+			return query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			em.close();
+		}
 	}
 	
 

@@ -11,22 +11,29 @@ import jakarta.persistence.TypedQuery;
 
 public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 
-	private final EntityManager em;
 	
 	public DoctorDAOImpl() {
 		super(Doctor.class);
-		this.em = JpaUtil.getEntityManager();
 	}
 
 	@Override
 	public Long countTotalDoctor() {
-		String jpql = "select count(d.id) from Doctor d";
-		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-		return query.getSingleResult();
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "select count(d.id) from Doctor d";
+			TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+			return query.getSingleResult();
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
 	public boolean deleteById(String id) {
+		EntityManager em = JpaUtil.getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 
 		String jpql = "DELETE FROM Doctor d WHERE d.id = :doctorId";
@@ -44,6 +51,8 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 			e.printStackTrace();
 			transaction.rollback();
 			return false;
+		} finally {
+			em.close();
 		}
 	}
 	

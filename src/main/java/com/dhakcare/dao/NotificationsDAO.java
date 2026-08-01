@@ -1,5 +1,8 @@
 package com.dhakcare.dao;
 
-public class NotificationsDAO {
+import com.dhakcare.entity.Notification;
+import com.dhakcare.utils.GenericDAO;
+
+public interface NotificationsDAO extends GenericDAO<Notification>{
 
 }
