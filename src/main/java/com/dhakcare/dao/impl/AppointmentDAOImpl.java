@@ -1,53 +1,39 @@
 package com.dhakcare.dao.impl;
 
-import java.util.List;
-
-import com.dhakcare.dao.DoctorDAO;
-import com.dhakcare.entity.Doctor;
+import com.dhakcare.dao.AppointmentsDAO;
+import com.dhakcare.entity.Appointment;
 import com.dhakcare.utils.GenericDAOImpl;
 import com.dhakcare.utils.JpaUtil;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.TypedQuery;
 
-public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
+public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements AppointmentsDAO {
 
-	private final EntityManager em;
-	
-	public DoctorDAOImpl() {
-		super(Doctor.class);
+	public AppointmentDAOImpl() {
+		super(Appointment.class);
 		this.em = JpaUtil.getEntityManager();
 	}
+ 
+	private EntityManager em;
 
 	@Override
-	public Long countTotalDoctor() {
-		String jpql = "select count(d.id) from Doctor d";
-		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-		return query.getSingleResult();
-	}
-
-	@Override
-	public boolean deleteById(String id) {
-		EntityTransaction transaction = em.getTransaction();
-
-		String jpql = "DELETE FROM Doctor d WHERE d.id = :doctorId";
+	public boolean deleteByDoctorId(String id) {
+		String jpql = "DELETE FROM Appointment a WHERE a.doctor.id = :doctorId";
 		try {
-			transaction.begin();
-			
+			em.getTransaction().begin();
 			var query = em.createQuery(jpql);
 			query.setParameter("doctorId", Long.parseLong(id));
 			int result = query.executeUpdate();
-			
-			transaction.commit();
+						
+			em.getTransaction().commit();
 			
 			return result >= 0;
-			
-		} catch (Exception e){
-			e.printStackTrace();
-			transaction.rollback();
+		}catch(Exception e) {
+			em.getTransaction().rollback();
 			return false;
 		}
+		
 	}
 
 	@Override
@@ -55,9 +41,9 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 		EntityTransaction transaction = em.getTransaction();
 		
 		String jpql = """
-				UPDATE Doctor d
-                SET d.department = NULL
-                WHERE d.department.id = :departmentId
+				UPDATE Appointment a
+                SET a.department = NULL
+                WHERE a.department.id = :departmentId
 				""";
 		try {
 			transaction.begin();
@@ -74,15 +60,15 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 			return false;
 		}
 				
-		
 	}
 
 	@Override
-	public List<Doctor> findByDepartmentId(String id) {
+	public boolean deleteDepartmentById(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
+	
 	
 	
 }

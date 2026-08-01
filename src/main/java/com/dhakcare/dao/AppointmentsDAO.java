@@ -1,5 +1,11 @@
 package com.dhakcare.dao;
 
-public class AppointmentsDAO {
+import com.dhakcare.entity.Appointment;
+import com.dhakcare.utils.GenericDAO;
 
+public interface AppointmentsDAO extends GenericDAO<Appointment> {
+	
+	public boolean deleteByDoctorId(String id);
+    public boolean removeDepartmentByDepartmentId(String id);
+	public boolean deleteDepartmentById(String id);
 }

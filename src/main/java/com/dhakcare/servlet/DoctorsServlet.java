@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.util.List;
 
 import com.dhakcare.entity.Doctor;
+import com.dhakcare.entity.DoctorScheduleSlot;
+import com.dhakcare.service.AppointmentService;
+import com.dhakcare.service.DoctorScheduleSlotService;
 import com.dhakcare.service.DoctorService;
+import com.dhakcare.service.impl.AppointmentServiceImpl;
+import com.dhakcare.service.impl.DoctorScheduleSlotServiceImpl;
 import com.dhakcare.service.impl.DoctorServiceImpl;
 
 import jakarta.servlet.ServletException;
@@ -20,6 +25,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class DoctorsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DoctorService doctorservice = new DoctorServiceImpl();
+	private DoctorScheduleSlotService slotService = new DoctorScheduleSlotServiceImpl();
+	private AppointmentService appointmentService = new AppointmentServiceImpl();
 
     /**
      * Default constructor. 
@@ -59,13 +66,12 @@ public class DoctorsServlet extends HttpServlet {
 	        
 	        response.sendRedirect(request.getContextPath() + "/doctor");
 	        return;
-	    }else if (path.contains("/doctor/delete")) {
+	    }else if (path.equals("/doctor/delete")) {
 	    	String id = request.getParameter("id");
 	    	
+	    	appointmentService.deleteByDoctorId(id);
+	    	slotService.deleteByDoctorId(id);
 	    	doctorservice.deleteById(id);
-	    	
-	    	List<Doctor> listDoctor = doctorservice.getAll();
-	    	request.setAttribute("listDoctor", listDoctor);
 	    	
 	    	response.sendRedirect(request.getContextPath()+"/admin/doctor");
 	    	return;

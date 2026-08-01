@@ -31,6 +31,12 @@ public class DoctorServiceImpl implements DoctorService {
 		return dao.countTotalDoctor();
 	}
 
+	@Override
+	public boolean removeDepartmentByDepartmentId(String id) {
+		// TODO Auto-generated method stub
+		return dao.removeDepartmentByDepartmentId(id);
+	}
+
 	
 	
 	
