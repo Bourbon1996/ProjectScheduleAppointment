@@ -149,4 +149,10 @@ public class UserServiceImpl implements UserService {
 		return dao.update(user) != null;
 	}
 
+	@Override
+	public boolean create(User user) {
+		// TODO Auto-generated method stub
+		return dao.create(user);
+	}
+
 }

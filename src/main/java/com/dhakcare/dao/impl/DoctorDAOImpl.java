@@ -1,5 +1,7 @@
 package com.dhakcare.dao.impl;
 
+import java.util.List;
+
 import com.dhakcare.dao.DoctorDAO;
 import com.dhakcare.entity.Doctor;
 import com.dhakcare.utils.GenericDAOImpl;
@@ -25,7 +27,7 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 			return query.getSingleResult();
 		} catch (Exception e){
 			e.printStackTrace();
-			return null;
+			return 0L;
 		} finally {
 			em.close();
 		}
@@ -45,7 +47,8 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 			int result = query.executeUpdate();
 			
 			transaction.commit();
-			return result > 0;
+			
+			return result >= 0;
 			
 		} catch (Exception e){
 			e.printStackTrace();
@@ -55,5 +58,43 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 			em.close();
 		}
 	}
+
+	@Override
+	public boolean removeDepartmentByDepartmentId(String id) {
+		EntityManager em = JpaUtil.getEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		
+		String jpql = """
+				UPDATE Doctor d
+                SET d.department = NULL
+                WHERE d.department.id = :departmentId
+				""";
+		try {
+			transaction.begin();
+			
+			var query = em.createQuery(jpql);
+			query.setParameter("departmentId", Long.parseLong(id));
+			int result = query.executeUpdate();
+			
+			transaction.commit();
+			return result >= 0;
+		} catch (Exception e){
+			e.printStackTrace();
+			transaction.rollback();
+			return false;
+		} finally {
+			em.close();
+		}
+				
+		
+	}
+
+	@Override
+	public List<Doctor> findByDepartmentId(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	
 }

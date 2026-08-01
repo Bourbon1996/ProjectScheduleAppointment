@@ -9,4 +9,6 @@ public interface DepartmentDAO extends GenericDAO<Department>{
 	public List<Department> findDepartmentsParent();
 	public List<Department> findAllDepartmentChild();
 	public Long countTotalDepartment();
+	public boolean removeParentByParentId(Long id);
+	
 }

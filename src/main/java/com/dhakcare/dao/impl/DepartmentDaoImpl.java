@@ -1,5 +1,6 @@
 package com.dhakcare.dao.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.dhakcare.dao.DepartmentDAO;
@@ -8,6 +9,7 @@ import com.dhakcare.utils.GenericDAOImpl;
 import com.dhakcare.utils.JpaUtil;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 
 public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements DepartmentDAO {
@@ -30,7 +32,7 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	    } catch (Exception e){
 	    	
 			e.printStackTrace();
-			return null;
+			return Collections.emptyList();
 		} finally {
 			em.close();
 		}
@@ -46,7 +48,7 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	    } catch (Exception e){
 	    	
 			e.printStackTrace();
-			return null;
+			return Collections.emptyList();
 		} finally {
 			em.close();
 		}
@@ -61,11 +63,41 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 			return query.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return 0L;
 		} finally {
 			em.close();
 		}
 	}
+
+	@Override
+	public boolean removeParentByParentId(Long id) {
+		EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+		
+		String jpql = """
+				UPDATE Department d
+                SET d.parent = NULL
+                WHERE d.id = :id
+				""";
+		try {
+			transaction.begin();
+			
+			var query = em.createQuery(jpql);
+			query.setParameter("id", id);
+			int result = query.executeUpdate();
+			
+			transaction.commit();
+			return result >= 0;
+		} catch (Exception e){
+			e.printStackTrace();
+			transaction.rollback();
+			return false;
+		} finally {
+			em.close();
+		}
+				
+	}
+
 	
 
 	

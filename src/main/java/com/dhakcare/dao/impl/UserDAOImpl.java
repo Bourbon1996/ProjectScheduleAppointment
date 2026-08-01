@@ -81,7 +81,7 @@ public class UserDAOImpl extends GenericDAOImpl<User> implements UserDAO {
 		} catch (Exception e){
     		e.printStackTrace();
 			em.getTransaction().rollback();
-			return null;
+			return 0L;
 			
 		} finally {
 			em.close();

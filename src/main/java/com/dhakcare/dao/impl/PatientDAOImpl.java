@@ -1,6 +1,6 @@
 package com.dhakcare.dao.impl;
 
-import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import com.dhakcare.dao.PatientsDAO;
@@ -53,7 +53,7 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
             
         } catch(Exception e) {
             e.printStackTrace();
-            return null;
+            return Collections.emptyList();
         } finally {
 			em.close();
 		}
@@ -68,7 +68,7 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 			return query.getSingleResult();
 		} catch(Exception e) {
             e.printStackTrace();
-            return null;
+            return 0L;
         } finally {
 			em.close();
 		}

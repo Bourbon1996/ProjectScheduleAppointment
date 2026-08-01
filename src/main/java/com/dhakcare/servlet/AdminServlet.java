@@ -55,6 +55,9 @@ public class AdminServlet extends HttpServlet {
 			request.getRequestDispatcher("/admin/views/doctor-manager.jsp").forward(request, response);
 		}else if(path.contains("/department")) {
 			List<Department> listChildren = departmentService.getAllDepartmentChild();
+			List<Department> listParent = departmentService.getAllDepartmentParent();
+			
+			request.setAttribute("listDepartmentsParent", listParent);
 			request.setAttribute("listDepartmentsChild", listChildren);
 			request.getRequestDispatcher("/admin/views/department-manager.jsp").forward(request, response);
 		}else if(path.contains("/user")) {
