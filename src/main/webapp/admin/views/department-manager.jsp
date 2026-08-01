@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%@ include file="/admin/shared/page.jsp" %>
+     <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +21,8 @@
             <p>Danh sách chuyên khoa trong hệ thống</p>
         </div>
 
-        <button class="btn-add"
+        <button  type = "button"
+        		 class="btn-add btn-add-department"
 	        	 data-bs-toggle="modal" 
 	        	 data-bs-target="#departmentModal">
 	         	 <i class="bi bi-plus-lg"></i>
@@ -67,15 +69,25 @@
                         <td>
                             <div class="action-buttons">
 
-                                <a href="${pageContext.request.contextPath}/admin/department/edit?id=${department.id}"
-                                   class="btn-edit"
-                                   data-bs-toggle="modal" 
-						           data-bs-target="#departmentModal"
-                                   title="Chỉnh sửa">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Sửa
-                                </a>
-                                
+                                <button type="button"
+								        class="btn-edit btn-edit-department"
+								        data-bs-toggle="modal"
+								        data-bs-target="#departmentModal"
+								
+								        data-id="${department.id}"
+								        data-name="${fn:escapeXml(department.name)}"
+								        data-description="${fn:escapeXml(department.description)}"
+								        data-status="${department.status}"
+								        data-base-price="${department.basePrice}"
+								        data-parent-id="${department.parent != null
+								                            ? department.parent.id
+								                            : ''}"
+								        data-image-url="${fn:escapeXml(department.imageUrl)}">
+								
+								    <i class="bi bi-pencil-square"></i>
+								    Sửa
+								</button>
+								                                
                                 
 
                                 <a href="${pageContext.request.contextPath}/admin/department/delete?id=${department.id}"

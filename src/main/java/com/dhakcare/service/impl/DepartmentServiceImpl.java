@@ -10,7 +10,7 @@ import com.dhakcare.entity.Doctor;
 import com.dhakcare.service.DepartmentService;
 
 public class DepartmentServiceImpl implements DepartmentService{
-	DepartmentDAO dao = new DepartmentDaoImpl();
+	private final DepartmentDAO dao = new DepartmentDaoImpl();
 	
 	public List<Department> getAllDepartmentParent(){
 		
@@ -44,6 +44,20 @@ public class DepartmentServiceImpl implements DepartmentService{
 	@Override
 	public Long getTotalDepartment() {
 		return dao.countTotalDepartment();
+	}
+
+
+	@Override
+	public Department findById(Long id) {
+		// TODO Auto-generated method stub
+		return dao.findById(id);
+	}
+
+
+	@Override
+	public boolean update(Department department) {
+		// TODO Auto-generated method stub
+		return dao.update(department) != null;
 	}
 	
 }

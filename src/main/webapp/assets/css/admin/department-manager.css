@@ -232,6 +232,8 @@
 .btn-edit,
 .btn-delete {
     display: inline-flex;
+    
+    border: none;
 
     align-items: center;
 
