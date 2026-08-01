@@ -1,6 +1,7 @@
 package com.dhakcare.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.dhakcare.entity.Doctor;
 import com.dhakcare.service.DoctorService;
@@ -60,12 +61,17 @@ public class DoctorsServlet extends HttpServlet {
 	        return;
 	    }else if (path.contains("/doctor/delete")) {
 	    	String id = request.getParameter("id");
+	    	
 	    	doctorservice.deleteById(id);
+	    	
+	    	List<Doctor> listDoctor = doctorservice.getAll();
+	    	request.setAttribute("listDoctor", listDoctor);
+	    	
 	    	response.sendRedirect(request.getContextPath()+"/admin/doctor");
 	    	return;
 	    }
 	   
-	    request.getRequestDispatcher("/site/views/doctor.jsp").forward(request, response);
+	    request.getRequestDispatcher("/admin/views/doctor-manager.jsp").forward(request, response);
 	   
 	}
 

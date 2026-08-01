@@ -1,13 +1,10 @@
 package com.dhakcare.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import com.dhakcare.entity.Department;
+import com.dhakcare.entity.Doctor;
 import com.dhakcare.entity.User;
 import com.dhakcare.service.DepartmentService;
 import com.dhakcare.service.DoctorService;
@@ -18,17 +15,23 @@ import com.dhakcare.service.impl.DoctorServiceImpl;
 import com.dhakcare.service.impl.PatientServiceImpl;
 import com.dhakcare.service.impl.UserServiceImpl;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet({"/admin/dashboard", "/admin/doctor", "/admin/account", "/admin/account/*", "/admin/department"})
+@WebServlet({"/admin/dashboard", "/admin/doctor", "/admin/user", "/admin/department"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private UserService userservice = new UserServiceImpl();
-	private PatientService patientservice = new PatientServiceImpl();
+	private UserService userService = new UserServiceImpl();
+	private PatientService patientService = new PatientServiceImpl();
 	
-	private DoctorService doctorservice = new DoctorServiceImpl();
-	private DepartmentService departmentservice = new DepartmentServiceImpl();
+	private DoctorService doctorService = new DoctorServiceImpl();
+	private DepartmentService departmentService = new DepartmentServiceImpl();
 	
        
     /**
@@ -47,29 +50,26 @@ public class AdminServlet extends HttpServlet {
 		
 		
 		if(path.contains("/doctor")) {
+			List<Doctor> listDoctor = doctorService.getAll();
+			request.setAttribute("listDoctor", listDoctor);
 			request.getRequestDispatcher("/admin/views/doctor-manager.jsp").forward(request, response);
-		}if(path.contains("/department")) {
-			request.getRequestDispatcher("/admin/views/department-manager.jsp").forward(request, response);
-		}if(path.contains("/account")) {
-			List<User> listUser = userservice.findAll();
-			request.setAttribute("listAccount", listUser);
-			request.getRequestDispatcher("/admin/views/account-manager.jsp").forward(request, response);
-		}if(path.contains("/dashboard")) {
-			request.setAttribute("totalUser", userservice.getTotalUser());
-			request.setAttribute("totalDoctor", doctorservice.getTotalDoctor());
-			request.setAttribute("totalPatient", patientservice.getTotalPatient());
-			request.setAttribute("totalDepartment", departmentservice.getTotalDepartment());
-			request.getRequestDispatcher("/admin/views/dashboard.jsp").forward(request, response);
-		}if(path.contains("/account/delete")) {
-			String id = request.getParameter("id");
-			patientservice.deleteByUserId(id);
-			System.out.println("Id: "+id);
-			userservice.deleteById(id);
-			request.getRequestDispatcher("/admin/views/account-manager.jsp").forward(request, response);
-
-
-	
+		}else if(path.contains("/department")) {
+			List<Department> listChildren = departmentService.getAllDepartmentChild();
+			List<Department> listParent = departmentService.getAllDepartmentParent();
 			
+			request.setAttribute("listDepartmentsParent", listParent);
+			request.setAttribute("listDepartmentsChild", listChildren);
+			request.getRequestDispatcher("/admin/views/department-manager.jsp").forward(request, response);
+		}else if(path.contains("/user")) {
+			List<User> listUser = userService.findAll();
+			request.setAttribute("listAccount", listUser);
+			request.getRequestDispatcher("/admin/views/user-manager.jsp").forward(request, response);
+		}else if(path.contains("/dashboard")) {
+			request.setAttribute("totalUser", userService.getTotalUser());
+			request.setAttribute("totalDoctor", doctorService.getTotalDoctor());
+			request.setAttribute("totalPatient", patientService.getTotalPatient());
+			request.setAttribute("totalDepartment", departmentService.getTotalDepartment());
+			request.getRequestDispatcher("/admin/views/dashboard.jsp").forward(request, response);
 		}
 	}
 

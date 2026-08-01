@@ -9,7 +9,22 @@ document.addEventListener("DOMContentLoaded", function () {
         tomorrow.setDate(tomorrow.getDate() + 1);
         dateInput.valueAsDate = tomorrow;
     }
+	
+	const targetPane = document.getElementById("stepper-1");
+	if(targetPane.classList.contains('completed')){
+		const modalDateEl = document.getElementById('modalDate');
+							    
+			if (modalDateEl) {
+							        
+				const modalDate = bootstrap.Modal.getOrCreateInstance(modalDateEl);
+				modalDate.show();
+			}
+	}
+	
+	
 });
+
+
 
 // =========================================================================
 // HÀM 1: CHỌN HỒ SƠ TỪ DANH SÁCH DO JSP (DATABASE) VẼ RA
@@ -114,11 +129,21 @@ function goToStep(stepNumber) {
     document.querySelectorAll('.step-pane').forEach(pane => {
         pane.classList.remove('active');
     });
+	
+	document.querySelector("#input-display-date").value = "";
+	document.querySelector("#input-display-dept").value = "";
+	
+	document.querySelectorAll(".check-status-icon").forEach(icon => {
+		icon.classList.add("d-none");
+	})
 
     const targetPane = document.getElementById(`step-pane-${stepNumber}`);
     if (targetPane) {
         targetPane.classList.add('active');
+		
     }
+	
+	
 
     for (let i = 1; i <= 4; i++) {
         const stepItem = document.getElementById(`stepper-${i}`);

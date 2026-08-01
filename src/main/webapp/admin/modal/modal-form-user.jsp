@@ -151,10 +151,6 @@
                                     Nữ
                                 </option>
 
-                                <option value="OTHER">
-                                    Khác
-                                </option>
-
                             </select>
 
                         </div>
@@ -218,10 +214,6 @@
 
                                 <option value="DOCTOR">
                                     Bác sĩ
-                                </option>
-
-                                <option value="STAFF">
-                                    Nhân viên
                                 </option>
 
                                 <option value="ADMIN">

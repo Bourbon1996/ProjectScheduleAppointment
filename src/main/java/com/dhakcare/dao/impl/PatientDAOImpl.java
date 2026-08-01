@@ -37,8 +37,6 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
             }
             e.printStackTrace();
             return false;
-        } finally {
-            em.close();
         }
 	}
 
@@ -54,8 +52,9 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
             
             return query.getResultList();
             
-        } finally {
-            em.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
         }
 	}
 
@@ -73,22 +72,20 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 		String jpql = "DELETE FROM Patient p WHERE p.user.id = :userId ";
 		try {
 			em.getTransaction().begin();
+			
 			var query = em.createQuery(jpql);
 			query.setParameter("userId",id);
 			int result = query.executeUpdate();
-			if(result > 0) {
-				return true;	
-			}
-			return false;
+			
+			em.getTransaction().commit();
+			
+			return result > 0;
 			
 		} catch (Exception e){
 			em.getTransaction().rollback();
 			return false;
 			
-		} finally {
-			em.close();
 		}
-		
 		
 	}
 	

@@ -38,7 +38,7 @@
 
     <li class="nav-item">
         <a class="nav-link"
-           href="${pageContext.request.contextPath}/admin/account">
+           href="${pageContext.request.contextPath}/admin/user">
             Quản lý Tài Khoản
         </a>
     </li>

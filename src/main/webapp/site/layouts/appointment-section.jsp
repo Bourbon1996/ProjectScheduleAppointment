@@ -114,7 +114,7 @@
 		            <!-- Ô 1: Ngày khám -->
 		            <div class="col-md-6">
 		                <label class="form-label small fw-bold text-muted">NGÀY KHÁM <span class="text-danger">*</span></label>
-		                <div class="input-group" onclick="openBookingFlow()" style="cursor: pointer;">
+		                <div class="input-group" onclick="openSpecificModal('date')" style="cursor: pointer;">
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-calendar-check fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-date" 
 		                           placeholder="Chưa chọn ngày khám..." readonly style="cursor: pointer;">
@@ -126,7 +126,7 @@
 		            <!-- Ô 2: Chuyên khoa -->
 		            <div class="col-md-6">
 		                <label class="form-label small fw-bold text-muted">CHUYÊN KHOA <span class="text-danger">*</span></label>
-		                <div class="input-group" onclick="openBookingFlow()" style="cursor: pointer;">
+		                <div class="input-group" onclick="openSpecificModal('dept')" style="cursor: pointer;">
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-heart-pulse fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-dept" 
 		                           placeholder="Chưa chọn chuyên khoa..." readonly style="cursor: pointer;">
@@ -137,7 +137,7 @@
 		            <!-- Ô 3: Giờ khám -->
 		            <div class="col-md-6">
 		                <label class="form-label small fw-bold text-muted">GIỜ KHÁM <span class="text-danger">*</span></label>
-		                <div class="input-group" onclick="openBookingFlow()" style="cursor: pointer;">
+		                <div class="input-group" onclick="openSpecificModal('time')" style="cursor: pointer;">
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-clock fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-time" 
 		                           placeholder="Chưa chọn giờ khám..." readonly style="cursor: pointer;">
@@ -148,7 +148,7 @@
 		            <!-- Ô 4: Bác sĩ -->
 		            <div class="col-md-6">
 		                <label class="form-label small fw-bold text-muted">BÁC SĨ KHÁM <span class="text-muted fw-normal">(Tùy chọn)</span></label>
-		                <div class="input-group" onclick="openBookingFlow()" style="cursor: pointer;">
+		                <div class="input-group" onclick="openSpecificModal('doctor')" style="cursor: pointer;">
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-person-badge fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-doctor" 
 		                           placeholder="Chưa chọn bác sĩ..." readonly style="cursor: pointer;">

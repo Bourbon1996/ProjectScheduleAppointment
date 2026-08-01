@@ -29,9 +29,11 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	        
 	        return query.getResultList();
 	        
-	    } finally {
-	        em.close();
-	    }
+	    } catch (Exception e){
+	    	
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public List<Department> findAllDepartmentChild() {
@@ -41,9 +43,11 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	        String jpql = "SELECT d FROM Department d WHERE d.parent IS NOT NULL"; 
 	        
 	        return em.createQuery(jpql, Department.class).getResultList();
-	    } finally {
-	        em.close();
-	    }
+	    } catch (Exception e){
+	    	
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override

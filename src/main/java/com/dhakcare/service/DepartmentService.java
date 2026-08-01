@@ -11,5 +11,6 @@ public interface DepartmentService {
 	public List<Department> getAllDepartmentChild();
 	public boolean deleteById(String id);
 	public Long getTotalDepartment();
-	
+	public Department findById(Long id);
+	public boolean update(Department department);
 }
