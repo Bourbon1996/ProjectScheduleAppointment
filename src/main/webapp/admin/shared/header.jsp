@@ -2,7 +2,7 @@
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ include file="/site/shared/page.jsp" %>
+<%@ include file="/admin/shared/page.jsp" %>
 <nav class="navbar navbar-expand-lg admin-navbar">
     <div class="container-fluid">
       <a class="navbar-brand admin-logo"
@@ -72,14 +72,14 @@
 		        
 		        <ul class="dropdown-menu dropdown-menu-end admin-account-menu">
 			         <li>
-			            <a class="dropdown-item" href="#">
+			            <a class="dropdown-item" href="${ctx}/account/edit-profile">
 			                <i class="bi bi-person-circle me-2"></i>
 			                Tài khoản
 			            </a>
 			        </li>
 			
 			        <li>
-			            <a class="dropdown-item" href="#">
+			            <a class="dropdown-item" href="${ctx}/account/change-password">
 			                <i class="bi bi-key me-2"></i>
 			                Đổi mật khẩu
 			            </a>

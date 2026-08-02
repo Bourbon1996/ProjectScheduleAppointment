@@ -6,6 +6,7 @@ import java.io.IOException;
 import jakarta.servlet.ServletException;
 
 public class XPath {
+
 	public static StringBuffer getRequestUrl() {
 		return XHttp.getRequest().getRequestURL();
 	}

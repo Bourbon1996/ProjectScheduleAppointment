@@ -44,9 +44,19 @@ public class AuthServlet extends HttpServlet {
     			"logoutMessage",
     			"Đăng xuất thành công"
     		);
+    		
+    		
+    		
+    		String referer = request.getHeader("Referer");
 
-    		XPath.forward("/home/index");
-    		return;
+    	    if (referer != null && !referer.isEmpty()) {
+
+    	    	response.sendRedirect(referer);
+    	    	return;
+    	    } else {
+    	        XPath.redirect("/home/index");
+    	        return;
+    	    }
     	}
 
     	if (XPath.contains("login")) {
@@ -67,7 +77,7 @@ public class AuthServlet extends HttpServlet {
     }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(XPath.contains("login")) {
-			this.doLogin();
+			this.doLogin(request);
 			return;
 		}
 		
@@ -80,7 +90,7 @@ public class AuthServlet extends HttpServlet {
 		
 	}
 
-	private void doLogin() throws ServletException, IOException {
+	private void doLogin(HttpServletRequest request) throws ServletException, IOException {
 		//check co sdt co mat khau
 		var phone = XParam.getString("phone");
 		var password = XParam.getString("password");
@@ -98,16 +108,23 @@ public class AuthServlet extends HttpServlet {
 		
 		XAuth.setUser(user);
 		
-		if(XAuth.backToSavedUrl()) { //dang nhap thanh cong tra ve URL da luu 
-			return;
-		}
-		
 		if (XAuth.isAdmin()) {
 			XPath.redirect("/admin/dashboard");// neu la admin se dua ve dasboard
 			return;
 		}
 		
-		XPath.redirect("/home/index");
+		if(XAuth.backToSavedUrl()) { //dang nhap thanh cong tra ve URL da luu 
+			return;
+		}
+
+		String referer = request.getHeader("Referer");
+
+	    if (referer != null && !referer.isEmpty()) {
+
+	    	XPath.redirect(referer);
+	    } else {
+	        XPath.redirect("/home/index");
+	    }
 	}
 	
 	private void doRegister() throws ServletException, IOException {
