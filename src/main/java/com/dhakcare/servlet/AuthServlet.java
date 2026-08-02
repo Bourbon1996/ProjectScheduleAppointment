@@ -57,7 +57,7 @@ public class AuthServlet extends HttpServlet {
     			message = "Vui lòng đăng nhập để tiếp tục";
     		}
 
-    		XAttr.setRequest("loginError",message);// popup tu mo 
+    		XAttr.setRequest("loginError",message);// popup dang nhap 
 
     		XPath.forward("/home/index");
     		return;

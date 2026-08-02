@@ -189,12 +189,12 @@
 							</li>
 							<!-- Đăng xuất -->							
 								<li>
-									<a class="dropdown-item text-danger"
-									   href="${ctx}/auth/logout">
+								    <a class="dropdown-item text-danger"
+								       href="${ctx}/auth/logout">
 								
-										<i class="bi bi-box-arrow-right me-2"></i>
-										Đăng xuất
-									</a>
+								        <i class="bi bi-box-arrow-right me-2"></i>
+								        Đăng xuất
+								    </a>
 								</li>
 
 						</ul>
