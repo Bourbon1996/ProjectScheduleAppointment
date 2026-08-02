@@ -22,6 +22,8 @@ public interface UserService {
 	public Long getTotalUser();
 	
 	public User findById(Long id);
+	
+	public User findByEmmail(String email);
 
 	public boolean update(User user);
 	

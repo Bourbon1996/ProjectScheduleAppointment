@@ -5,13 +5,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+
 
 import java.io.IOException;
 
-import com.dhakcare.entity.User;
 import com.dhakcare.service.UserService;
 import com.dhakcare.service.impl.UserServiceImpl;
+import com.dhakcare.utils.XAttr;
+import com.dhakcare.utils.XAuth;
+import com.dhakcare.utils.XParam;
+import com.dhakcare.utils.XPath;
 
 /**
  * Servlet implementation class AuthServlet
@@ -24,106 +27,94 @@ import com.dhakcare.service.impl.UserServiceImpl;
 })
 public class AuthServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	UserService service = new UserServiceImpl();
+	private final UserService userService = new UserServiceImpl();
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public AuthServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+        super();        
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		
-		String path = request.getServletPath();
-		if("/auth/login".equals(path)) {
-			String phone = request.getParameter("phone");
-			String password = request.getParameter("password");
-			 // Gọi Service kiểm tra đăng nhập
-	        // Thành công trả về User, thất bại trả về null
-			User user = service.login(phone, password);
+		if(XPath.contains("logout")) {
+			XAuth.logoff();
 			
-			if(user == null) {
-				request.setAttribute("loginError","Số điện thoại hoặc mật khẩu không chính xác." );
-				
-				request.setAttribute("loginPhone", phone);
-				
-				 request.getRequestDispatcher("/home/index").forward(request, response);
-
-	          return;
-			}
+			XAttr.setRequest("logoutMessage", "Đăng xuất thành công");
 			
-			
-
-		      HttpSession session = request.getSession();
-		
-		      session.setAttribute("user", user);
-		
-		      response.sendRedirect( request.getContextPath() + "/home/index" );
-		  }
-		
-		if("/auth/register".equals(path)) {
-			String fullName = request.getParameter("fullName");
-			String phone = request.getParameter("phone");
-			String email = request.getParameter("email");
-	        String password = request.getParameter("password");
-	        String gender = request.getParameter("gender");
-	        String confirmPassword = request.getParameter("confirmPassword");
-	        
-	        // service kiem tra dulieu 
-	        //kiem tra trung  va tao User
-	         User user = service.register(fullName,gender, phone, email, password, confirmPassword);
-	         
-	         // dang ky that bai 
-	         if(user == null) {
-	        	 request.setAttribute("registerError","Thông tin không hợp lệ hoặc số điện thoại/email đã tồn tại.");
-	        	 request.setAttribute( "registerFullName", fullName );
-
-	             request.setAttribute("registerPhone",phone );
-	             
-	             request.setAttribute("registerGender", gender );
-
-	             request.setAttribute("registerEmail",email );
-
-	             request.getRequestDispatcher("/home/index").forward(request, response);
-	        	 
-	        	 return;
-	         }
-	         HttpSession session = request.getSession();
-	         session.setAttribute("user", user);
-
-	         response.sendRedirect(request.getContextPath()+"/home/index");
-	         return;
 		}
 		
-		if ("/auth/logout".equals(path)) {
+		XPath.forward("/home/index");
+		return;
+	}
 
-	        // false nghĩa là không tạo session mới
-	        // nếu session hiện tại không tồn tại
-	        HttpSession session = request.getSession(false);
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(XPath.contains("login")) {
+			this.doLogin();
+			return;
+		}
+		
+		else if(XPath.contains("register")) {
+			this.doRegister();
+			return;
+		}
+		
+		response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		
+	}
 
-	        if (session != null) { 
-	        	session.invalidate();
-	        }
+	private void doLogin() throws ServletException, IOException {
+		//check co sdt co mat khau
+		var phone = XParam.getString("phone");
+		var password = XParam.getString("password");
+		
+		var user = userService.login(phone, password);
+		
+		if(user == null) {
+			XAttr.setRequest("loginError", "Số điện thoại hoặc mật khẩu không chính xác");
+			
+			XAttr.setRequest("loginPhone", phone);
+			
+			XPath.forward("/home/index");
+			return;
+		}
+		
+		XAuth.setUser(user);
+		
+		if(XAuth.backToSavedUrl()) { //dang nhap thanh cong tra ve URL da luu 
+			return;
+		}
+		
+		if (XAuth.isAdmin()) {
+			XPath.redirect("/admin/dashboard");// neu la admin se dua ve dasboard
+			return;
+		}
+		
+		XPath.redirect("/home/index");
+	}
+	
+	private void doRegister() throws ServletException, IOException {
+		var fullName = XParam.getString("fullName");
+		var phone = XParam.getString("phone");
+		var email = XParam.getString("email");
+		var password = XParam.getString("password");
+		var gender = XParam.getString("gender");
+		var confirmPassword = XParam.getString("confirmPassword");	
+		
+		var user = userService.register(fullName, gender, phone, email, password, confirmPassword);
+		
+		if(user == null) {
+			XAttr.setRequest("registerError", "Thông tin không hợp lệ hoặc email/số điện thoại đã tồn tại");
+			
+			XAttr.setRequest("registerFullName", fullName);
+			XAttr.setRequest("registerGender", gender);
+			XAttr.setRequest("registerPhone", phone);
+			XAttr.setRequest("registerEmail", email);
 
-	        response.sendRedirect(request.getContextPath() +"/home/index" );
-
-	        return;
-	    }
+			XPath.forward("/home/index");
+			return;
+		}
+		
+		XAuth.setUser(user);
+		XPath.redirect("/home/index");
 	}
 
 }

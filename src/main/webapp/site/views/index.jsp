@@ -37,7 +37,7 @@
 
 	<!-- HEADER(Q.ANH) -->
 	<header>
-		<jsp:include page="/site/shared/header.jsp"/>
+	<jsp:include page="/site/shared/header.jsp"/>
 	</header>
 
 	<main>
@@ -65,7 +65,7 @@
 	</footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-	
+	<script src="${ctx}/assets/js/client/auth.js"></script>
 
 </body>
 </html>
