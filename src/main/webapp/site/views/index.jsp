@@ -11,7 +11,7 @@
     <title>Home</title>
     
     <!-- Cài đặt Favicon cho web -->
-	<link rel="icon" type="image/png" href="${ctx}/img/logo.png">
+	<link rel="icon" type="image/png" href="${ctx}/assets/img/logo.png">
 
     <!-- Bootstrap CSS: vẫn giữ để dùng cho navbar -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"

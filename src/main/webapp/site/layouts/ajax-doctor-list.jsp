@@ -12,7 +12,7 @@
                 <div class="d-flex align-items-center text-primary-custom">
                     <div class="icon-circle me-3">
 					    <c:choose>
-					        <%-- TRƯỜNG HỢP 1: Chuyên khoa có lưu link ảnh --%>
+					        
 					        <c:when test="${not empty doctor.department.imageUrl}">
 					            <img src="${ctx}${doctor.department.imageUrl}" 
 					                 alt="${doctor.department.name}" 

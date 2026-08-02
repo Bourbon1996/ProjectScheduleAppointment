@@ -3,7 +3,6 @@ package com.dhakcare.dao;
 import java.util.List;
 
 import com.dhakcare.entity.Department;
-import com.dhakcare.entity.Doctor;
 import com.dhakcare.utils.GenericDAO;
 
 public interface DepartmentDAO extends GenericDAO<Department>{

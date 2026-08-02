@@ -36,7 +36,7 @@
 						        <div class="card h-100 shadow-sm border-0 umc-card d-flex flex-column align-items-center justify-content-center">
 						            
 						            <div class="card-icon mx-auto mb-3" 
-						                 style="-webkit-mask-image: url('${pageContext.request.contextPath}${khoaCon.imageUrl}'); mask-image: url('${pageContext.request.contextPath}/assets${khoaCon.imageUrl}');">
+						                 style="-webkit-mask-image: url('${pageContext.request.contextPath}${khoaCon.imageUrl}'); mask-image: url('${pageContext.request.contextPath}${khoaCon.imageUrl}');">
 						            </div>
 						                 
 						            <!-- Tiêu đề Khoa -->

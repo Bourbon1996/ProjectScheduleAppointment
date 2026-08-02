@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.dhakcare.dao.DepartmentDAO;
 import com.dhakcare.entity.Department;
-import com.dhakcare.entity.Doctor;
 import com.dhakcare.utils.GenericDAOImpl;
 import com.dhakcare.utils.JpaUtil;
 

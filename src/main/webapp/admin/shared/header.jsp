@@ -45,41 +45,64 @@
 
      </ul>
      
-     <!-- Tài khoản Admin -->
-     <div class="admin-user ms-auto dropdown">
-        <a href="#" 
-        class="admin-avatar"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        title="Tài khoản">
-        
-        <i class="bi bi-person"></i>
-        </a>
-        
-        <ul class="dropdown-menu dropdown-menu-end admin-account-menu">
-         <li>
-            <a class="dropdown-item" href="#">
-                <i class="bi bi-person-circle me-2"></i>
-                Tài khoản
-            </a>
-        </li>
+     <c:choose>
+     	<c:when test="${empty sessionScope.user}">
+     		<div class="admin-user ms-auto">
+		        <a href="#" 
+			        class="admin-avatar"
+			        data-bs-toggle="dropdown"
+			        aria-expanded="false"
+			        title="Tài khoản">
+			        
+			        <i class="bi bi-person"></i>
+		        </a>
+		     </div>
+     	</c:when>
+     	
+     	<c:otherwise>
+     		<div class="admin-user ms-auto dropdown">
+		        <a href="#" 
+			        class="admin-avatar"
+			        data-bs-toggle="dropdown"
+			        aria-expanded="false"
+			        title="Tài khoản">
+			        
+			        <i class="bi bi-person-check-fill"></i>
+		        </a>
+		        
+		        <ul class="dropdown-menu dropdown-menu-end admin-account-menu">
+			         <li>
+			            <a class="dropdown-item" href="#">
+			                <i class="bi bi-person-circle me-2"></i>
+			                Tài khoản
+			            </a>
+			        </li>
+			
+			        <li>
+			            <a class="dropdown-item" href="#">
+			                <i class="bi bi-key me-2"></i>
+			                Đổi mật khẩu
+			            </a>
+			        </li>
+			        
+			        <li>
+			            <a class="dropdown-item text-danger" href="#">
+			                <i class="bi bi-box-arrow-right me-2"></i>
+			                Đăng xuất
+			            </a>
+			        </li>
+		        
+		        </ul>
+		     </div>
+     	</c:otherwise>
+     
+     </c:choose>
+     
 
-        <li>
-            <a class="dropdown-item" href="#">
-                <i class="bi bi-key me-2"></i>
-                Đổi mật khẩu
-            </a>
-        </li>
+     
         
-        <li>
-            <a class="dropdown-item text-danger" href="#">
-                <i class="bi bi-box-arrow-right me-2"></i>
-                Đăng xuất
-            </a>
-        </li>
         
-        </ul>
-     </div>
+     
      
     </div>
 

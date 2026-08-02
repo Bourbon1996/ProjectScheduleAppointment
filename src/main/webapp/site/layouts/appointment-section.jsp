@@ -103,9 +103,7 @@
 		                <h5 class="fw-bold text-primary mb-1"><i class="bi bi-file-earmark-medical me-2"></i>THÔNG TIN KHÁM BỆNH</h5>
 		                <p class="text-muted small mb-0">Vui lòng bấm chọn tuần tự Ngày khám, Chuyên khoa và Khung giờ</p>
 		            </div>
-		            <button type="button" class="btn btn-primary px-4 py-2 fw-bold shadow-sm" onclick="openBookingFlow()">
-		                <i class="bi bi-hand-index-thumb me-1"></i> Bấm chọn lịch khám ngay
-		            </button>
+
 		        </div>
 		
 		        <!-- 4 Ô HIỂN THỊ KẾT QUẢ ĐÃ CHỌN (Bấm vào là mở Modal) -->
@@ -119,7 +117,7 @@
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-date" 
 		                           placeholder="Chưa chọn ngày khám..." readonly style="cursor: pointer;">
 		                    <!-- Icon tích xanh sẽ bật lên khi chọn xong -->
-		                    <span class="input-group-text bg-white border-start-0"><i class="bi bi-check-circle-fill check-status-icon d-none"></i></span>
+		                    <span class="input-group-text bg-white border-start-0"><i class="bi bi-check-circle-fill text-primary check-status-icon d-none"></i></span>
 		                </div>
 		            </div>
 		
@@ -130,7 +128,7 @@
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-heart-pulse fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-dept" 
 		                           placeholder="Chưa chọn chuyên khoa..." readonly style="cursor: pointer;">
-		                    <span class="input-group-text bg-white border-start-0"><i class="bi bi-check-circle-fill check-status-icon d-none"></i></span>
+		                    <span class="input-group-text bg-white border-start-0"><i class="bi bi-check-circle-fill text-primary check-status-icon d-none"></i></span>
 		                </div>
 		            </div>
 		
@@ -141,7 +139,7 @@
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-clock fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-time" 
 		                           placeholder="Chưa chọn giờ khám..." readonly style="cursor: pointer;">
-		                    <span class="input-group-text bg-white border-start-0"><i class="bi bi-check-circle-fill check-status-icon d-none"></i></span>
+		                    <span class="input-group-text bg-white border-start-0"><i class="bi bi-check-circle-fill text-primary check-status-icon d-none"></i></span>
 		                </div>
 		            </div>
 		
@@ -152,7 +150,7 @@
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-person-badge fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-doctor" 
 		                           placeholder="Chưa chọn bác sĩ..." readonly style="cursor: pointer;">
-		                    <span class="input-group-text bg-white border-start-0"><i class="bi bi-check-circle-fill check-status-icon d-none"></i></span>
+		                    <span class="input-group-text bg-white border-start-0"><i class="bi bi-check-circle-fill text-primary check-status-icon d-none"></i></span>
 		                </div>
 		            </div>
 		
