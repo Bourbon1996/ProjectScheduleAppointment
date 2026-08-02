@@ -14,7 +14,7 @@ import jakarta.servlet.annotation.WebFilter;
 @WebFilter("/*") // chay qua tat ca cac request 
 		//nham gi nhan rq,rp de phuc vu cho cac cong vie hdong trong pham vi rq
 
-public class AppFilter implements Filter {
+public class AAAFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
