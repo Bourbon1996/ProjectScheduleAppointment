@@ -10,6 +10,7 @@ public interface DoctorService {
 	public boolean deleteById(String id);
 	public Long getTotalDoctor();
 	public boolean removeDepartmentByDepartmentId(String id);
+	public List<Doctor> getDoctorbyDeptId(String id);
 
 
 }

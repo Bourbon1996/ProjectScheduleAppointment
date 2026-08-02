@@ -24,10 +24,4 @@ public interface GenericDAO<T> {
     
     /** Check exists */
     boolean exists(Object id);
-    
-    /** Refresh entity */
-    void refresh(T entity);
-    
-    /** Detach entity */
-    void detach(T entity);
 }

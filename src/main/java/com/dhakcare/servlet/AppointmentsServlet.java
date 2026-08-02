@@ -13,9 +13,11 @@ import com.dhakcare.entity.Doctor;
 import com.dhakcare.entity.Patient;
 import com.dhakcare.entity.User;
 import com.dhakcare.service.DepartmentService;
+import com.dhakcare.service.DoctorScheduleSlotService;
 import com.dhakcare.service.DoctorService;
 import com.dhakcare.service.PatientService;
 import com.dhakcare.service.impl.DepartmentServiceImpl;
+import com.dhakcare.service.impl.DoctorScheduleSlotServiceImpl;
 import com.dhakcare.service.impl.DoctorServiceImpl;
 import com.dhakcare.service.impl.PatientServiceImpl;
 import com.dhakcare.utils.HolidayUtil;
@@ -56,13 +58,9 @@ public class AppointmentsServlet extends HttpServlet {
         
         List<Doctor> listDoctor = doctorservice.getAll();
         
-        
-        
-        // Tạo biến list chuyên khoa
         request.setAttribute("listDepartmentsParent", listDepartments);
         request.setAttribute("listDepartmentsChild", listChildren);
         
-        // Tạo biến list bác sĩ
         request.setAttribute("listDoctor", listDoctor);
 		
 	    

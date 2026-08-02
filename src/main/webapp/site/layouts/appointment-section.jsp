@@ -137,7 +137,7 @@
 		            <!-- Ô 3: Giờ khám -->
 		            <div class="col-md-6">
 		                <label class="form-label small fw-bold text-muted">GIỜ KHÁM <span class="text-danger">*</span></label>
-		                <div class="input-group" onclick="openSpecificModal('time')" style="cursor: pointer;">
+		                <div class="input-group" onclick="openSpecificModal('doctor')" style="cursor: pointer;">
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-clock fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-time" 
 		                           placeholder="Chưa chọn giờ khám..." readonly style="cursor: pointer;">

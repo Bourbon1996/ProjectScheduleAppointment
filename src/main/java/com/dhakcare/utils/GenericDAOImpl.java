@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GenericDAOImpl<T> implements GenericDAO<T> {
@@ -14,33 +15,29 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
         this.entityClass = entityClass;
     }
 
-    protected EntityManager getEm() {
-        EntityManager em = JpaUtil.getEntityManager();
-        
-        if (em == null || !em.isOpen()) {
-            em = JpaUtil.getEntityManager();
-        }
-        return em;
-    }
-
     /**
      * Create
      */
     @Override
     public boolean create(T entity) {
-        EntityManager em = getEm();
+        EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
+        
         try {
             transaction.begin();
             em.persist(entity);
             transaction.commit();
             return true;
         } catch (Exception e) {
-            if (transaction.isActive()) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             e.printStackTrace();
             return false;
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
 
@@ -49,19 +46,24 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
      */
     @Override
     public T update(T entity) {
-        EntityManager em = getEm();
+        EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
+        
         try {
             transaction.begin();
             T updatedEntity = em.merge(entity);
             transaction.commit();
             return updatedEntity;
         } catch (Exception e) {
-            if (transaction.isActive()) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             e.printStackTrace();
             return null;
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
 
@@ -70,24 +72,27 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
      */
     @Override
     public boolean delete(Object id) {
-        EntityManager em = getEm();
+        EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
+        
         try {
             transaction.begin();
-
             T entity = em.find(entityClass, id);
             if (entity != null) {
                 em.remove(entity);
             }
-
             transaction.commit();
             return true;
         } catch (Exception e) {
-            if (transaction.isActive()) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             e.printStackTrace();
             return false;
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
 
@@ -96,7 +101,18 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
      */
     @Override
     public T findById(Object id) {
-        return getEm().find(entityClass, id);
+        EntityManager em = JpaUtil.getEntityManager();
+        
+        try {
+            return em.find(entityClass, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     /**
@@ -104,10 +120,20 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
      */
     @Override
     public List<T> findAll() {
-        EntityManager em = getEm();
-        String jpql = "FROM " + entityClass.getSimpleName();
-        TypedQuery<T> query = em.createQuery(jpql, entityClass);
-        return query.getResultList();
+        EntityManager em = JpaUtil.getEntityManager();
+        
+        try {
+            String jpql = "FROM " + entityClass.getSimpleName();
+            TypedQuery<T> query = em.createQuery(jpql, entityClass);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close(); 
+            }
+        }
     }
 
     /**
@@ -115,9 +141,19 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
      */
     @Override
     public long count() {
-        EntityManager em = getEm();
-        String jpql = "SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e";
-        return em.createQuery(jpql, Long.class).getSingleResult();
+        EntityManager em = JpaUtil.getEntityManager();
+        
+        try {
+            String jpql = "SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e";
+            return em.createQuery(jpql, Long.class).getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     /**
@@ -128,19 +164,4 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
         return findById(id) != null;
     }
 
-    /**
-     * Refresh entity
-     */
-    @Override
-    public void refresh(T entity) {
-        getEm().refresh(entity);
-    }
-
-    /**
-     * Detach entity
-     */
-    @Override
-    public void detach(T entity) {
-        getEm().detach(entity);
-    }
 }
