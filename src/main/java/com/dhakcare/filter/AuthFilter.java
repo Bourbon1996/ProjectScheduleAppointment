@@ -27,9 +27,7 @@ public class AuthFilter implements Filter {
 			throws IOException, ServletException {
 		//nguoi dung chua dang nhap 
 		if(!XAuth.isAuthenticated()) {
-			redirectToLogin(
-					"Vui lòng đăng nhập trước khi truy cập trang này"
-				);
+			redirectToLogin("Vui lòng đăng nhập trước khi truy cập trang này");
 		}else {
 			chain.doFilter(request, response);
 		}

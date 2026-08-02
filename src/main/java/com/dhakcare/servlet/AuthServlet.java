@@ -33,19 +33,38 @@ public class AuthServlet extends HttpServlet {
         super();        
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(XPath.contains("logout")) {
-			XAuth.logoff();
-			
-			XAttr.setRequest("logoutMessage", "Đăng xuất thành công");
-			
-		}
-		
-		XPath.forward("/home/index");
-		return;
-	}
+   
+    protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 
-	
+    	if (XPath.contains("logout")) {
+
+    		XAuth.logoff();
+
+    		XAttr.setRequest(
+    			"logoutMessage",
+    			"Đăng xuất thành công"
+    		);
+
+    		XPath.forward("/home/index");
+    		return;
+    	}
+
+    	if (XPath.contains("login")) {
+
+    		var message = XParam.getString("msg");
+
+    		if (message == null || message.isBlank()) {
+    			message = "Vui lòng đăng nhập để tiếp tục";
+    		}
+
+    		XAttr.setRequest("loginError",message);// popup dang nhap 
+
+    		XPath.forward("/home/index");
+    		return;
+    	}
+
+    	response.sendError(HttpServletResponse.SC_NOT_FOUND);
+    }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(XPath.contains("login")) {
 			this.doLogin();

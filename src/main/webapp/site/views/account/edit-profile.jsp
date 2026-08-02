@@ -237,27 +237,7 @@
 						</div>
 
 					</div>
-
-					<!-- Vai trò -->
-					<div class="account-form-group">
-
-						<label for="role" class="account-form-label"> Vai trò tài
-							khoản </label>
-
-						<div class="input-group">
-
-							<span class="input-group-text"> <i
-								class="bi bi-shield-check"></i>
-							</span> <input type="text" class="form-control account-input" id="role"
-								value="${sessionScope.user.role}" disabled>
-
-						</div>
-
-						<div class="form-text">Người dùng không thể tự thay đổi vai
-							trò tài khoản.</div>
-
-					</div>
-
+			
 					<!-- Nút thao tác -->
 					<div class="account-actions">
 
