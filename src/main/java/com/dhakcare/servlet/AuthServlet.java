@@ -97,13 +97,21 @@ public class AuthServlet extends HttpServlet {
 		
 		var user = userService.login(phone, password);
 		
+		String referer = request.getHeader("Referer");
+		
 		if(user == null) {
 			XAttr.setRequest("loginError", "Số điện thoại hoặc mật khẩu không chính xác");
 			
 			XAttr.setRequest("loginPhone", phone);
 			
-			XPath.forward("/home/index");
-			return;
+			if (referer != null && !referer.isEmpty()) {
+
+		    	XPath.redirect(referer);
+		    	return;
+		    } else {
+		        XPath.redirect("/home/index");
+		        return;
+		    }
 		}
 		
 		XAuth.setUser(user);
@@ -116,9 +124,7 @@ public class AuthServlet extends HttpServlet {
 		if(XAuth.backToSavedUrl()) { //dang nhap thanh cong tra ve URL da luu 
 			return;
 		}
-
-		String referer = request.getHeader("Referer");
-
+	
 	    if (referer != null && !referer.isEmpty()) {
 
 	    	XPath.redirect(referer);

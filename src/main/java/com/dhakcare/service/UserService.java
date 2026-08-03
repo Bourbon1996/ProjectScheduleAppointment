@@ -23,7 +23,7 @@ public interface UserService {
 	
 	public User findById(Long id);
 	
-	public User findByEmmail(String email);
+	public User findByEmail(String email);
 
 	public boolean update(User user);
 	

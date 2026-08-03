@@ -732,3 +732,70 @@ input:checked + .gender-toggle-text {
         gap: 8px;
     }
 }
+.auth-server-success {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    margin-bottom: 14px;
+    padding: 10px 12px;
+
+    color: #0f5132;
+    font-size: 13px;
+    line-height: 1.5;
+
+    border: 1px solid #badbcc;
+    border-radius: 7px;
+
+    background-color: #d1e7dd;
+}
+
+.auth-server-success i {
+    margin-top: 2px;
+}
+/* ==================================================
+   POPUP QUÊN MẬT KHẨU
+   ================================================== */
+
+.forgot-password-box {
+    width: 420px;
+}
+
+.forgot-password-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    text-align: left;
+}
+
+.forgot-password-message i {
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.forgot-password-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+
+    margin: 4px 0 18px;
+    padding: 11px 12px;
+
+    color: #4e6676;
+    font-size: 13px;
+    line-height: 1.5;
+
+    border: 1px solid #cce4f4;
+    border-radius: 8px;
+
+    background-color: #f0f8fd;
+}
+
+.forgot-password-note i {
+    margin-top: 2px;
+
+    color: #0d68aa;
+
+    flex-shrink: 0;
+}

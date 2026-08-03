@@ -20,13 +20,19 @@
             <p>Danh sách tài khoản trong hệ thống</p>
         </div>
 
-	     <button class="btn-add btn-create-user"
-	        	 data-bs-toggle="modal" 
-	        	 data-bs-target="#userModal">
-	         	 <i class="bi bi-plus-lg"></i>
-	           	 Thêm mới
-	      </button>
+		<div class="account-header-actions">
+			<%@ include file = "/admin/layouts/use-filter.jsp" %>
+			<button type="button"
+                class="btn-add btn-create-user"
+                data-bs-toggle="modal"
+                data-bs-target="#userModal">
+
+            <i class="bi bi-plus-lg"></i>
+				Thêm mới
+			</button>
+		</div>
     </div>
+
 
     <div class="account-table-wrapper">
 

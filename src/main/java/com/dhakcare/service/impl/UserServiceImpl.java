@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findByEmmail(String email) {
+	public User findByEmail(String email) {
 		// TODO Auto-generated method stub
 		return dao.findByEmail(email);
 	}

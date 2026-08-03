@@ -9,8 +9,8 @@
 <!-- Lớp phủ toàn bộ màn hình -->
 <div class="auth-popup-overlay"
      id="loginPopup"
-     data-has-login-error="${not empty loginError}">
-
+     data-has-login-error="${not empty loginError}"
+     data-open-login="${openLoginPopup == true}">
     <!-- Khung đăng nhập -->
     <div class="auth-popup-box">
 
@@ -36,11 +36,18 @@
 
         <!-- Form đăng nhập -->
         <form action="${pageContext.request.contextPath}/auth/login"
-              method="post">
-              
-              <c:if test="${not empty loginError}">
+		      method="post">
+		
+		    <c:if test="${not empty loginError}">
 		        <div class="auth-server-error">
-		            ${loginError}
+		            <c:out value="${loginError}"/>
+		        </div>
+		    </c:if>
+		
+		    <c:if test="${not empty loginSuccess}">
+		        <div class="auth-server-success">
+		            <i class="bi bi-check-circle-fill"></i>
+		            <c:out value="${loginSuccess}"/>
 		        </div>
 		    </c:if>
 

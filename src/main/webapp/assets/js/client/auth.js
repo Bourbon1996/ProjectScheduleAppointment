@@ -248,7 +248,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	} else if (
 	    loginPopup &&
-	    loginPopup.dataset.hasLoginError === "true"
+	    (
+	        loginPopup.dataset.hasLoginError === "true" ||
+	        loginPopup.dataset.openLogin === "true"
+	    )
 	) {
 	    showPopup(loginPopup);
 	}
