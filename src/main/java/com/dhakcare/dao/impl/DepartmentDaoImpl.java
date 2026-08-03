@@ -1,5 +1,6 @@
 package com.dhakcare.dao.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.dhakcare.dao.DepartmentDAO;
@@ -13,11 +14,9 @@ import jakarta.persistence.TypedQuery;
 
 public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements DepartmentDAO {
 	
-	private final EntityManager em;
 
 	public DepartmentDaoImpl() {
 		super(Department.class);
-		this.em = JpaUtil.getEntityManager();
 	}
 
 	@Override
@@ -33,7 +32,9 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	    } catch (Exception e){
 	    	
 			e.printStackTrace();
-			return null;
+			return Collections.emptyList();
+		} finally {
+			em.close();
 		}
 	}
 	
@@ -47,20 +48,31 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 	    } catch (Exception e){
 	    	
 			e.printStackTrace();
-			return null;
+			return Collections.emptyList();
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
 	public Long countTotalDepartment() {
-		String jpql = "Select count(d.id) from Department d";
-		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-		return query.getSingleResult();
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "Select count(d.id) from Department d";
+			TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+			return query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0L;
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
 	public boolean removeParentByParentId(Long id) {
-       EntityTransaction transaction = em.getTransaction();
+		EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
 		
 		String jpql = """
 				UPDATE Department d
@@ -76,20 +88,17 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 			
 			transaction.commit();
 			return result >= 0;
-		}catch (Exception e){
+		} catch (Exception e){
 			e.printStackTrace();
 			transaction.rollback();
 			return false;
+		} finally {
+			em.close();
 		}
 				
 	}
 
-	@Override
-	public List<Department> filter(Long id, String name, String status, String sort) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	
 
 	

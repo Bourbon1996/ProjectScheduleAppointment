@@ -26,17 +26,13 @@ function openSpecificModal(modalType) {
         const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDept'));
         modal.show();
     } 
-    else if (modalType === 'time') {
+    else if (modalType === 'doctor') {
         if (!bookingData.deptId) {
             alert("Vui lòng chọn chuyên khoa trước!");
             openSpecificModal('dept');
             return;
         }
-        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalSlot')); 
-        modal.show();
-    }
-    else if (modalType === 'doctor') {
-        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDoctor'));
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDoctor')); 
         modal.show();
     }
 }
@@ -65,7 +61,6 @@ function selectDate(dateVal, dateStr) {
     bookingData.dateDisplay = dateStr;
 	
 	document.querySelector("#input-display-date").value = dateStr;
-	document.querySelector(".check-status-icon").classList.remove("d-none");
 	    
     safeSwitchModal('modalDate', 'modalDept');
 }
@@ -75,12 +70,24 @@ function selectDept(id, name, priceStr) {
     bookingData.deptName = name;
     bookingData.price = priceStr;
 	
-	document.querySelector("#input-display-dept").value = name;
-	document.querySelector("#display-total-price").textContent = parseFloat(priceStr).toLocaleString('vi-VN') + " đồng";
+    document.querySelector("#input-display-dept").value = name;
+    document.querySelector("#display-total-price").textContent = parseFloat(priceStr).toLocaleString('vi-VN') + " đồng";
 	
-	document.querySelector(".check-status-icon").classList.remove("d-none");
+    const dateVal = bookingData.dateValue; 
+    
+    fetch('/scheduleappointment/api/get-doctors?deptId=' + id + '&workdate=' + dateVal)
+        .then(response => response.text())
+        .then(htmlString => {
+            
+            const modalSlotBody = document.querySelector("#modalDoctor .modal-body");
+            modalSlotBody.innerHTML = htmlString;
 
-    safeSwitchModal('modalDept', 'modalDoctor');
+            safeSwitchModal('modalDept', 'modalDoctor');
+        })
+        .catch(error => {
+            console.error("Lỗi:", error);
+            alert("Lỗi mạng, không tải được danh sách bác sĩ!");
+        });
 }
 
 function selectTimeSlot(docId, docName, timeStr) {
@@ -90,7 +97,7 @@ function selectTimeSlot(docId, docName, timeStr) {
     bookingData.doctorName = docName;
     bookingData.timeSlot = timeStr;
 	
-	document.querySelector(".check-status-icon").classList.remove("d-none");
+	document.getElementById("input-display-doctor").value = docName;
 
     const modalDocIns = bootstrap.Modal.getInstance(document.getElementById('modalDoctor'));
     if (modalDocIns) modalDocIns.hide();

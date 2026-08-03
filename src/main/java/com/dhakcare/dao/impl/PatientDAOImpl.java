@@ -1,6 +1,6 @@
 package com.dhakcare.dao.impl;
 
-import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import com.dhakcare.dao.PatientsDAO;
@@ -14,11 +14,8 @@ import jakarta.persistence.TypedQuery;
 
 public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsDAO{
 
-	private final EntityManager em;
 	public PatientDAOImpl() {
 		super(Patient.class);
-		this.em = JpaUtil.getEntityManager();
-		
 	}
 
 	@Override
@@ -37,7 +34,9 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
             }
             e.printStackTrace();
             return false;
-        }
+        } finally {
+			em.close();
+		}
 	}
 
 	@Override
@@ -54,20 +53,31 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
             
         } catch(Exception e) {
             e.printStackTrace();
-            return null;
-        }
+            return Collections.emptyList();
+        } finally {
+			em.close();
+		}
 	}
 
 	@Override
 	public Long countTotalPatients() {
-		String jpql = "Select count(p.id) from Patient p";
-		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-		return query.getSingleResult();
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "Select count(p.id) from Patient p";
+			TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+			return query.getSingleResult();
+		} catch(Exception e) {
+            e.printStackTrace();
+            return 0L;
+        } finally {
+			em.close();
+		}
+
 	}
 
 	@Override
 	public boolean deleteByUserId(String id) {
-		
+		EntityManager em = JpaUtil.getEntityManager();
 		
 		String jpql = "DELETE FROM Patient p WHERE p.user.id = :userId ";
 		try {
@@ -85,6 +95,8 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
 			em.getTransaction().rollback();
 			return false;
 			
+		} finally {
+			em.close();
 		}
 		
 	}

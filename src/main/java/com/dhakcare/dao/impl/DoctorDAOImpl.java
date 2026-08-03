@@ -1,5 +1,6 @@
 package com.dhakcare.dao.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.dhakcare.dao.DoctorDAO;
@@ -13,22 +14,29 @@ import jakarta.persistence.TypedQuery;
 
 public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 
-	private final EntityManager em;
 	
 	public DoctorDAOImpl() {
 		super(Doctor.class);
-		this.em = JpaUtil.getEntityManager();
 	}
 
 	@Override
 	public Long countTotalDoctor() {
-		String jpql = "select count(d.id) from Doctor d";
-		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-		return query.getSingleResult();
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "select count(d.id) from Doctor d";
+			TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+			return query.getSingleResult();
+		} catch (Exception e){
+			e.printStackTrace();
+			return 0L;
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
 	public boolean deleteById(String id) {
+		EntityManager em = JpaUtil.getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 
 		String jpql = "DELETE FROM Doctor d WHERE d.id = :doctorId";
@@ -47,11 +55,14 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 			e.printStackTrace();
 			transaction.rollback();
 			return false;
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
 	public boolean removeDepartmentByDepartmentId(String id) {
+		EntityManager em = JpaUtil.getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		
 		String jpql = """
@@ -68,19 +79,36 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 			
 			transaction.commit();
 			return result >= 0;
-		}catch (Exception e){
+		} catch (Exception e){
 			e.printStackTrace();
 			transaction.rollback();
 			return false;
+		} finally {
+			em.close();
 		}
 				
 		
 	}
 
 	@Override
-	public List<Doctor> findByDepartmentId(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Doctor> finDoctorbyDeptId(String id) {
+	    EntityManager em = JpaUtil.getEntityManager();
+	    try {
+	        String jpql = "SELECT doc FROM Doctor doc WHERE doc.department.id = :id";
+	        
+	        var query = em.createQuery(jpql, Doctor.class);
+	        
+	        query.setParameter("id", Long.parseLong(id));
+	        
+	        return query.getResultList();
+	    } catch (Exception e){
+	        e.printStackTrace();
+	        return Collections.emptyList();
+	    } finally {
+	        if (em != null && em.isOpen()) {
+	            em.close();
+	        }
+	    }
 	}
 
 	

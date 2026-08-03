@@ -4,10 +4,6 @@
 
 		<properties>
 			<property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-			<property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=scheduleappointment;encrypt=true;trustServerCertificate=true" />
-			<property name="jakarta.persistence.jdbc.user" value="sa" />
-			<property name="jakarta.persistence.jdbc.password" value="123" />
-			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2016Dialect"/>
 			<property name="hibernate.hbm2ddl.auto" value="none" />
 			<property name="hibernate.show_sql" value="false" />
@@ -19,10 +15,6 @@
 
 		<properties>
 			<property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-			<property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://scheduleappointment.mssql.somee.com;databaseName=scheduleappointment;encrypt=true;trustServerCertificate=true" />
-			<property name="jakarta.persistence.jdbc.user" value="KaKaKaaaaa_SQLLogin_1" />
-			<property name="jakarta.persistence.jdbc.password" value="czbmw6le1d" />
-			
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2016Dialect"/>
 			<property name="hibernate.hbm2ddl.auto" value="none" />
 			<property name="hibernate.show_sql" value="false" />

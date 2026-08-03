@@ -75,10 +75,5 @@ public class DepartmentServiceImpl implements DepartmentService{
 	}
 
 
-	@Override
-	public List<Department> filter(Long id, String name, String status, String sort) {
-		// TODO Auto-generated method stub
-		return dao.filter(id, name, status, sort);
-	}
-	
+
 }

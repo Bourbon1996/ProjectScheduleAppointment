@@ -1,3 +1,11 @@
+/* ==================================================
+   PHẦN DÙNG CHUNG CHO POPUP
+   ================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
 /* Lớp nền tối phủ toàn bộ màn hình */
 .auth-popup-overlay {
     position: fixed;
@@ -7,38 +15,41 @@
     width: 100%;
     height: 100%;
 
-    background-color: rgba(0, 0, 0, 0.65);
-
     display: none;
     align-items: center;
     justify-content: center;
 
+    padding: 15px;
+
+    background-color: rgba(0, 0, 0, 0.65);
+
     z-index: 9999;
 }
 
-/* Class được JavaScript thêm vào để mở popup */
+/* JavaScript thêm class active để mở popup */
 .auth-popup-overlay.active {
     display: flex;
 }
 
-/* Khung đăng nhập */
+/* Khung popup mặc định */
 .auth-popup-box {
     position: relative;
 
     width: 390px;
     max-width: calc(100% - 30px);
 
-    background-color: white;
+    padding: 28px 24px 24px;
+
     border-radius: 8px;
 
-    padding: 28px 24px 24px;
+    background-color: #ffffff;
 
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 
     animation: authPopupShow 0.25s ease;
 }
 
-/* Hiệu ứng xuất hiện */
+/* Hiệu ứng mở popup */
 @keyframes authPopupShow {
     from {
         opacity: 0;
@@ -57,23 +68,29 @@
     top: 10px;
     right: 14px;
 
+    padding: 0;
+
+    color: #888888;
+    font-size: 26px;
+    line-height: 1;
+
     border: none;
     background: transparent;
 
-    font-size: 26px;
-    color: #888;
-
     cursor: pointer;
+
+    transition: color 0.2s ease;
 }
 
 .auth-popup-close:hover {
-    color: #333;
+    color: #333333;
 }
 
-/* Logo */
+/* Logo popup đăng nhập */
 .auth-logo-wrapper {
-    text-align: center;
     margin-bottom: 16px;
+
+    text-align: center;
 }
 
 .auth-logo {
@@ -86,44 +103,55 @@
 .auth-description {
     margin-bottom: 22px;
 
-    text-align: center;
-    color: #555;
-
+    color: #555555;
     font-size: 14px;
     line-height: 1.6;
+    text-align: center;
 }
 
-/* Từng nhóm input */
+/* ==================================================
+   FORM DÙNG CHUNG
+   ================================================== */
+
 .auth-form-group {
     margin-bottom: 16px;
 }
 
-.auth-form-group label {
+.auth-form-group > label {
     display: block;
 
     margin-bottom: 6px;
 
-    color: #333;
+    color: #333333;
     font-size: 14px;
     font-weight: 500;
 }
 
-.auth-form-group input {
+/* Input thông thường của popup đăng nhập */
+.auth-form-group > input,
+.auth-password-wrapper > input {
     width: 100%;
     height: 42px;
 
     padding: 0 12px;
 
-    border: 1px solid #ccc;
+    color: #263238;
+    font-size: 14px;
+
+    border: 1px solid #cccccc;
     border-radius: 5px;
 
-    font-size: 14px;
+    background-color: #ffffff;
+
     outline: none;
 
-    box-sizing: border-box;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.auth-form-group input:focus {
+.auth-form-group > input:focus,
+.auth-password-wrapper > input:focus {
     border-color: #1681c4;
     box-shadow: 0 0 0 2px rgba(22, 129, 196, 0.12);
 }
@@ -133,7 +161,7 @@
     position: relative;
 }
 
-.auth-password-wrapper input {
+.auth-password-wrapper > input {
     padding-right: 45px;
 }
 
@@ -142,58 +170,96 @@
     top: 50%;
     right: 10px;
 
-    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #777777;
 
     border: none;
     background: transparent;
 
-    color: #777;
+    transform: translateY(-50%);
+
     cursor: pointer;
 }
 
-/* Nút đăng nhập */
+.auth-show-password:hover {
+    color: #147fc3;
+}
+
+/* ==================================================
+   THÔNG BÁO LỖI
+   ================================================== */
+
+/* Lỗi trả về từ Servlet */
 .auth-server-error {
     margin-bottom: 12px;
     padding: 8px 10px;
 
     color: #d93025;
-    background-color: #fdecec;
+    font-size: 14px;
+    text-align: center;
 
     border: 1px solid #f5c2c0;
     border-radius: 6px;
 
-    font-size: 14px;
-    text-align: center;
+    background-color: #fdecec;
 }
+
+/* Lỗi kiểm tra bằng JavaScript */
+.auth-error-message {
+    display: none;
+
+    margin: 0 0 14px;
+    padding: 10px 12px;
+
+    color: #842029;
+    font-size: 14px;
+
+    border: 1px solid #f1aeb5;
+    border-radius: 5px;
+
+    background-color: #f8d7da;
+}
+
+.auth-error-message.show {
+    display: block;
+}
+
+/* ==================================================
+   NÚT GỬI FORM
+   ================================================== */
 
 .auth-submit-button {
     width: 100%;
     height: 43px;
 
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+
     border: none;
     border-radius: 5px;
 
     background-color: #147fc3;
-    color: white;
-
-    font-size: 15px;
-    font-weight: 600;
 
     cursor: pointer;
+
+    transition: background-color 0.2s ease;
 }
 
 .auth-submit-button:hover {
     background-color: #086da9;
 }
 
-
-/* Dòng đăng ký */
+/* Dòng chuyển giữa đăng nhập và đăng ký */
 .auth-register-text {
     margin-top: 16px;
     margin-bottom: 0;
 
-    text-align: center;
     font-size: 14px;
+    text-align: center;
 }
 
 .auth-register-text a {
@@ -206,97 +272,463 @@
     text-decoration: underline;
 }
 
-/* Tiêu đề popup đăng ký */
-.auth-title {
-    margin: 0 0 8px;
+/* ==================================================
+   QUÊN MẬT KHẨU
+   ================================================== */
 
-    text-align: center;
+.auth-popup-box .auth-forgot-password {
+    width: 100%;
 
-    color: #333;
+    display: flex;
+    justify-content: center;
+
+    margin: 10px 0 14px;
+}
+
+.auth-popup-box .auth-forgot-password > a {
+    color: #dc3545;
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.auth-popup-box .auth-forgot-password > a:hover {
+    color: #a71d2a;
+    text-decoration: underline;
+}
+
+/* ==================================================
+   POPUP ĐĂNG KÝ
+   ================================================== */
+
+/*
+ * Giữ chiều rộng popup đăng ký là 420px.
+ * Nội dung cuộn trong auth-register-body.
+ */
+.auth-register-box {
+    width: 420px;
+
+    padding: 0;
+
+    overflow: hidden;
+}
+
+/* Phần đầu màu xanh */
+.auth-register-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 20px 24px;
+
+    color: #ffffff;
+
+    background-color: #0d68aa;
+}
+
+/* Logo tròn */
+.auth-register-logo-wrapper {
+    width: 66px;
+    height: 66px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 3px solid rgba(255, 255, 255, 0.45);
+    border-radius: 50%;
+
+    background-color: #ffffff;
+}
+
+.auth-register-logo {
+    width: 52px;
+    height: 52px;
+
+    object-fit: contain;
+}
+
+/* Tiêu đề đăng ký */
+.auth-register-heading {
+    min-width: 0;
+}
+
+.auth-register-heading h2 {
+    margin: 0;
+
+    color: #ffffff;
     font-size: 21px;
     font-weight: 600;
 }
 
-/*
- * Popup đăng ký dài hơn popup đăng nhập.
- * Nếu màn hình thấp thì cho phép cuộn bên trong.
- */
-.auth-register-box {
-    width: 420px;
-    max-height: 95vh;
+.auth-register-heading p {
+    margin: 5px 0 0;
+
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+/* Nút đóng nằm trên phần đầu màu xanh */
+.auth-register-box .auth-popup-close {
+    top: 10px;
+    right: 13px;
+
+    z-index: 2;
+
+    color: #ffffff;
+
+    opacity: 0.9;
+}
+
+.auth-register-box .auth-popup-close:hover {
+    color: #ffffff;
+
+    opacity: 1;
+}
+
+/* Nội dung đăng ký */
+.auth-register-body {
+    max-height: calc(90vh - 110px);
+
+    padding: 22px 24px 24px;
+
     overflow-y: auto;
 }
 
-/* Thông báo lỗi */
-.auth-error-message {
-    display: none;
-
-    margin: 0 0 14px;
-    padding: 10px 12px;
-
-    border: 1px solid #f1aeb5;
-    border-radius: 5px;
-
-    background-color: #f8d7da;
-    color: #842029;
-
-    font-size: 14px;
+/* Thanh cuộn */
+.auth-register-body::-webkit-scrollbar {
+    width: 6px;
 }
 
-/* Khi có lỗi thì JavaScript thêm class show */
-.auth-error-message.show {
+.auth-register-body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+
+    background-color: #b9c9d5;
+}
+
+.auth-register-body::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Khoảng cách các trường đăng ký */
+.auth-register-box .auth-form-group {
+    margin-bottom: 15px;
+}
+
+.auth-register-box .auth-form-group > label {
     display: block;
+
+    margin-bottom: 7px;
+
+    color: #2f3d46;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-/* ================================================== */
-/* RADIO GIỚI TÍNH DẠNG KHỐI (SEGMENTED BUTTON)       */
-/* ================================================== */
-.gender-toggle-group {
-    display: flex;
-    gap: 12px; /* Khoảng cách giữa nút Nam và nút Nữ */
+.auth-required {
+    color: #dc3545;
+}
+
+/* Khung chứa input và icon */
+.auth-field-wrapper {
+    position: relative;
+
     width: 100%;
 }
 
-.gender-toggle-item {
-    flex: 1; /* Cho 2 nút chia đều 50/50 chiều rộng */
-    margin-bottom: 0 !important;
-    cursor: pointer;
+/* Icon bên trái input */
+.auth-field-icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+
+    z-index: 2;
+
+    color: #0d68aa;
+    font-size: 16px;
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
 }
 
-/* Ẩn triệt để cái nút tròn mặc định của trình duyệt */
-.gender-toggle-item input[type="radio"] {
-    display: none;
+/* Input đăng ký */
+.auth-register-box .auth-field-wrapper input {
+    width: 100%;
+    height: 44px;
+
+    padding: 0 43px;
+
+    color: #263238;
+    font-size: 14px;
+
+    border: 1px solid #ced7df;
+    border-radius: 9px;
+
+    background-color: #ffffff;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-/* Khung hiển thị thay thế */
-.gender-toggle-text {
+.auth-register-box .auth-field-wrapper input::placeholder {
+    color: #9aa5ad;
+}
+
+.auth-register-box .auth-field-wrapper input:focus {
+    border-color: #0d68aa;
+    box-shadow: 0 0 0 3px rgba(13, 104, 170, 0.12);
+}
+
+/*
+ * Input mật khẩu cần chừa khoảng bên phải
+ * cho nút hiện hoặc ẩn mật khẩu.
+ */
+.auth-register-box
+.auth-field-wrapper.auth-password-wrapper
+input {
+    padding-right: 45px;
+}
+
+/* Nút hiện hoặc ẩn mật khẩu đăng ký */
+.auth-register-box .auth-show-password {
+    position: absolute;
+    top: 50%;
+    right: 7px;
+
+    width: 34px;
+    height: 34px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 42px; /* Bằng đúng chiều cao các ô input khác */
-    
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f8fafc; /* Nền xám nhạt nhẹ nhàng */
-    
-    color: #555;
+
+    color: #7a8790;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    transform: translateY(-50%);
+
+    cursor: pointer;
+}
+
+.auth-register-box .auth-show-password:hover {
+    color: #0d68aa;
+
+    background-color: #edf6fc;
+}
+
+/* Ghi chú dưới input */
+.auth-field-note {
+    margin-top: 5px;
+
+    color: #7b8790;
+    font-size: 12px;
+}
+
+/* ==================================================
+   GIỚI TÍNH TRONG POPUP ĐĂNG KÝ
+   ================================================== */
+
+.auth-register-box .gender-toggle-group {
+    width: 100%;
+
+    display: flex;
+    gap: 12px;
+}
+
+.auth-register-box .gender-toggle-item {
+    position: relative;
+
+    flex: 1;
+
+    margin: 0;
+
+    cursor: pointer;
+}
+
+/* Ẩn radio mặc định */
+.auth-register-box .gender-toggle-item input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+/* Khung Nam/Nữ */
+.auth-register-box .gender-toggle-text {
+    width: 100%;
+    min-height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    color: #4a565e;
     font-size: 14px;
     font-weight: 500;
-    
-    transition: all 0.25s ease; /* Hiệu ứng chuyển màu mượt mà */
+
+    border: 1px solid #ced7df;
+    border-radius: 9px;
+
+    background-color: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-/* Hiệu ứng khi lướt chuột qua */
-.gender-toggle-item:hover .gender-toggle-text {
-    border-color: #147fc3;
-    background-color: #f0f7fb;
-    color: #147fc3;
+.auth-register-box .gender-toggle-text:hover {
+    color: #0d68aa;
+
+    border-color: #0d68aa;
+
+    background-color: #f5fbff;
 }
 
-/* KHI NÚT ĐƯỢC CHỌN (Tỏa sáng màu xanh chủ đạo) */
-.gender-toggle-item input[type="radio"]:checked + .gender-toggle-text {
-    background-color: #147fc3;
-    border-color: #147fc3;
-    color: #ffffff;
-    box-shadow: 0 4px 10px rgba(20, 127, 195, 0.2); /* Đổ bóng nhẹ cho nút nổi lên */
+/* Giới tính đang được chọn */
+.auth-register-box
+.gender-toggle-item
+input:checked + .gender-toggle-text {
+    color: #0d68aa;
+    font-weight: 500;
+
+    border-color: #0d68aa;
+
+    background-color: #eaf5fd;
+
+    box-shadow: 0 0 0 3px rgba(13, 104, 170, 0.08);
+}
+
+/* ==================================================
+   THÔNG BÁO TRONG POPUP ĐĂNG KÝ
+   ================================================== */
+
+.auth-register-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    margin-bottom: 15px;
+    padding: 10px 12px;
+
+    color: #842029;
+    font-size: 13px;
+    line-height: 1.45;
+    text-align: left;
+
+    border: 1px solid #f5c2c7;
+    border-radius: 8px;
+
+    background-color: #f8d7da;
+}
+
+.auth-register-box .auth-error-message {
+    margin: 0 0 12px;
+
+    color: #dc3545;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Nút đăng ký */
+.auth-register-submit {
+    min-height: 46px;
+
+    margin-top: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border-radius: 9px;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Phần quay lại đăng nhập */
+.auth-register-footer {
+    margin: 17px 0 0;
+
+    color: #66737c;
+    font-size: 13px;
+    text-align: center;
+}
+
+.auth-register-footer a {
+    color: #0d68aa;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-register-footer a:hover {
+    color: #084f82;
+    text-decoration: underline;
+}
+
+/* ==================================================
+   RESPONSIVE
+   ================================================== */
+
+@media (max-width: 576px) {
+
+    .auth-popup-overlay {
+        padding: 10px;
+    }
+
+    .auth-popup-box {
+        max-width: 100%;
+    }
+
+    .auth-register-header {
+        padding: 18px;
+    }
+
+    .auth-register-logo-wrapper {
+        width: 58px;
+        height: 58px;
+    }
+
+    .auth-register-logo {
+        width: 46px;
+        height: 46px;
+    }
+
+    .auth-register-heading h2 {
+        font-size: 19px;
+    }
+
+    .auth-register-heading p {
+        padding-right: 12px;
+
+        font-size: 12px;
+    }
+
+    .auth-register-body {
+        padding: 20px 18px;
+    }
+
+    .auth-register-box .gender-toggle-group {
+        gap: 8px;
+    }
 }

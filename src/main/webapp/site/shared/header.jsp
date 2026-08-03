@@ -170,21 +170,32 @@
 							</li>
 
 							<!-- Chỉnh sửa thông tin -->
-							<li><a class="dropdown-item" href="${ctx}/user/edit"> <i
-									class="bi bi-pencil-square me-2"></i> Chỉnh sửa thông tin
-							</a></li>
-
-							<!-- Đăng xuất -->
 							<li>
-								<form action="${ctx}/auth/logout" method="post" class="m-0">
-
-									<button type="submit" class="dropdown-item text-danger">
-
-										<i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
-									</button>
-
-								</form>
+							    <a class="dropdown-item"
+							       href="${ctx}/account/edit-profile">
+							
+							        <i class="bi bi-person-gear me-2"></i>
+							        Chỉnh sửa hồ sơ
+							    </a>
 							</li>
+							
+							<li>
+							    <a class="dropdown-item"
+							       href="${ctx}/account/change-password">
+							
+							        <i class="bi bi-key me-2"></i>
+							        Đổi mật khẩu
+							    </a>
+							</li>
+							<!-- Đăng xuất -->							
+								<li>
+								    <a class="dropdown-item text-danger"
+								       href="${ctx}/auth/logout">
+								
+								        <i class="bi bi-box-arrow-right me-2"></i>
+								        Đăng xuất
+								    </a>
+								</li>
 
 						</ul>
 

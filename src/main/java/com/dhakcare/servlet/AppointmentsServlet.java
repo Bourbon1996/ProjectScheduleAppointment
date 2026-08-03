@@ -13,9 +13,11 @@ import com.dhakcare.entity.Doctor;
 import com.dhakcare.entity.Patient;
 import com.dhakcare.entity.User;
 import com.dhakcare.service.DepartmentService;
+import com.dhakcare.service.DoctorScheduleSlotService;
 import com.dhakcare.service.DoctorService;
 import com.dhakcare.service.PatientService;
 import com.dhakcare.service.impl.DepartmentServiceImpl;
+import com.dhakcare.service.impl.DoctorScheduleSlotServiceImpl;
 import com.dhakcare.service.impl.DoctorServiceImpl;
 import com.dhakcare.service.impl.PatientServiceImpl;
 import com.dhakcare.utils.HolidayUtil;
@@ -48,23 +50,19 @@ public class AppointmentsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		
 		HttpSession session = request.getSession();
 	    User loggedInUser = (User) session.getAttribute("user");
 	    
 	    List<Department> listDepartments = departmentService.getAllDepartmentParent();
         List<Department> listChildren = departmentService.getAllDepartmentChild();
-        
         List<Doctor> listDoctor = doctorservice.getAll();
         
         
-        
-        // Tạo biến list chuyên khoa
-        request.setAttribute("listDepartmentsParent", listDepartments);
-        request.setAttribute("listDepartmentsChild", listChildren);
-        
-        // Tạo biến list bác sĩ
-        request.setAttribute("listDoctor", listDoctor);
-		
 	    
 	    if (loggedInUser != null) {
 	        
@@ -73,11 +71,20 @@ public class AppointmentsServlet extends HttpServlet {
 	        request.setAttribute("patientList", patientList);
 	    }
 	    
-	    
-	    
-	    //TỰ ĐỘNG SINH RA 4 THÁNG LỊCH
+	 
 	    List<MonthCalendar> fourMonthsList = new ArrayList<>();
-	    YearMonth currentYM = YearMonth.now();
+	    this.getCanlender(fourMonthsList);
+	    
+	    request.setAttribute("listDepartmentsParent", listDepartments);
+        request.setAttribute("listDepartmentsChild", listChildren);
+        request.setAttribute("listDoctor", listDoctor);
+	    request.setAttribute("fourMonthsList", fourMonthsList);
+	    
+	    request.getRequestDispatcher("/site/views/appointment.jsp").forward(request, response);
+	}
+
+	private void getCanlender(List<MonthCalendar> fourMonthsList) {
+		YearMonth currentYM = YearMonth.now();
 	    String[] weekdays = {"Chủ Nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"};
 
 	    for (int i = 0; i <= 3; i++) {
@@ -116,11 +123,7 @@ public class AppointmentsServlet extends HttpServlet {
 	        String label = "Tháng " + targetYM.getMonthValue() + " năm " + targetYM.getYear();
 	        fourMonthsList.add(new MonthCalendar(label, i, calendarGrid));
 	    }
-
-	    
-	    request.setAttribute("fourMonthsList", fourMonthsList);
-	    
-	    request.getRequestDispatcher("/site/views/appointment.jsp").forward(request, response);
+		
 	}
 
 	/**

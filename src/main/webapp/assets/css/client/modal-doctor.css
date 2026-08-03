@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+/* CSS cho Modal Chọn Giờ Khám */
+#modalSlot .modal-content {
+    border-radius: 12px;
+    border: none;
+}
+#modalSlot .modal-title {
+    color: #0056b3; /* Màu xanh y tế chủ đạo */
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+#modalSlot .modal-body {
+    background-color: #f2f5f8; /* Nền xám nhạt để làm nổi bật card */
+}
+.doctor-card {
+    border-radius: 12px;
+}
+.icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: #0056b3;
+    color: white;
+    border-radius: 50%;
+    font-size: 1rem;
+}
+.text-primary-custom {
+    color: #0056b3 !important;
+}
+.dashed-line {
+    border-bottom: 1px dashed #0056b3;
+    opacity: 0.4;
+    position: relative;
+    top: -2px; /* Căn giữa dòng kẻ ngang với chữ */
+}
+
+/* Style cho các nút chọn giờ */
+.btn-slot {
+    min-width: 125px;
+    border-radius: 20px; /* Bo tròn giống hệt hình */
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+/* Trạng thái giờ CÒN TRỐNG */
+.slot-available {
+    background-color: #ffffff;
+    color: #0056b3;
+    border: 1px solid #0056b3;
+}
+.slot-available:hover {
+    background-color: #0056b3;
+    color: #ffffff;
+}
+/* Trạng thái giờ ĐÃ KÍN/QUÁ HẠN */
+.slot-disabled {
+    background-color: #f4f4f4;
+    color: #b0b0b0;
+    border: 1px solid #e2e2e2;
+    cursor: not-allowed;
+}

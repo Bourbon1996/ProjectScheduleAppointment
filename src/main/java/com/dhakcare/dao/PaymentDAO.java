@@ -1,5 +1,8 @@
 package com.dhakcare.dao;
 
-public class PaymentDAO {
+import com.dhakcare.entity.Payment;
+import com.dhakcare.utils.GenericDAO;
+
+public interface PaymentDAO extends GenericDAO<Payment> {
 
 }
