@@ -1,5 +1,6 @@
 // Biến toàn cục lưu thông tin bệnh nhân đang được chọn trên màn hình
 let selectedPatientData = null;
+let lastConfirmedPatientId = null;
 
 document.addEventListener("DOMContentLoaded", function () {
     // 1. Đặt ngày khám mặc định là ngày mai cho form sinh động
@@ -26,23 +27,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-// =========================================================================
-// HÀM 1: CHỌN HỒ SƠ TỪ DANH SÁCH DO JSP (DATABASE) VẼ RA
-// =========================================================================
 function selectProfileFromDB(element, id, fullName, phone, dob, gender, bhyt, relationship) {
-    // 1. Xóa hiệu ứng "selected" (viền xanh) ở tất cả các thẻ Card khác
+
     document.querySelectorAll('.profile-card').forEach(card => {
         card.classList.remove('selected');
         const icon = card.querySelector('.check-icon');
         if (icon) icon.classList.add('d-none');
     });
 
-    // 2. Thêm hiệu ứng "selected" vào thẻ Card vừa được click
     element.classList.add('selected');
     const checkIcon = element.querySelector('.check-icon');
     if (checkIcon) checkIcon.classList.remove('d-none');
 
-    // 3. Lưu thông tin vào biến toàn cục để dành cho Bước 3 (Xác nhận)
     selectedPatientData = {
         id: id,
         fullName: fullName,
@@ -52,47 +48,29 @@ function selectProfileFromDB(element, id, fullName, phone, dob, gender, bhyt, re
         bhyt: bhyt,
         relationship: relationship
     };
+	
 
-    // 4. Mở khóa nút "Tiếp tục" ở Bước 1
     const nextBtn = document.getElementById("btn-next-step1");
     if (nextBtn) nextBtn.disabled = false;
 }
 
-// =========================================================================
-// HÀM 2: KIỂM TRA & ĐỔ DỮ LIỆU SANG BƯỚC 3 (XÁC NHẬN)
-// =========================================================================
-// =========================================================================
-// HÀM KIỂM TRA & ĐỔ DỮ LIỆU SANG BƯỚC 3 (XÁC NHẬN ĐẶT LỊCH)
-// =========================================================================
+
 function validateAndGoToStep3() {
-    // 1. Kiểm tra an toàn: Đảm bảo bệnh nhân đã được chọn ở Bước 1
     if (!selectedPatientData) {
         alert("⚠️ Vui lòng chọn 1 hồ sơ bệnh nhân ở Bước 1 trước khi tiếp tục!");
         goToStep(1);
         return;
     }
 
-    // 2. Lấy các giá trị đầu vào từ form Bước 2
-    const date = document.getElementById("examDate").value;
-    const time = document.getElementById("timeSlotSelect").value;
-    const doctor = document.getElementById("doctorSelect").value;
+    const date = document.getElementById("input-display-date").value;
+    const time = document.getElementById("input-display-time").value;
+    const doctor = document.getElementById("input-display-doctor").value;
+    const deptSelect = document.getElementById("input-display-dept").value;
 
-    // 🔥 LẤY CHUYÊN KHOA (Tách riêng thẻ Select để xử lý ID và Tên)
-    const deptSelect = document.getElementById("departmentSelect");
-    const deptId = deptSelect.value; // Đây là con số ID (VD: "1", "2") để gửi về DB
-
-    // 3. Kiểm tra rỗng (Validation) - Bắt buộc phải chọn Ngày, Khoa và Giờ
-    if (!date || !deptId || !time) {
+    if (!date || !deptSelect || !time ) {
         alert("⚠️ Vui lòng chọn đầy đủ Ngày khám, Chuyên khoa và Giờ khám!");
         return;
     }
-
-    // 🔥 Sau khi đã chắc chắn người dùng chọn đúng Khoa, mới lấy CHỮ ra hiển thị
-    const deptName = deptSelect.options[deptSelect.selectedIndex].text; // Lấy chữ (VD: "Khoa Tim Mạch")
-
-    // =====================================================================
-    // 4. HIỆN DỮ LIỆU LÊN MÀN HÌNH XÁC NHẬN (BƯỚC 3) - DÀNH CHO NGƯỜI DÙNG ĐỌC
-    // =====================================================================
     
     // --> Thông tin bệnh nhân
     document.getElementById("conf-patient-name").textContent = selectedPatientData.fullName;
@@ -104,46 +82,63 @@ function validateAndGoToStep3() {
 
     // --> Thông tin phiếu khám
     document.getElementById("conf-date").textContent = formatDate(date);
-    document.getElementById("conf-department").textContent = deptName; // Hiện chữ đẹp đẽ
+    document.getElementById("conf-department").textContent = deptSelect;
     document.getElementById("conf-time").textContent = time;
     document.getElementById("conf-doctor").textContent = doctor || "Bác sĩ phân công tự động";
 
-    // =====================================================================
-    // 5. ĐÓNG GÓI VÀO THẺ HIDDEN - DÀNH CHO JAVA SERVLET LẤY BẰNG getParameter()
-    // =====================================================================
     
     document.getElementById("hidden-patient-id").value = selectedPatientData.id;
     document.getElementById("hidden-date").value = date;
-    document.getElementById("hidden-dept").value = deptId; // 🔥 Gán ID gọn gàng cho Servlet
     document.getElementById("hidden-time").value = time;
     document.getElementById("hidden-doc").value = doctor;
 
-    // 6. Mọi thứ đã hoàn hảo -> Lướt sang giao diện Bước 3
     goToStep(3);
 }
 
-// =========================================================================
-// HÀM 3: ĐIỀU KHIỂN CHUYỂN BƯỚC STEPPER (1, 2, 3, 4)
-// =========================================================================
+
 function goToStep(stepNumber) {
     document.querySelectorAll('.step-pane').forEach(pane => {
         pane.classList.remove('active');
     });
 	
-	document.querySelector("#input-display-date").value = "";
-	document.querySelector("#input-display-dept").value = "";
-	
-	document.querySelectorAll(".check-status-icon").forEach(icon => {
-		icon.classList.add("d-none");
-	})
+    if (stepNumber === 2) {
+        if (lastConfirmedPatientId !== null && lastConfirmedPatientId !== selectedPatientData.id) {
+            
+            // 1. Xóa sạch dữ liệu hiển thị trên màn hình
+            document.querySelector("#input-display-date").value = "";
+            document.querySelector("#input-display-dept").value = "";
+            document.querySelector("#input-display-time").value = "";
+            document.querySelector("#input-display-doctor").value = "";
+            
+            const totalPriceEl = document.getElementById("display-total-price");
+            if (totalPriceEl) totalPriceEl.textContent = "";
+
+            document.querySelectorAll(".check-status-icon").forEach(icon => {
+                icon.classList.add("d-none");
+            });
+
+            const btnNextStep2 = document.getElementById("btn-next-step2");
+            if (btnNextStep2) btnNextStep2.disabled = true;
+
+            if (typeof bookingData !== 'undefined') {
+                bookingData.dateValue = "";       
+                bookingData.dateDisplay = "";     
+                bookingData.deptId = "";          
+                bookingData.deptName = "";        
+                bookingData.doctorId = "";        
+                bookingData.doctorName = "";      
+                bookingData.timeSlot = "";        
+                bookingData.price = "";
+            }
+        }
+        
+        lastConfirmedPatientId = selectedPatientData.id;
+    }
 
     const targetPane = document.getElementById(`step-pane-${stepNumber}`);
     if (targetPane) {
         targetPane.classList.add('active');
-		
     }
-	
-	
 
     for (let i = 1; i <= 4; i++) {
         const stepItem = document.getElementById(`stepper-${i}`);

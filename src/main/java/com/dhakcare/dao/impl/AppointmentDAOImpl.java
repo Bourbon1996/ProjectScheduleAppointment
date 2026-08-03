@@ -12,13 +12,13 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 
 	public AppointmentDAOImpl() {
 		super(Appointment.class);
-		this.em = JpaUtil.getEntityManager();
 	}
  
-	private EntityManager em;
+	AppointmentsDAO dao = new AppointmentDAOImpl();
 
 	@Override
 	public boolean deleteByDoctorId(String id) {
+		EntityManager em = JpaUtil.getEntityManager();
 		String jpql = "DELETE FROM Appointment a WHERE a.doctor.id = :doctorId";
 		try {
 			em.getTransaction().begin();
@@ -32,12 +32,15 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 		}catch(Exception e) {
 			em.getTransaction().rollback();
 			return false;
+		} finally {
+			em.close();
 		}
 		
 	}
 
 	@Override
 	public boolean removeDepartmentByDepartmentId(String id) {
+		EntityManager em = JpaUtil.getEntityManager();
 		EntityTransaction transaction = em.getTransaction();
 		
 		String jpql = """
@@ -58,6 +61,8 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 			e.printStackTrace();
 			transaction.rollback();
 			return false;
+		} finally {
+			em.close();
 		}
 				
 	}
@@ -65,7 +70,7 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 	@Override
 	public boolean deleteDepartmentById(String id) {
 		// TODO Auto-generated method stub
-		return false;
+		return dao.delete(id);
 	}
 
 	

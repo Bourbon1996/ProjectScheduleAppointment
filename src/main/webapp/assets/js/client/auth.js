@@ -252,6 +252,40 @@ document.addEventListener("DOMContentLoaded", function () {
 	) {
 	    showPopup(loginPopup);
 	}
+	
+	// =====================================
+	// 11. THÔNG BÁO ĐĂNG XUẤT
+	// =====================================
+
+	const logoutToast =
+	    document.getElementById("logoutToast");
+
+	const closeLogoutToast =
+	    document.getElementById("closeLogoutToast");
+
+	if (logoutToast) {
+
+	    // Tự động ẩn sau 2 giây
+	    setTimeout(function () {
+
+	        logoutToast.classList.remove("show");
+
+	        setTimeout(function () {
+	            logoutToast.remove();
+	        }, 300);
+
+	    }, 2000);
+	}
+
+	if (closeLogoutToast && logoutToast) {
+
+	    closeLogoutToast.addEventListener(
+	        "click",
+	        function () {
+	            logoutToast.remove();
+	        }
+	    );
+	}
 // =====================================
     // CÁC HÀM DÙNG CHUNG
     // =====================================

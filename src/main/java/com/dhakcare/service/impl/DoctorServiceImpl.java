@@ -37,6 +37,13 @@ public class DoctorServiceImpl implements DoctorService {
 		return dao.removeDepartmentByDepartmentId(id);
 	}
 
+	@Override
+	public List<Doctor> getDoctorbyDeptId(String id) {
+		// TODO Auto-generated method stub
+		return dao.finDoctorbyDeptId(id);
+	}
+	
+
 	
 	
 	

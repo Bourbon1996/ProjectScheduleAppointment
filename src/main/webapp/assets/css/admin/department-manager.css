@@ -71,7 +71,237 @@
     color: #ffffff;
 }
 
+/* ==============================
+   HEADER ACTIONS
+   SẮP XẾP - BỘ LỌC 
+================================ */
 
+.department-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* Nút Sắp xếp và Bộ lọc */
+
+.btn-tool {
+    height: 42px;
+    padding: 0 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    background-color: #ffffff;
+    color: var(--primary-blue);
+
+    border: 1px solid var(--primary-blue);
+    border-radius: 6px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-tool:hover,
+.btn-tool:focus,
+.btn-tool.show {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    border-color: var(--primary-blue);
+}
+
+.btn-tool:focus {
+    box-shadow: none;
+}
+
+
+/* Chỉnh mũi tên mặc định của Bootstrap */
+
+.btn-tool.dropdown-toggle::after {
+    margin-left: 3px;
+}
+
+
+/* ==============================
+   MENU SẮP XẾP
+================================ */
+
+.sort-menu {
+    min-width: 230px;
+    padding: 8px;
+
+    border: 1px solid #e1e7ed;
+    border-radius: 10px;
+
+    background-color: #ffffff;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.sort-menu .dropdown-item {
+    padding: 10px 13px;
+
+    border-radius: 7px;
+
+    color: #444444;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: 0.2s;
+}
+
+.sort-menu .dropdown-item:hover,
+.sort-menu .dropdown-item:focus {
+    background-color: #eef7fd;
+    color: var(--primary-blue);
+}
+
+
+/* ==============================
+   MENU BỘ LỌC
+================================ */
+
+.filter-menu {
+    width: 400px;
+    padding: 0;
+
+    border: 1px solid #e1e7ed;
+    border-radius: 12px;
+
+    background-color: #ffffff;
+
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Form trong bộ lọc */
+
+.filter-form {
+    padding: 22px;
+}
+
+
+/* Tiêu đề bộ lọc */
+
+.filter-header {
+    margin-bottom: 20px;
+}
+
+.filter-header h5 {
+    margin: 0;
+
+    color: var(--primary-blue);
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* Từng nhóm lọc */
+
+.filter-group {
+    margin-bottom: 18px;
+}
+
+.filter-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #444444;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* Select của Bootstrap */
+
+.filter-group .form-select {
+    height: 44px;
+
+    border: 1px solid #ced4da;
+    border-radius: 7px;
+
+    color: #444444;
+
+    font-size: 14px;
+}
+
+.filter-group .form-select:focus {
+    border-color: var(--primary-blue);
+
+    box-shadow: 0 0 0 3px rgba(13, 104, 170, 0.12);
+}
+
+
+/* Footer bộ lọc */
+
+.filter-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+
+/* Nút Đặt lại và Áp dụng */
+
+.btn-reset-filter,
+.btn-apply-filter {
+    height: 42px;
+    padding: 0 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+
+/* Đặt lại */
+
+.btn-reset-filter {
+    background-color: #ffffff;
+    color: var(--primary-blue);
+
+    border: 1px solid var(--primary-blue);
+}
+
+.btn-reset-filter:hover {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+}
+
+
+/* Áp dụng */
+
+.btn-apply-filter {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+
+    border: 1px solid var(--primary-blue);
+}
+
+.btn-apply-filter:hover {
+    background-color: #09588f;
+    border-color: #09588f;
+}
 /* ==============================
    TABLE WRAPPER (ĐÃ NÂNG CẤP: Chiều cao cố định + Ẩn thanh cuộn)
 ================================ */

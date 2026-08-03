@@ -1,0 +1,288 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    color: #263238;
+    background-color: #f4f7fa;
+}
+
+.account-page {
+    min-height: calc(100vh - 150px);
+    padding: 50px 16px;
+}
+
+.account-card {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 35px rgba(20, 55, 80, 0.1);
+}
+
+.account-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 30px;
+    color: #ffffff;
+    background-color: #0d68aa;
+}
+
+.account-header-icon {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 27px;
+    background-color: rgba(255, 255, 255, 0.17);
+}
+
+.account-card-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.account-card-header p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.account-card-body {
+    padding: 30px;
+}
+
+.account-avatar {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #e4f2fc;
+    border-radius: 50%;
+    color: #0d68aa;
+    background-color: #f1f8fd;
+    font-size: 46px;
+}
+
+.account-form-group {
+    margin-bottom: 20px;
+}
+
+.account-form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2e3c46;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.account-required {
+    color: #dc3545;
+}
+
+.account-input,
+.input-group-text {
+    min-height: 46px;
+}
+
+.account-input {
+    border-radius: 0 9px 9px 0;
+}
+
+.input-group-text {
+    width: 48px;
+    justify-content: center;
+    color: #0d68aa;
+    background-color: #f3f8fc;
+    border-radius: 9px 0 0 9px;
+}
+
+.account-input:focus {
+    border-color: #0d68aa;
+    box-shadow: 0 0 0 0.2rem rgba(13, 104, 170, 0.13);
+}
+
+.gender-wrapper {
+    display: flex;
+    gap: 14px;
+}
+
+.gender-option {
+    position: relative;
+    flex: 1;
+}
+
+.gender-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.gender-option label {
+    width: 100%;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid #dee2e6;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.gender-option label:hover {
+    border-color: #0d68aa;
+    background-color: #f5fbff;
+}
+
+.gender-option input:checked + label {
+    color: #0d68aa;
+    border-color: #0d68aa;
+    background-color: #eaf5fd;
+    font-weight: 500;
+}
+
+.account-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.account-actions .btn {
+    min-width: 140px;
+    min-height: 44px;
+    border-radius: 9px;
+}
+
+.account-submit-button {
+    color: #ffffff;
+    background-color: #0d68aa;
+    border-color: #0d68aa;
+}
+
+.account-submit-button:hover {
+    color: #ffffff;
+    background-color: #095487;
+    border-color: #095487;
+}
+
+@media (max-width: 576px) {
+
+    .account-page {
+        padding: 24px 12px;
+    }
+
+    .account-card-header {
+        padding: 22px 18px;
+    }
+
+    .account-card-body {
+        padding: 24px 18px;
+    }
+
+    .account-card-header h1 {
+        font-size: 21px;
+    }
+
+    .gender-wrapper {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .account-actions {
+        flex-direction: column-reverse;
+    }
+
+    .account-actions .btn {
+        width: 100%;
+    }
+}
+
+/* ==================================================
+   TRANG ĐỔI MẬT KHẨU
+   ================================================== */
+
+.account-password-card {
+    max-width: 650px;
+}
+
+.account-password-wrapper .account-input {
+    border-radius: 0;
+}
+
+.account-password-toggle {
+    width: 48px;
+    min-height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #6c757d;
+
+    border: 1px solid #dee2e6;
+    border-left: none;
+    border-radius: 0 9px 9px 0;
+
+    background-color: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.account-password-toggle:hover {
+    color: #0d68aa;
+
+    border-color: #0d68aa;
+
+    background-color: #edf7fd;
+}
+
+.account-password-toggle:focus {
+    color: #0d68aa;
+
+    outline: none;
+
+    box-shadow: 0 0 0 0.2rem rgba(13, 104, 170, 0.13);
+}
+
+.account-password-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+
+    margin-top: 6px;
+    padding: 12px 14px;
+
+    color: #4e6676;
+    font-size: 13px;
+    line-height: 1.5;
+
+    border: 1px solid #cce4f4;
+    border-radius: 9px;
+
+    background-color: #f0f8fd;
+}
+
+.account-password-note i {
+    margin-top: 2px;
+
+    color: #0d68aa;
+}

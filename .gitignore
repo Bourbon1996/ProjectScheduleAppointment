@@ -27,3 +27,4 @@ target/
 Thumbs.db
 .idea/
 *.iml
+config.properties

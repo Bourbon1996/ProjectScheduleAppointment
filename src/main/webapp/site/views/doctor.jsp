@@ -43,13 +43,13 @@
             <!-- Icon y tế góc phải (sử dụng ảnh động từ khoa) -->
             <div class="doctor-icon-badge">
                 <!-- Nếu không có ảnh động, có thể để lại thẻ <i class="bi bi-lungs"></i> -->
-                <img alt="Icon khoa" src="${ctx}/assets${doctor.department.imageUrl}">
+                <img alt="Icon khoa" src="${ctx}${doctor.department.imageUrl}">
             </div>
 
             <!-- Phần thông tin phía trên -->
             <div class="doctor-info">
                 <div class="doctor-avatar">
-                    <img alt="Hình ảnh bác sĩ ${doctor.user.fullName}" src="${ctx}/assets${doctor.avtUrl}">
+                    <img alt="Hình ảnh bác sĩ ${doctor.user.fullName}" src="${ctx}${doctor.avtUrl}">
                 </div>
                 
                 <div class="doctor-details">

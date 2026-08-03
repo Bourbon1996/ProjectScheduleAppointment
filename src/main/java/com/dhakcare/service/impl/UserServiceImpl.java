@@ -155,4 +155,10 @@ public class UserServiceImpl implements UserService {
 		return dao.create(user);
 	}
 
+	@Override
+	public User findByEmmail(String email) {
+		// TODO Auto-generated method stub
+		return dao.findByEmail(email);
+	}
+
 }

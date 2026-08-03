@@ -66,5 +66,14 @@ public class DepartmentServiceImpl implements DepartmentService{
 		// TODO Auto-generated method stub
 		return dao.create(department);
 	}
-	
+
+
+	@Override
+	public boolean removeParentByParentId(Long id) {
+		// TODO Auto-generated method stub
+		return dao.removeParentByParentId(id);
+	}
+
+
+
 }
