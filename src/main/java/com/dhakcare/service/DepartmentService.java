@@ -15,4 +15,11 @@ public interface DepartmentService {
 	public boolean update(Department department);
 	public boolean create(Department department);
 	public boolean removeParentByParentId(Long id);
+	public List<Department> filter (
+			Long id,
+			String name,
+			String status,
+			String sort
+			
+			);
 }

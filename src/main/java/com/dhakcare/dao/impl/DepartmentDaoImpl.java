@@ -84,6 +84,12 @@ public class DepartmentDaoImpl extends GenericDAOImpl<Department> implements Dep
 				
 	}
 
+	@Override
+	public List<Department> filter(Long id, String name, String status, String sort) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 	

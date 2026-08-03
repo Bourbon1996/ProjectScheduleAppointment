@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
      <%@ include file="/admin/shared/page.jsp" %>
      <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+     <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,14 +21,169 @@
             <h1>Quản lý chuyên khoa</h1>
             <p>Danh sách chuyên khoa trong hệ thống</p>
         </div>
+        
+        <div class="department-actions">
+        <!-- Nút sắp xếp -->
+        <div class="dropdown">
+            <button type="button"
+                    class="btn-tool dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
 
-        <button  type = "button"
+                <i class="bi bi-arrow-down-up"></i>
+                Sắp xếp
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end sort-menu">
+                <li>
+                    <a class="dropdown-item"
+                       href="${ctx}/admin/department?sort=az">
+
+                        Tên chuyên khoa A → Z
+                    </a>
+                </li>
+
+                <li>
+                    <a class="dropdown-item"
+                       href="${ctx}/admin/department?sort=za">
+
+                        Tên chuyên khoa Z → A
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Nút bộ lọc -->
+        <div class="dropdown">
+            <button type="button"
+                    class="btn-tool dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="outside"
+                    aria-expanded="false">
+
+                <i class="bi bi-sliders"></i>
+                Bộ lọc
+            </button>
+
+            <div class="dropdown-menu dropdown-menu-end filter-menu">
+
+              <form action="${ctx}/admin/department"
+                    method="get"
+                    class="filter-form">
+
+				    <div class="filter-header">
+				        <h5>Bộ lọc chuyên khoa</h5>
+				    </div>
+
+					    <!-- Lọc theo ID -->
+					    <div class="filter-group">
+					        <label for="departmentId">
+					            ID chuyên khoa
+					        </label>
+					
+					        <select id="departmentId"
+					                name="departmentId"
+					                class="form-select">
+					
+					            <option value="">
+					                Tất cả ID
+					            </option>
+					
+					            <c:forEach items="${filterDepartments}" var="department">
+					                <option value="${department.id}"
+					                    ${param.departmentId == department.id.toString()
+					                        ? 'selected' : ''}>
+					
+					                    ID ${department.id}
+					                </option>
+					            </c:forEach>
+					        </select>
+					    </div>
+					
+					    <!-- Lọc theo tên -->
+					    <div class="filter-group">
+					        <label for="departmentName">
+					            Tên chuyên khoa
+					        </label>
+					
+					        <select id="departmentName"
+					                name="departmentName"
+					                class="form-select">
+					
+					            <option value="">
+					                Tất cả chuyên khoa
+					            </option>
+					
+					            <c:forEach items="${filterDepartments}" var="department">
+					                <option value="${department.name}"
+					                    ${param.departmentName == department.name
+					                        ? 'selected' : ''}>
+					
+					                    ${department.name}
+					                </option>
+					            </c:forEach>
+					        </select>
+					    </div>
+					
+					    <!-- Lọc theo trạng thái -->
+					    <div class="filter-group">
+					        <label for="status">
+					            Trạng thái
+					        </label>
+					
+					        <select id="status"
+					                name="status"
+					                class="form-select">
+					
+					            <option value="">
+					                Tất cả trạng thái
+					            </option>
+					
+					            <option value="ACTIVE"
+					                ${param.status == 'ACTIVE' ? 'selected' : ''}>
+					
+					                ACTIVE
+					            </option>
+					
+					            <option value="INACTIVE"
+					                ${param.status == 'INACTIVE' ? 'selected' : ''}>
+					
+					            </option>
+					        </select>
+					    </div>
+					
+					    <!-- Giữ lại lựa chọn sắp xếp -->
+					    <input type="hidden"
+					           name="sort"
+					           value="${param.sort}">
+					
+					    <div class="filter-footer">
+					        <a href="${ctx}/admin/department"
+					           class="btn-reset-filter">
+					
+					            Đặt lại
+					        </a>
+					
+					        <button type="submit"
+					                class="btn-apply-filter">
+					
+					            Áp dụng
+					        </button>
+					    </div>
+					</form>
+
+            </div>
+        </div>
+
+         <button  type = "button"
         		 class="btn-add btn-add-department"
 	        	 data-bs-toggle="modal" 
 	        	 data-bs-target="#departmentModal">
 	         	 <i class="bi bi-plus-lg"></i>
 	           	 Thêm mới
-	      </button>
+	     </button>
+	     
+	    </div>
     </div>
 
     <div class="department-table-wrapper">
