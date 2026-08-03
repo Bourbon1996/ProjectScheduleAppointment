@@ -13,11 +13,7 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
-/**
- * Gửi email qua Google mail
- * @version 1.0
- * @author Nguyễn Nghiệm
- */
+
 public class XMail {
     static String path = ConfigUtil.get("app.url");
     
