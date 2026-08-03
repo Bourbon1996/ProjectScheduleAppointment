@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 /* ==============================
    DEPARTMENT MANAGER
 ================================ */
@@ -18,6 +19,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
 
     margin-bottom: 25px;
 }
@@ -45,15 +47,18 @@
 ================================ */
 
 .btn-add {
+    height: 42px;
+    padding: 0 18px;
+
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 7px;
-
-    padding: 10px 18px;
 
     background-color: #0d68aa;
     color: #ffffff;
 
+    border: none;
     border-radius: 6px;
 
     text-decoration: none;
@@ -61,9 +66,9 @@
     font-size: 14px;
     font-weight: 500;
 
+    white-space: nowrap;
+
     transition: 0.2s;
-    
-    border: none;
 }
 
 .btn-add:hover {
@@ -71,19 +76,110 @@
     color: #ffffff;
 }
 
+
 /* ==============================
    HEADER ACTIONS
-   SẮP XẾP - BỘ LỌC 
+   TÌM KIẾM - TRẠNG THÁI
+   SẮP XẾP - THÊM MỚI
 ================================ */
 
-.department-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.department-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:12px;
+    flex-wrap:nowrap;
 }
 
 
-/* Nút Sắp xếp và Bộ lọc */
+
+/* ==============================
+   SEARCH
+================================ */
+
+.department-search {
+    width: 260px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0;
+    padding: 0 14px;
+    background-color: #ffffff;
+    border: 1px solid var(--primary-blue);
+    border-radius: 6px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+.department-search:focus-within {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(13, 104, 170, 0.12);
+}
+
+.department-search i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: var(--primary-blue);
+    font-size: 16px;
+    margin: 0;
+}
+
+.department-search input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #444444;
+    font-size: 14px;
+}
+
+.department-search input::placeholder {
+    color: #888888;
+}
+/* ==============================
+   STATUS FILTER
+================================ */
+
+.status-form {
+    margin: 0;
+}
+
+.status-filter{
+    width:190px;
+    height:42px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 1px solid var(--primary-blue);
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: var(--primary-blue) !important;
+    font-size: 14px;
+    font-weight: 500;
+    box-sizing: border-box;
+}
+
+.status-filter:focus {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue) !important;
+    box-shadow: 0 0 0 3px rgba(13, 104, 170, 0.12);
+}
+
+.status-filter option {
+	color: #444444;
+    background-color: #ffffff;
+}
+
+
+/* ==============================
+   SORT BUTTON
+================================ */
 
 .btn-tool {
     height: 42px;
@@ -164,170 +260,31 @@
 
 
 /* ==============================
-   MENU BỘ LỌC
-================================ */
-
-.filter-menu {
-    width: 400px;
-    padding: 0;
-
-    border: 1px solid #e1e7ed;
-    border-radius: 12px;
-
-    background-color: #ffffff;
-
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
-}
-
-
-/* Form trong bộ lọc */
-
-.filter-form {
-    padding: 22px;
-}
-
-
-/* Tiêu đề bộ lọc */
-
-.filter-header {
-    margin-bottom: 20px;
-}
-
-.filter-header h5 {
-    margin: 0;
-
-    color: var(--primary-blue);
-
-    font-size: 19px;
-    font-weight: 700;
-}
-
-
-/* Từng nhóm lọc */
-
-.filter-group {
-    margin-bottom: 18px;
-}
-
-.filter-group label {
-    display: block;
-
-    margin-bottom: 8px;
-
-    color: #444444;
-
-    font-size: 14px;
-    font-weight: 600;
-}
-
-
-/* Select của Bootstrap */
-
-.filter-group .form-select {
-    height: 44px;
-
-    border: 1px solid #ced4da;
-    border-radius: 7px;
-
-    color: #444444;
-
-    font-size: 14px;
-}
-
-.filter-group .form-select:focus {
-    border-color: var(--primary-blue);
-
-    box-shadow: 0 0 0 3px rgba(13, 104, 170, 0.12);
-}
-
-
-/* Footer bộ lọc */
-
-.filter-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-
-    margin-top: 22px;
-}
-
-
-/* Nút Đặt lại và Áp dụng */
-
-.btn-reset-filter,
-.btn-apply-filter {
-    height: 42px;
-    padding: 0 18px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 7px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-
-/* Đặt lại */
-
-.btn-reset-filter {
-    background-color: #ffffff;
-    color: var(--primary-blue);
-
-    border: 1px solid var(--primary-blue);
-}
-
-.btn-reset-filter:hover {
-    background-color: var(--primary-blue);
-    color: #ffffff;
-}
-
-
-/* Áp dụng */
-
-.btn-apply-filter {
-    background-color: var(--primary-blue);
-    color: #ffffff;
-
-    border: 1px solid var(--primary-blue);
-}
-
-.btn-apply-filter:hover {
-    background-color: #09588f;
-    border-color: #09588f;
-}
-/* ==============================
-   TABLE WRAPPER (ĐÃ NÂNG CẤP: Chiều cao cố định + Ẩn thanh cuộn)
+   TABLE WRAPPER
+   Chiều cao cố định + ẩn thanh cuộn
 ================================ */
 
 .department-table-wrapper {
     width: 100%;
-    
-    /* 👉 Chiều cao tối đa: Vượt quá 550px là bắt đầu cho phép cuộn */
-    max-height: 650px; 
+
+    max-height: 650px;
 
     background-color: #ffffff;
 
     border-radius: 10px;
 
-    /* Kích hoạt cuộn cho cả chiều dọc lẫn ngang */
-    overflow: auto; 
+    overflow: auto;
 
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+
     position: relative;
-    
-    /* 👉 ẨN THANH CUỘN: Cho Firefox và IE/Edge cũ */
+
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
-/* 👉 ẨN THANH CUỘN: Cho Chrome, Safari, Opera, Edge mới */
+/* Ẩn thanh cuộn cho Chrome, Safari, Opera, Edge mới */
+
 .department-table-wrapper::-webkit-scrollbar {
     display: none;
 }
@@ -349,7 +306,6 @@
     background-color: #0d68aa;
 }
 
-/* 👉 ĐÃ NÂNG CẤP: Ghim cố định Header đứng yên lên sát trần */
 .department-table th {
     padding: 15px 16px;
 
@@ -361,16 +317,13 @@
     text-align: left;
 
     white-space: nowrap;
-    
-    /* Kỹ thuật Sticky Header */
+
     position: sticky;
     top: 0;
     z-index: 10;
-    
-    /* Bắt buộc phải có màu nền để khi cuộn data ở dưới không bị nhìn xuyên thấu */
-    background-color: #0d68aa; 
-    
-    /* Bóng mờ nhẹ dưới vạch Header phân cách với phần cuộn */
+
+    background-color: #0d68aa;
+
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -387,7 +340,7 @@
 }
 
 
-/* hover row */
+/* Hover row */
 
 .department-table tbody tr {
     transition: 0.2s;
@@ -462,7 +415,7 @@
 .btn-edit,
 .btn-delete {
     display: inline-flex;
-    
+
     border: none;
 
     align-items: center;
@@ -530,5 +483,21 @@
 
     .department-manager-header h1 {
         font-size: 24px;
+    }
+
+    .department-actions {
+        width: 100%;
+
+        justify-content: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+    .department-search {
+        width: 100%;
+    }
+
+    .status-filter {
+        width: 180px;
     }
 }

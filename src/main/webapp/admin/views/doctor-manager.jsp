@@ -21,13 +21,9 @@
             <h1>Quản lý bác sĩ</h1>
             <p>Danh sách bác sĩ trong hệ thống</p>
         </div>
+        <%@ include file="/admin/layouts/doctor-filter.jsp" %>
 
-        <button class="btn-add"
-	        	 data-bs-toggle="modal" 
-	        	 data-bs-target="#doctorModal">
-	         	 <i class="bi bi-plus-lg"></i>
-	           	 Thêm mới
-	      </button>
+        
     </div>
 
     <div class="doctor-table-wrapper">
