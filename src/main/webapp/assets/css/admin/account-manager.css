@@ -318,3 +318,422 @@
         font-size: 24px;
     }
 }
+
+
+
+
+
+
+
+
+/* =========================
+   ACCOUNT HEADER
+========================= */
+
+.account-manager-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.account-header-title {
+    flex-shrink: 0;
+}
+
+.account-header-title h1 {
+    margin-bottom: 5px;
+}
+
+.account-header-title p {
+    margin: 0;
+}
+
+
+/* =========================
+   KHU VỰC BÊN PHẢI
+========================= */
+
+.account-header-actions {
+    /* Chiều cao chung của tất cả các ô */
+    --control-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 10px;
+
+    margin-left: auto;
+}
+
+
+/* =========================
+   CHỈNH CHIỀU NGANG TỪNG Ô
+========================= */
+
+/* Ô tìm kiếm */
+.account-header-actions .user-search {
+    --control-width: 200px;
+}
+
+/* Ô vai trò */
+.account-header-actions .role-filter {
+    --control-width: 105px;
+}
+
+/* Ô giới tính */
+.account-header-actions .gender-filter {
+    --control-width: 115px;
+}
+
+/* Ô trạng thái */
+.account-header-actions .status-filter {
+    --control-width: 120px;
+}
+
+/* Ô sắp xếp */
+.account-header-actions .sort-filter {
+    --control-width: 112px;
+}
+
+/* Nút Thêm mới */
+.account-header-actions .btn-add {
+    --control-width: 125px;
+}
+
+
+/* =========================
+   USER FILTER ACTIONS
+========================= */
+
+.user-filter-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+
+    margin: 0;
+    padding: 0;
+}
+
+
+/* =========================
+   Ô TÌM KIẾM
+========================= */
+
+.user-search {
+    position: relative;
+
+    flex: 0 0 var(--control-width);
+    width: var(--control-width);
+    min-width: var(--control-width);
+    height: var(--control-height);
+
+    margin: 0;
+    padding: 0;
+}
+
+.user-search > i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    z-index: 1;
+
+    transform: translateY(-50%);
+
+    color: #1172b3;
+    font-size: 15px;
+
+    pointer-events: none;
+}
+
+.user-search input {
+    width: 100%;
+    height: 100%;
+
+    padding: 0 10px 0 35px;
+    box-sizing: border-box;
+
+    color: #3b4650;
+    font-size: 14px;
+
+    background-color: #ffffff;
+    border: 1px solid #ced9e3;
+    border-radius: 7px;
+
+    outline: none;
+    transition: 0.2s;
+}
+
+.user-search input::placeholder {
+    color: #7c8b99;
+    opacity: 1;
+}
+
+.user-search input:hover {
+    border-color: #1172b3;
+}
+
+.user-search input:focus {
+    color: #3b4650;
+
+    background-color: #ffffff;
+    border-color: #1172b3;
+
+    box-shadow: 0 0 0 3px rgba(17, 114, 179, 0.12);
+}
+
+
+/* =========================
+   KHUNG DROPDOWN
+========================= */
+
+.user-filter-actions .dropdown {
+    flex: 0 0 var(--control-width);
+
+    width: var(--control-width);
+    min-width: var(--control-width);
+}
+
+
+/* =========================
+   NÚT DROPDOWN
+========================= */
+
+.user-filter-actions .btn-tool {
+    width: 100%;
+    height: var(--control-height);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 7px;
+
+    padding: 0 10px;
+    box-sizing: border-box;
+
+    color: #3b4650;
+    font-size: 14px;
+    font-weight: 500;
+
+    background-color: #ffffff;
+    border: 1px solid #ced9e3;
+    border-radius: 7px;
+
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.user-filter-actions .btn-tool i {
+    color: #1172b3;
+    font-size: 15px;
+}
+
+.user-filter-actions .dropdown-toggle::after {
+    margin-left: auto;
+}
+
+.user-filter-actions .btn-tool:hover,
+.user-filter-actions .btn-tool:focus,
+.user-filter-actions .btn-tool.show {
+    color: #1172b3;
+
+    background-color: #eaf5fc;
+    border-color: #1172b3;
+
+    box-shadow: 0 0 0 3px rgba(17, 114, 179, 0.12);
+}
+
+
+/* =========================
+   DROPDOWN MENU
+========================= */
+
+.user-filter-actions .dropdown-menu {
+    z-index: 1050;
+
+    min-width: 190px;
+    margin-top: 7px;
+    padding: 6px;
+
+    background-color: #ffffff;
+    border: 1px solid #dce6ef;
+    border-radius: 8px;
+
+    box-shadow: 0 7px 20px rgba(0, 75, 125, 0.15);
+}
+
+.user-filter-actions .dropdown-item {
+    display: block;
+
+    padding: 9px 12px;
+
+    color: #36434e;
+    font-size: 14px;
+
+    background-color: transparent;
+    border-radius: 6px;
+
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.user-filter-actions .dropdown-item:hover,
+.user-filter-actions .dropdown-item:focus {
+    color: #1172b3;
+    background-color: #eaf5fc;
+}
+
+/* Menu Giới tính */
+.user-filter-actions .gender-filter {
+    --gender-menu-width: 130px;
+}
+
+.user-filter-actions .gender-filter .dropdown-menu {
+    --bs-dropdown-min-width: 0;
+
+    width: var(--gender-menu-width);
+    min-width: var(--gender-menu-width);
+}
+
+/* Menu Vai trò */
+.user-filter-actions .role-filter {
+    --role-menu-width: 130px;
+}
+
+.user-filter-actions .role-filter .dropdown-menu {
+    --bs-dropdown-min-width: 0;
+
+    width: var(--role-menu-width);
+    min-width: var(--role-menu-width);
+}
+
+/* Menu Trạng thái */
+.user-filter-actions .status-filter {
+    --status-menu-width: 150px;
+}
+
+.user-filter-actions .status-filter .dropdown-menu {
+    --bs-dropdown-min-width: 0;
+
+    width: var(--status-menu-width);
+    min-width: var(--status-menu-width);
+}
+
+/* Menu Sắp xếp */
+.user-filter-actions .sort-filter .dropdown-menu {
+    min-width: var(--control-width);
+    width: var(--control-width);
+}
+
+
+/* =========================
+   NÚT THÊM MỚI
+========================= */
+
+.account-header-actions .btn-add {
+    flex: 0 0 var(--control-width);
+
+    width: var(--control-width);
+    min-width: var(--control-width);
+    height: var(--control-height);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 0 10px;
+    box-sizing: border-box;
+
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+
+    background-color: #1172b3;
+    border: 1px solid #1172b3;
+    border-radius: 7px;
+
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.account-header-actions .btn-add i {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.account-header-actions .btn-add:hover,
+.account-header-actions .btn-add:focus {
+    color: #ffffff;
+
+    background-color: #0b6098;
+    border-color: #0b6098;
+
+    box-shadow: 0 0 0 3px rgba(17, 114, 179, 0.15);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+    .account-manager-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .account-header-actions {
+        justify-content: flex-start;
+
+        width: 100%;
+        max-width: 100%;
+
+        margin-left: 0;
+        padding-bottom: 5px;
+
+        overflow-x: auto;
+    }
+}
+
+/* Dropdown tự hiện khi rê chuột vào */
+.user-filter-actions .hover-dropdown {
+    position: relative;
+}
+
+/* Mặc định ẩn menu */
+.user-filter-actions .hover-dropdown > .dropdown-menu {
+    position: absolute;
+
+    top: 100% !important;
+    left: 0 !important;
+    right: auto !important;
+
+    display: none;
+    margin-top: 0;
+
+    transform: none !important;
+}
+
+/* Rê chuột vào thì hiện menu */
+.user-filter-actions .hover-dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+/* Nút đổi màu khi đang hover */
+.user-filter-actions .hover-dropdown:hover > .btn-tool {
+    color: #1172b3;
+    background-color: #eaf5fc;
+    border-color: #1172b3;
+    box-shadow: 0 0 0 3px rgba(17, 114, 179, 0.12);
+}
+
+/* Menu Sắp xếp căn sang bên phải */
+.user-filter-actions .sort-filter > .dropdown-menu {
+    right: 0 !important;
+    left: auto !important;
+}

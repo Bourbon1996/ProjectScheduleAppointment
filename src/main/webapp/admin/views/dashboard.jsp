@@ -151,24 +151,6 @@
 	                </div>
 	            </div>
 	
-	            <!-- Tổng lịch hẹn -->
-	            <div class="col-xl-4 col-md-6">
-	                <div class="stat-card">
-	                    <div class="stat-icon icon-appointment">
-	                        <i class="bi bi-calendar-check-fill"></i>
-	                    </div>
-	
-	                    <div class="stat-content">
-	                        <p>Tổng lịch hẹn</p>
-	                        <h2>${empty totalAppointments ? 0 : totalAppointments}</h2>
-	                        <a href="${ctx}/admin/appointment">
-	                            Xem chi tiết
-	                            <i class="bi bi-arrow-right"></i>
-	                        </a>
-	                    </div>
-	                </div>
-	            </div>
-	
 	            <!-- Doanh thu -->
 	            <div class="col-xl-4 col-md-6">
 	                <div class="stat-card">
