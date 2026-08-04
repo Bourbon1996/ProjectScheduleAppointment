@@ -13,8 +13,6 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 	public AppointmentDAOImpl() {
 		super(Appointment.class);
 	}
- 
-	AppointmentsDAO dao = new AppointmentDAOImpl();
 
 	@Override
 	public boolean deleteByDoctorId(String id) {
@@ -65,12 +63,6 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 			em.close();
 		}
 				
-	}
-
-	@Override
-	public boolean deleteDepartmentById(String id) {
-		// TODO Auto-generated method stub
-		return dao.delete(id);
 	}
 
 	

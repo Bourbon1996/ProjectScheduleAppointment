@@ -59,9 +59,9 @@ public class AppointmentsServlet extends HttpServlet {
 	private PatientService patientService = new PatientServiceImpl();
 	private DepartmentService departmentService = new DepartmentServiceImpl();
 	private DoctorService doctorservice = new DoctorServiceImpl();
-	private DoctorScheduleSlotService slotService = new DoctorScheduleSlotServiceImpl();
-	private AppointmentService appointmentService = new AppointmentServiceImpl();
-	private PaymentService paymentService = new PaymentServiceImpl();
+//	private DoctorScheduleSlotService slotService = new DoctorScheduleSlotServiceImpl();
+//	private AppointmentService appointmentService = new AppointmentServiceImpl();
+//	private PaymentService paymentService = new PaymentServiceImpl();
     /**
      * Default constructor. 
      */
@@ -155,60 +155,60 @@ public class AppointmentsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		
-		if (XPath.is("/appointment/create")) {
-		    
-		    try {
-		       
-		    	String doctorId = XParam.getString("doctorId");
-		    	String deptId = XParam.getString("departmentId");
-		    	String patientId = XParam.getString("patientId");
-		    	String slotId = XParam.getString("slotId");
-		    	String paymentMethod = XParam.getString("paymentMethod");
-		    	
-		    	User loggedInUser = XAuth.getUser();
-		        if (loggedInUser == null) {
-		            
-		            XPath.redirect("/auth/login");
-		            return;
-		        }
-		    	
-		    	Patient patient = patientService.getById(patientId);
-		    	Department dept = departmentService.getById(deptId);
-		    	Doctor doctor = doctorservice.getById(doctorId);
-		    	DoctorScheduleSlot slot = slotService.getById(slotId);
-
-		        BigDecimal finalPrice = doctor.getExaminationFee();
-
-		        
-		        Appointment appointment = new Appointment();
-		        appointment.setPatient(patient);
-		        appointment.setDoctor(doctor);
-		        appointment.setDepartment(dept);
-		        appointment.setSlot(slot);
-		        appointment.setBookedBy(loggedInUser);
-		        
-		        // Trạng thái mặc định khi vừa tạo
-		        appointment.setStatus(AppointmentStatus.PENDING);
-		        appointment.setPaymentStatus(PaymentStatus.UNPAID);
-		        appointment.setCreatedAt(LocalDateTime.now());
-
-		        appointmentService.insert(appointment);
-
-		        Long newAppointmentId = appointment.getId(); 
-
-		        // TẠO THANH TOÁN (PAYMENT)
-		        String txnRef = VNPayConfig.getRandomNumber(8);
-
-		        Payment payment = new Payment();
-		        
-		        payment.setAppointment(appointment); 
-		        payment.setAmount(finalPrice);
-		        payment.setMethod(paymentMethod); 
-		        payment.setStatus(TransactionStatus.PENDING); 
-		        payment.setTransactionCode(txnRef);
-
-		        paymentService.insert(payment);
+//		
+//		if (XPath.is("/appointment/create")) {
+//		    
+//		    try {
+//		       
+//		    	String doctorId = XParam.getString("doctorId");
+//		    	String deptId = XParam.getString("departmentId");
+//		    	String patientId = XParam.getString("patientId");
+//		    	String slotId = XParam.getString("slotId");
+//		    	String paymentMethod = XParam.getString("paymentMethod");
+//		    	
+//		    	User loggedInUser = XAuth.getUser();
+//		        if (loggedInUser == null) {
+//		            
+//		            XPath.redirect("/auth/login");
+//		            return;
+//		        }
+//		    	
+//		    	Patient patient = patientService.getById(patientId);
+//		    	Department dept = departmentService.getById(deptId);
+//		    	Doctor doctor = doctorservice.getById(doctorId);
+//		    	DoctorScheduleSlot slot = slotService.getById(slotId);
+//
+//		        BigDecimal finalPrice = doctor.getExaminationFee();
+//
+//		        
+//		        Appointment appointment = new Appointment();
+//		        appointment.setPatient(patient);
+//		        appointment.setDoctor(doctor);
+//		        appointment.setDepartment(dept);
+//		        appointment.setSlot(slot);
+//		        appointment.setBookedBy(loggedInUser);
+//		        
+//		        // Trạng thái mặc định khi vừa tạo
+//		        appointment.setStatus(AppointmentStatus.PENDING);
+//		        appointment.setPaymentStatus(PaymentStatus.UNPAID);
+//		        appointment.setCreatedAt(LocalDateTime.now());
+//
+//		        appointmentService.insert(appointment);
+//
+//		        Long newAppointmentId = appointment.getId(); 
+//
+//		        // TẠO THANH TOÁN (PAYMENT)
+//		        String txnRef = VNPayConfig.getRandomNumber(8);
+//
+//		        Payment payment = new Payment();
+//		        
+//		        payment.setAppointment(appointment); 
+//		        payment.setAmount(finalPrice);
+//		        payment.setMethod(paymentMethod); 
+//		        payment.setStatus(TransactionStatus.PENDING); 
+//		        payment.setTransactionCode(txnRef);
+//
+//		        paymentService.insert(payment);
 //		         5. RẼ NHÁNH XỬ LÝ THEO PHƯƠNG THỨC THANH TOÁN
 //		        if ("VNPAY".equals(paymentMethod)) {
 //
@@ -223,11 +223,11 @@ public class AppointmentsServlet extends HttpServlet {
 //		            
 //		        }
 
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        
-		    }
-		}
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        
+//		    }
+//		}
 		
 	}
 

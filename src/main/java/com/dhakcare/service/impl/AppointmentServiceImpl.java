@@ -15,12 +15,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	@Override
-	public boolean deleteDepartmentById(String id) {
-		// TODO Auto-generated method stub
-		return dao.deleteDepartmentById(id);
-	}
-
-	@Override
 	public boolean removeDepartmentByDepartmentId(String id) {
 		// TODO Auto-generated method stub
 		return dao.removeDepartmentByDepartmentId(id);
