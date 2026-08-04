@@ -15,5 +15,6 @@ public interface DepartmentService {
 	public boolean update(Department department);
 	public boolean create(Department department);
 	public boolean removeParentByParentId(Long id);
+	public Department getById(String id);
 	
 }

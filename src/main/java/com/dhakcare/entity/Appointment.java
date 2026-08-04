@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import com.dhakcare.enums.AppointmentStatus;
+import com.dhakcare.enums.PaymentStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,12 +51,6 @@ public class Appointment {
     @JoinColumn(name = "slot_id")
     private DoctorScheduleSlot slot;
 
-    @Column(name = "appointment_date")
-    private LocalDate appointmentDate;
-
-    @Column(name = "appointment_time")
-    private LocalTime appointmentTime;
-
     private String reason;
 
     @Enumerated(EnumType.STRING)
@@ -73,4 +68,9 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "booked_by")
     private User bookedBy;
+    
+    
+    @Column(name = "payment_status")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 }

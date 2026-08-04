@@ -5,7 +5,7 @@ INSERT INTO [dbo].[doctor_schedule_slots]
     ([doctor_id], [work_date], [start_time], [end_time], [max_patients], [booked_count], [status])
 SELECT 
     d.id AS doctor_id,
-    CAST('2026-08-03' AS DATE) AS work_date,
+    CAST('2026-08-04' AS DATE) AS work_date,
     slots.start_time,
     slots.end_time,
     10 AS max_patients,

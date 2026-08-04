@@ -57,6 +57,10 @@ public class XPath {
 		return XPath.getServletPath().contains(str);
 	}
 	
+	public static boolean is(String str) {
+		return XPath.getServletPath().equals(str);
+	}
+	
 	public static String getString() {
 		var info = XPath.getPathInfo();
 		return info != null ? info.substring(1) : null;

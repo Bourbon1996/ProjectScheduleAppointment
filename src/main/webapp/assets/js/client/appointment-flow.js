@@ -6,7 +6,8 @@ let bookingData = {
     deptName: "",        
     doctorId: "",        
     doctorName: "",      
-    timeSlot: "",        
+    timeSlot: "",
+	slotId:"",        
     price: ""
 };
 
@@ -37,7 +38,7 @@ function openSpecificModal(modalType) {
     }
 }
 
-function safeSwitchModal(hideModalId, showModalId) {
+function changeModal(hideModalId, showModalId) {
 	
     if (document.activeElement) {
         document.activeElement.blur();
@@ -62,7 +63,7 @@ function selectDate(dateVal, dateStr) {
 	
 	document.querySelector("#input-display-date").value = dateStr;
 	    
-    safeSwitchModal('modalDate', 'modalDept');
+    changeModal('modalDate', 'modalDept');
 }
 
 function selectDept(id, name, priceStr) {
@@ -71,7 +72,10 @@ function selectDept(id, name, priceStr) {
     bookingData.price = priceStr;
 	
     document.querySelector("#input-display-dept").value = name;
-    document.querySelector("#display-total-price").textContent = parseFloat(priceStr).toLocaleString('vi-VN') + " đồng";
+	
+	let price = document.querySelector("#display-total-price");
+    let priceFmt = parseFloat(priceStr);
+    price.textContent = priceFmt.toLocaleString('vi-VN') + " đồng";
 	
     const dateVal = bookingData.dateValue; 
     
@@ -82,7 +86,7 @@ function selectDept(id, name, priceStr) {
             const modalSlotBody = document.querySelector("#modalDoctor .modal-body");
             modalSlotBody.innerHTML = htmlString;
 
-            safeSwitchModal('modalDept', 'modalDoctor');
+            changeModal('modalDept', 'modalDoctor');
         })
         .catch(error => {
             console.error("Lỗi:", error);
@@ -90,12 +94,14 @@ function selectDept(id, name, priceStr) {
         });
 }
 
-function selectTimeSlot(docId, docName, timeStr) {
+function selectTimeSlot(slotId, docId, docName, timeStr, fee) {
     if (document.activeElement) document.activeElement.blur();
     
     bookingData.doctorId = docId;
     bookingData.doctorName = docName;
     bookingData.timeSlot = timeStr;
+	bookingData.price = fee;
+	bookingData.slotId = slotId;
 	
 	document.getElementById("input-display-doctor").value = docName;
 
@@ -115,8 +121,10 @@ function updateMainForm() {
     document.querySelectorAll(".check-status-icon").forEach(icon => {
         icon.classList.remove("d-none");
     });
-
-    document.getElementById("display-total-price").textContent = bookingData.price;
+	
+	let price = document.querySelector("#display-total-price");
+	    let priceFmt = parseFloat(bookingData.price);
+	    price.textContent = priceFmt.toLocaleString('vi-VN') + " đồng";
 
     const setHidden = (id, val) => {
         const el = document.getElementById(id);
@@ -125,17 +133,17 @@ function updateMainForm() {
     setHidden("hidden-date", bookingData.dateValue);
     setHidden("hidden-dept", bookingData.deptId);
     setHidden("hidden-doc", bookingData.doctorId);
-    setHidden("hidden-time", bookingData.timeSlot);
+    setHidden("hidden-slot", bookingData.slotId);
 
     document.getElementById("btn-next-step2").disabled = false;
 }
 
 function backToDateModal() {
-    safeSwitchModal('modalDept', 'modalDate');
+    changeModal('modalDept', 'modalDate');
 }
 
 function backToDeptModal() {
-    safeSwitchModal('modalDoctor', 'modalDept');
+    changeModal('modalDoctor', 'modalDept');
 }
 
 function checkBHYT(isYes) {

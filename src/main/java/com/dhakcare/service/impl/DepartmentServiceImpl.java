@@ -75,5 +75,12 @@ public class DepartmentServiceImpl implements DepartmentService{
 	}
 
 
+	@Override
+	public Department getById(String id) {
+		// TODO Auto-generated method stub
+		return dao.findById(id);
+	}
+
+
 
 }

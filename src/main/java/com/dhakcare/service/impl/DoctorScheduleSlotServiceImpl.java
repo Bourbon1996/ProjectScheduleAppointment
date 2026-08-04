@@ -23,4 +23,10 @@ public class DoctorScheduleSlotServiceImpl implements DoctorScheduleSlotService 
 		return dao.findSlotsByDoctorAndDate(id, workdate);
 	}
 
+	@Override
+	public DoctorScheduleSlot getById(String id) {
+		// TODO Auto-generated method stub
+		return dao.findById(id);
+	}
+
 }

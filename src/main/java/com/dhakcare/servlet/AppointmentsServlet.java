@@ -1,26 +1,42 @@
 package com.dhakcare.servlet;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dhakcare.dto.CalendarDay;
 import com.dhakcare.dto.MonthCalendar;
+import com.dhakcare.entity.Appointment;
 import com.dhakcare.entity.Department;
 import com.dhakcare.entity.Doctor;
+import com.dhakcare.entity.DoctorScheduleSlot;
 import com.dhakcare.entity.Patient;
+import com.dhakcare.entity.Payment;
 import com.dhakcare.entity.User;
+import com.dhakcare.enums.AppointmentStatus;
+import com.dhakcare.enums.PaymentStatus;
+import com.dhakcare.enums.TransactionStatus;
+import com.dhakcare.service.AppointmentService;
 import com.dhakcare.service.DepartmentService;
 import com.dhakcare.service.DoctorScheduleSlotService;
 import com.dhakcare.service.DoctorService;
 import com.dhakcare.service.PatientService;
+import com.dhakcare.service.PaymentService;
+import com.dhakcare.service.impl.AppointmentServiceImpl;
 import com.dhakcare.service.impl.DepartmentServiceImpl;
 import com.dhakcare.service.impl.DoctorScheduleSlotServiceImpl;
 import com.dhakcare.service.impl.DoctorServiceImpl;
 import com.dhakcare.service.impl.PatientServiceImpl;
+import com.dhakcare.service.impl.PaymentServiceImpl;
 import com.dhakcare.utils.HolidayUtil;
+import com.dhakcare.utils.VNPayConfig;
+import com.dhakcare.utils.XAuth;
+import com.dhakcare.utils.XParam;
+import com.dhakcare.utils.XPath;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -32,13 +48,20 @@ import jakarta.servlet.http.HttpSession;
 /**
  * Servlet implementation class PaymentServlet
  */
-@WebServlet({"/appointment"})
+@WebServlet({
+	"/appointment",
+	"/appointment/create"
+	
+})
 public class AppointmentsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private PatientService patientService = new PatientServiceImpl();
 	private DepartmentService departmentService = new DepartmentServiceImpl();
 	private DoctorService doctorservice = new DoctorServiceImpl();
+	private DoctorScheduleSlotService slotService = new DoctorScheduleSlotServiceImpl();
+	private AppointmentService appointmentService = new AppointmentServiceImpl();
+	private PaymentService paymentService = new PaymentServiceImpl();
     /**
      * Default constructor. 
      */
@@ -130,8 +153,82 @@ public class AppointmentsServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		
+		
+		if (XPath.is("/appointment/create")) {
+		    
+		    try {
+		       
+		    	String doctorId = XParam.getString("doctorId");
+		    	String deptId = XParam.getString("departmentId");
+		    	String patientId = XParam.getString("patientId");
+		    	String slotId = XParam.getString("slotId");
+		    	String paymentMethod = XParam.getString("paymentMethod");
+		    	
+		    	User loggedInUser = XAuth.getUser();
+		        if (loggedInUser == null) {
+		            
+		            XPath.redirect("/auth/login");
+		            return;
+		        }
+		    	
+		    	Patient patient = patientService.getById(patientId);
+		    	Department dept = departmentService.getById(deptId);
+		    	Doctor doctor = doctorservice.getById(doctorId);
+		    	DoctorScheduleSlot slot = slotService.getById(slotId);
+
+		        BigDecimal finalPrice = doctor.getExaminationFee();
+
+		        
+		        Appointment appointment = new Appointment();
+		        appointment.setPatient(patient);
+		        appointment.setDoctor(doctor);
+		        appointment.setDepartment(dept);
+		        appointment.setSlot(slot);
+		        appointment.setBookedBy(loggedInUser);
+		        
+		        // Trạng thái mặc định khi vừa tạo
+		        appointment.setStatus(AppointmentStatus.PENDING);
+		        appointment.setPaymentStatus(PaymentStatus.UNPAID);
+		        appointment.setCreatedAt(LocalDateTime.now());
+
+		        appointmentService.insert(appointment);
+
+		        Long newAppointmentId = appointment.getId(); 
+
+		        // TẠO THANH TOÁN (PAYMENT)
+		        String txnRef = VNPayConfig.getRandomNumber(8);
+
+		        Payment payment = new Payment();
+		        
+		        payment.setAppointment(appointment); 
+		        payment.setAmount(finalPrice);
+		        payment.setMethod(paymentMethod); 
+		        payment.setStatus(TransactionStatus.PENDING); 
+		        payment.setTransactionCode(txnRef);
+
+		        paymentService.insert(payment);
+//		         5. RẼ NHÁNH XỬ LÝ THEO PHƯƠNG THỨC THANH TOÁN
+//		        if ("VNPAY".equals(paymentMethod)) {
+//
+//		        	String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl; // (Đoạn tạo link VNPAY của ông)
+//		            
+//		            String jsonResponse = "{\"status\":\"VNPAY\", \"redirectUrl\":\"" + paymentUrl + "\"}";
+//		            response.getWriter().write(jsonResponse);
+//		            
+//		        } else {
+//		            
+//		            response.sendRedirect(request.getContextPath() + "/dat-lich-thanh-cong?id=" + newAppointmentId);
+//		            
+//		        }
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        
+		    }
+		}
+		
 	}
 
 }
