@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import com.dhakcare.service.UserService;
 import com.dhakcare.service.impl.UserServiceImpl;
+import com.dhakcare.utils.RandomPassWordUtil;
 import com.dhakcare.utils.XAttr;
 import com.dhakcare.utils.XAuth;
 import com.dhakcare.utils.XHttp;
+import com.dhakcare.utils.XMail;
 import com.dhakcare.utils.XParam;
 import com.dhakcare.utils.XPath;
 
@@ -193,23 +195,56 @@ public class AccountServlet extends HttpServlet {
 	}
 
 	private void doForgotPassword() throws ServletException, IOException {
-		if (XHttp.is("POST")) {
+		
+		if(XHttp.is("POST")) {
 
-			var email =
-					XParam.getString("email");
+		var email = XParam.getString("email");
 
-			var user =
-					userService.findByEmmail(email);
+		XAttr.setRequest("email", email);
+
+		if (email == null || email.isBlank()) {
+
+			XAttr.setRequest("msg","Vui lòng nhập địa chỉ email.");
+
+			XAttr.setRequest("messageType","danger");
+
+		} else {
+			var user = userService.findByEmail(email.trim());
+			
+			
 
 			if (user == null) {
-				XAttr.setRequest(
-					"message",
-					"Không tìm thấy tài khoản với email này"
-				);
+
+				XAttr.setRequest("msg","Không tìm thấy tài khoản với email này.");
+				XAttr.setRequest("messageType","danger");
 
 			} else {
-				XAttr.setRequest("message","Chức năng đặt lại mật khẩu đang được hoàn thiện");	
-			}	
+				user.setPasswordHash(RandomPassWordUtil.generateRandomPassword(8));
+				userService.update(user);
+				try {
+					XMail.sendPassword(user);					
+					XAttr.setRequest("openLoginPopup",true);
+					
+					XAttr.setRequest("loginSuccess","Đã gửi mật khẩu đến email của bạn. "+ "Vui lòng kiểm tra email và đăng nhập.");
+
+					XAttr.setRequest("loginPhone",user.getPhone());
+					
+					XPath.forward("/home/index");
+					return;
+
+				} catch (Exception e) {
+
+					e.printStackTrace();
+
+					XAttr.setRequest("msg","Không thể gửi email. Vui lòng thử lại.");
+
+					XAttr.setRequest("messageType","danger");
+				}
+			}
 		}
 	}
-}	
+
+	
+	XPath.forward("/site/views/account/forgot-password.jsp");
+	}	
+}
