@@ -1,11 +1,15 @@
 package com.dhakcare.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dhakcare.dao.PatientsDAO;
 import com.dhakcare.dao.impl.PatientDAOImpl;
 import com.dhakcare.entity.Patient;
+import com.dhakcare.enums.WsEventType;
 import com.dhakcare.service.PatientService;
+import com.dhakcare.ws.AdminDashboardWS;
 
 public class PatientServiceImpl implements PatientService {
 	
@@ -13,7 +17,6 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public boolean createPatient(Patient patient) {
 		
-		// 1. Kiểm tra các trường bắt buộc không được để trống hoặc null
         if (patient.getFullName() == null || patient.getFullName().trim().isEmpty()) {
             System.out.println("Lỗi: Tên bệnh nhân không được để trống!");
             return false;
@@ -27,13 +30,20 @@ public class PatientServiceImpl implements PatientService {
             return false;
         }
 
-        // 2. Chuẩn hóa dữ liệu trước khi lưu (Tên viết hoa, xóa khoảng trắng thừa)
         patient.setFullName(patient.getFullName().trim().toUpperCase());
         patient.setPhone(patient.getPhone().trim());
         patient.setAddress(patient.getAddress().trim());
 
-        // 3. Gọi DAO lưu xuống DB
-        return patientsDAO.insert(patient);
+        var newPatient = patientsDAO.insert(patient);
+        
+        Long totalPatient = patientsDAO.countTotalPatients();
+        
+        Map<String, Object> statsData = new HashMap<>();
+        statsData.put("totalPatient", totalPatient);
+
+        AdminDashboardWS.broadcast(WsEventType.NEW_PATIENT, statsData);
+        
+        return newPatient;
 	}
 	@Override
 	public List<Patient> findPatientbyUserId(Long id) {

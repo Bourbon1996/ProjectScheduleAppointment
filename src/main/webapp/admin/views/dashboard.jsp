@@ -70,7 +70,7 @@
 	
 	                    <div class="stat-content">
 	                        <p>Tổng tài khoản</p>
-	                        <h2>${empty totalUser ? 0 : totalUser}</h2>
+	                        <h2 id="stat-totalUser">${empty totalUser ? 0 : totalUser}</h2>
 	                        <a href="${ctx}/admin/account">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
@@ -88,7 +88,7 @@
 	
 	                    <div class="stat-content">
 	                        <p>Tổng bác sĩ</p>
-	                        <h2>${empty totalDoctor ? 0 : totalDoctor}</h2>
+	                        <h2 id="stat-totalDoctor">${empty totalDoctor ? 0 : totalDoctor}</h2>
 	                        <a href="${ctx}/admin/doctor">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
@@ -106,7 +106,7 @@
 	
 	                    <div class="stat-content">
 	                        <p>Tổng bệnh nhân</p>
-	                        <h2>${empty totalPatient ? 0 : totalPatient}</h2>
+	                        <h2 id="stat-totalPatient">${empty totalPatient ? 0 : totalPatient}</h2>
 	                        <a href="${ctx}/admin/patient">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
@@ -124,7 +124,7 @@
 				        
 				        <div class="stat-content">
 				            <p>Tổng chuyên khoa</p>
-				            <h2>${empty totalDepartment ? 0 : totalDepartment}</h2>
+				            <h2 id="stat-totalDepartment">${empty totalDepartment ? 0 : totalDepartment}</h2>
 				            <a href="${ctx}/admin/department">
 				                Xem chi tiết
 				                <i class="bi bi-arrow-right"></i>
@@ -142,7 +142,7 @@
 	
 	                    <div class="stat-content">
 	                        <p>Tổng lịch khám</p>
-	                        <h2>${empty totalSchedules ? 0 : totalSchedules}</h2>
+	                        <h2 id="stat-totalSchedules">${empty totalSchedules ? 0 : totalSchedules}</h2>
 	                        <a href="${ctx}/admin/schedules">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
@@ -160,7 +160,7 @@
 	
 	                    <div class="stat-content">
 	                        <p>Tổng doanh thu</p>
-	                        <h2>
+	                        <h2 id="stat-totalRevenue">
 	                            ${empty totalRevenue ? 0 : totalRevenue}
 	                            <small>VNĐ</small>
 	                        </h2>
@@ -419,5 +419,6 @@
 	</main>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src = "/assets/js/admin/dashboard.js"></script>
 </body>
 </html>

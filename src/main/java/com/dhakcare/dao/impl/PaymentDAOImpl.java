@@ -1,5 +1,7 @@
 package com.dhakcare.dao.impl;
 
+import java.math.BigDecimal;
+
 import com.dhakcare.dao.PaymentDAO;
 import com.dhakcare.entity.Payment;
 import com.dhakcare.utils.GenericDAOImpl;
@@ -24,6 +26,18 @@ public class PaymentDAOImpl extends GenericDAOImpl<Payment> implements PaymentDA
 	        return query.getSingleResult();
 	    } catch (Exception e) {
 	        return null;
+	    }
+	}
+	
+	@Override
+	public BigDecimal calculateTotal() {
+		var em = JpaUtil.getEntityManager();
+	    try {
+	        String jpql = "SELECT SUM(p.amount) FROM Payment p WHERE p.status = 'SUCCESS'";
+	        BigDecimal total = em.createQuery(jpql, BigDecimal.class).getSingleResult();
+	        return total != null ? total : BigDecimal.ZERO;
+	    } catch (Exception e) {
+	        return BigDecimal.ZERO;
 	    }
 	}
 

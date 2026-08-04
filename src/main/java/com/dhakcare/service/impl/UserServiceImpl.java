@@ -1,14 +1,18 @@
 package com.dhakcare.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dhakcare.dao.UserDAO;
 import com.dhakcare.dao.impl.UserDAOImpl;
 import com.dhakcare.entity.User;
 import com.dhakcare.enums.UserRole;
 import com.dhakcare.enums.UserStatus;
+import com.dhakcare.enums.WsEventType;
 import com.dhakcare.service.UserService;
+import com.dhakcare.ws.AdminDashboardWS;
 
 
 public class UserServiceImpl implements UserService {
@@ -125,8 +129,13 @@ public class UserServiceImpl implements UserService {
 		    if (!created) {
 		        return null;
 		    }
-	
-		    //  Trả User vừa tạo
+		    
+		    Long totalUser = dao.countTotalUser();
+		    
+		    Map<String, Object> statsData = new HashMap<>();
+	        statsData.put("totalUser", totalUser);
+		    		
+	        AdminDashboardWS.broadcast(WsEventType.NEW_USER, statsData);
 		    return user;
 	}
 	

@@ -2,6 +2,8 @@ package com.dhakcare.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.dhakcare.dao.AppointmentsDAO;
 import com.dhakcare.dao.PaymentDAO;
@@ -12,7 +14,10 @@ import com.dhakcare.entity.Payment;
 import com.dhakcare.enums.AppointmentStatus;
 import com.dhakcare.enums.PaymentStatus;
 import com.dhakcare.enums.TransactionStatus;
+import com.dhakcare.enums.WsEventType;
 import com.dhakcare.service.PaymentService;
+import com.dhakcare.utils.JpaUtil;
+import com.dhakcare.ws.AdminDashboardWS;
 
 public class PaymentServiceImpl implements PaymentService{
 
@@ -42,24 +47,50 @@ public class PaymentServiceImpl implements PaymentService{
 	
 	@Override
 	public void updatePaymentSuccess(String txnRef) {
+		
+		var em = JpaUtil.getEntityManager();
+		var trans = em.getTransaction();
+		
+		try {
+			
+			trans.begin();
 
-	    Payment payment = dao.findByTransactionCode(txnRef);
-	    
-	    if (payment != null) {
-	       
-	        payment.setStatus(TransactionStatus.SUCCESS); 
-	        payment.setPaidAt(LocalDateTime.now()); 
-	        
-	        
-	        Appointment appointment = payment.getAppointment();
-	        if (appointment != null) {
-	            appointment.setPaymentStatus(PaymentStatus.PAID); 
-	            appointment.setStatus(AppointmentStatus.CONFIRMED); 
-	            
-	            appointmentsDAO.update(appointment);
-	        }
+		    Payment payment = dao.findByTransactionCode(txnRef);
+		    
+		    if (payment != null) {
+		       
+		        payment.setStatus(TransactionStatus.SUCCESS); 
+		        payment.setPaidAt(LocalDateTime.now()); 
+		        
+		        
+		        Appointment appointment = payment.getAppointment();
+		        if (appointment != null) {
+		            appointment.setPaymentStatus(PaymentStatus.PAID); 
+		            appointment.setStatus(AppointmentStatus.CONFIRMED); 
+		            
+		            appointmentsDAO.update(appointment);
+		        }
+	
+		        dao.update(payment);
+		        
+		        Long totalAppointments = appointmentsDAO.count();
+		        BigDecimal totalRevenue = dao.calculateTotal();
+		        
+		        trans.commit();
 
-	        dao.update(payment);
-	    }
+		        Map<String, Object> statsData = new HashMap<>();
+		        statsData.put("totalAppointments", totalAppointments);
+		        statsData.put("totalRevenue", totalRevenue);
+	
+		      
+		        AdminDashboardWS.broadcast(WsEventType.PAYMENT_SUCCESS, statsData);
+		    }
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			trans.rollback();
+		} finally {
+			em.close();
+		}
 	}
 }
