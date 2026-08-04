@@ -86,7 +86,7 @@
 			        </li>
 			        
 			        <li>
-			            <a class="dropdown-item text-danger" href="#">
+			            <a class="dropdown-item text-danger" href="${ctx}/auth/logout">
 			                <i class="bi bi-box-arrow-right me-2"></i>
 			                Đăng xuất
 			            </a>

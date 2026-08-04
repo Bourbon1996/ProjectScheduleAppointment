@@ -310,7 +310,7 @@
 		                <i class="bi bi-arrow-left me-1"></i> Quay lại
 		            </button>
 		            
-		            <!-- Khi làm thật bấm nút này nên đổi thành type="submit" hoặc gọi form.submit() để gửi về Servlet nhé -->
+		           
 		            <button type="button" class="btn btn-primary px-5 fw-bold" id="btn-final-submit" onclick="submitBookingForm()">
 			            Thanh toán VNPAY <i class="bi bi-credit-card ms-1"></i>
 			        </button>

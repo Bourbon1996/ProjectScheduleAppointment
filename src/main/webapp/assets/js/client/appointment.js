@@ -208,7 +208,7 @@ function submitBookingForm() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json()) // Nhận dữ liệu dạng JSON từ Servlet trả về
+    .then(response => response.json())
     .then(data => {
         if (data.status === 'VNPAY') {
             // Trường hợp 1: Chọn VNPAY -> Lấy link rồi đá sang trang VNPay
