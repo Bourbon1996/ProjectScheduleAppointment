@@ -15,15 +15,15 @@ public class DoctorServiceImpl implements DoctorService {
 	}
 
 	@Override
-	public Doctor getById(String id) {
+	public Doctor getById(Long id) {
 		// TODO Auto-generated method stub
 		return dao.findById(id);
 	}
 
 	@Override
-	public boolean deleteById(String id) {
+	public boolean deleteById(Long id) {
 		// TODO Auto-generated method stub
-		return dao.deleteById(id);
+		return dao.delete(id);
 	}
 
 	@Override

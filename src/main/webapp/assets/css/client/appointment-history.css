@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+body {
+    background-color: #f4f7fc;
+}
+
+.history-main {
+    min-height: 75vh;
+}
+
+.table th {
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    background-color: #edf2f9 !important;
+    color: #4f5d75 !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.table td {
+    vertical-align: middle;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 0.92rem;
+    color: #2d3748;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.025);
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.04) !important;
+}
+
+.badge {
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.3px;
+}
+
+.btn-outline-primary {
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+}
+
+/* --- CSS CHO MODAL CHI TIẾT --- */
+.custom-modal-content {
+    border: none;
+    border-radius: 1.25rem;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.custom-modal-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    padding: 1.25rem 1.5rem;
+}
+
+.modal-inner-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease-in-out;
+}
+
+.modal-inner-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+.payment-card {
+    background-color: #f8faff;
+    border-width: 2px;
+}
+
+/* Định dạng font chữ nhỏ cho nhãn */
+.fs-7 {
+    font-size: 0.85rem;
+}
+
+.modal-footer .btn {
+    transition: all 0.2s;
+}
+
+.modal-footer .btn-light:hover {
+    background-color: #e2e6ea;
+}
+
+.modal-header{
+	background-color: #0d68aa;
+}

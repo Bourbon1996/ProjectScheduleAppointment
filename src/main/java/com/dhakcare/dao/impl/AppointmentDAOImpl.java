@@ -1,12 +1,18 @@
 package com.dhakcare.dao.impl;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.dhakcare.dao.AppointmentsDAO;
 import com.dhakcare.entity.Appointment;
+import com.dhakcare.entity.Doctor;
+import com.dhakcare.entity.User;
 import com.dhakcare.utils.GenericDAOImpl;
 import com.dhakcare.utils.JpaUtil;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements AppointmentsDAO {
 
@@ -63,6 +69,33 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 			em.close();
 		}
 				
+	}
+	
+	@Override
+	public Integer findMaxQueueNumberByDoctorAndDate(Doctor doctor, LocalDate date) {
+		EntityManager em = JpaUtil.getEntityManager();
+	    try {
+	        String jpql = "SELECT MAX(a.queueNumber) FROM Appointment a "
+	                    + "WHERE a.doctor = :doctor AND a.slot.date = :date";
+	        
+	        TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
+	        query.setParameter("doctor", doctor);
+	        query.setParameter("date", date);
+	        
+	        Integer max = query.getSingleResult();
+	        return max != null ? max : 0;
+	    } catch (Exception e) {
+	        return 0;
+	    }
+	}
+	
+	@Override
+	public List<Appointment> findByUser(User user) {
+		EntityManager em = JpaUtil.getEntityManager();
+	    String jpql = "SELECT a FROM Appointment a WHERE a.bookedBy = :user ORDER BY a.createdAt DESC";
+	    TypedQuery<Appointment> query = em.createQuery(jpql, Appointment.class);
+	    query.setParameter("user", user);
+	    return query.getResultList();
 	}
 
 	
