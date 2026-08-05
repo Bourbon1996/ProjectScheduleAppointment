@@ -3,7 +3,7 @@ package com.dhakcare.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.dhakcare.enums.PaymentStatus;
+import com.dhakcare.enums.TransactionStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,7 +41,7 @@ public class Payment {
     private String method;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus status;
+    private TransactionStatus status;
 
     @Column(name = "paid_at")
     private LocalDateTime paidAt;

@@ -93,13 +93,12 @@ CREATE TABLE appointments (
     doctor_id BIGINT NOT NULL,
     department_id BIGINT NOT NULL,
     slot_id BIGINT NULL,
-    appointment_date DATE NOT NULL,
-    appointment_time TIME NOT NULL,
     reason NVARCHAR(500),
     [status] VARCHAR(30) NOT NULL DEFAULT 'PENDING',
     queue_number INT,
     created_at DATETIME2 DEFAULT SYSDATETIME(),
     booked_by bigint NOT NULL,
+    payment_status varchar(20) NOT NULL DEFAULT ('UNPAID'),
 
     CONSTRAINT fk_appointments_booked_by
         FOREIGN KEY(booked_by) REFERENCES users (id),
@@ -121,7 +120,7 @@ go
 -- Bảng thanh toán
 CREATE TABLE payments (
     id BIGINT IDENTITY(1,1) PRIMARY KEY,
-    appointment_id BIGINT NOT NULL UNIQUE,
+    appointment_id BIGINT NOT NULL,
     amount DECIMAL(18,2) NOT NULL,
     method VARCHAR(30) NOT NULL, -- CASH, MOMO, VNPAY, BANKING
     status VARCHAR(30) NOT NULL DEFAULT 'PENDING',

@@ -9,4 +9,5 @@ public interface PatientService {
 	public List<Patient> findPatientbyUserId(Long id);
 	public Long getTotalPatient();
 	public boolean deleteByUserId(String id);
+	public Patient getById(String id);
 }

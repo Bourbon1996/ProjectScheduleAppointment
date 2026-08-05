@@ -216,7 +216,6 @@
 		<!-- BƯỚC 3: XÁC NHẬN THÔNG TIN -->
 		<div class="step-pane" id="step-pane-3">
 		    
-		    <!-- 🔥 BỔ SUNG: KHỐI THÔNG TIN BỆNH NHÂN (Để JS không bị lỗi null textContent) 🔥 -->
 		    <h5 class="step-title mb-3"><i class="bi bi-person-lines-fill text-primary me-2"></i>Thông tin bệnh nhân</h5>
 		    <div class="row g-3 mb-4 bg-light p-3 rounded-3 border">
 		        <div class="col-md-6">
@@ -240,24 +239,71 @@
 		        </div>
 		        <div class="col-md-6">
 		            <p class="mb-2"><strong>Ngày khám:</strong> <span id="conf-date" class="fw-bold">--</span></p>
-		            <p class="mb-2"><strong>Tiền khám:</strong> 150.000 đồng</p>
+		            <p class="mb-2"><strong>Tiền khám:</strong> <span id = "price-form"></span></p>
 		            <p class="mb-2"><strong>Bảo hiểm tư nhân:</strong> Không</p>
 		        </div>
 		    </div>
 		
 		    <div class="total-price-bar d-flex justify-content-between align-items-center mb-5 p-3 bg-primary bg-opacity-10 rounded-3">
-		        <span class="fw-bold">Tổng tiền khám:</span>
-		        <span class="fs-5 fw-bold text-primary">150.000 đồng</span>
+		        <span class="fw-bold text-primary">Tổng tiền khám:</span>
+		        <span class="fs-5 fw-bold text-primary" id = "price"></span>
 		    </div>
+		    
+		    <!-- KHỐI CHỌN PHƯƠNG THỨC THANH TOÁN -->
+			<h5 class="step-title mb-3"><i class="bi bi-credit-card text-primary me-2"></i>Phương thức thanh toán</h5>
+			<div class="row g-3 mb-4">
+			    
+			    <!-- Lựa chọn 1: VNPAY -->
+			    <div class="col-md-6">
+			        <label class="w-100 h-100 m-0">
+			            <!-- Thẻ input bị ẩn đi, dùng CSS ở trên để bắt sự kiện checked -->
+			            <input type="radio" name="paymentMethod" value="VNPAY" class="d-none payment-radio" checked onchange="updatePaymentMethod('VNPAY')">
+			            <div class="card payment-card h-100 rounded-3">
+			                <div class="card-body d-flex align-items-center p-3">
+			                    <div class="me-3 p-2 bg-white rounded shadow-sm border">
+			                        <i class="bi bi-qr-code-scan fs-3 text-primary"></i> 
+			                    </div>
+			                    <div>
+			                        <h6 class="mb-1 fw-bold text-dark">Thanh toán qua VNPAY</h6>
+			                        <small class="text-muted">Quét mã QR, Thẻ ATM/Visa</small>
+			                    </div>
+			                    <i class="bi bi-check-circle-fill text-primary ms-auto fs-4 check-icon"></i>
+			                </div>
+			            </div>
+			        </label>
+			    </div>
+			
+			    <!-- Lựa chọn 2: THANH TOÁN TẠI QUẦY -->
+			    <div class="col-md-6">
+			        <label class="w-100 h-100 m-0">
+			            <input type="radio" name="paymentMethod" value="CASH" class="d-none payment-radio" onchange="updatePaymentMethod('CASH')">
+			            <div class="card payment-card h-100 rounded-3">
+			                <div class="card-body d-flex align-items-center p-3">
+			                    <div class="me-3 p-2 bg-light rounded border">
+			                        <i class="bi bi-cash-stack fs-3 text-secondary"></i>
+			                    </div>
+			                    <div>
+			                        <h6 class="mb-1 fw-bold text-dark">Thanh toán tại quầy</h6>
+			                        <small class="text-muted">Đóng tiền mặt khi đến khám</small>
+			                    </div>
+			                    <i class="bi bi-check-circle-fill text-primary ms-auto fs-4 check-icon d-none"></i>
+			                </div>
+			            </div>
+			        </label>
+			    </div>
+			
+			</div>
 		
 		    <!-- Form chính thức để Submit về Servlet -->
-		    <form action="${ctx}/submit-booking" method="POST" id="realSubmitForm">
+		    <form action="${ctx}/appointment/create" method="POST" id="realSubmitForm">
 		        <!-- 🔥 SỬA LẠI ID THẺ HIDDEN CHO KHỚP 100% VỚI JAVASCRIPT 🔥 -->
 		        <input type="hidden" name="patientId" id="hidden-patient-id">
 		        <input type="hidden" name="examDate" id="hidden-date">
 		        <input type="hidden" name="departmentId" id="hidden-dept">
-		        <input type="hidden" name="timeSlot" id="hidden-time">
+		        <input type="hidden" name="slotId" id="hidden-slot">
 		        <input type="hidden" name="doctorId" id="hidden-doc">
+		        <input type="hidden" name="UserId" value = "${SessionScope.user.id}">
+		        <input type="hidden" name="paymentMethod" id="hidden-payment-method" value="VNPAY">
 		
 		        <div class="d-flex justify-content-between">
 		            <button type="button" class="btn btn-outline-secondary px-4" onclick="goToStep(2)">
@@ -265,9 +311,9 @@
 		            </button>
 		            
 		            <!-- Khi làm thật bấm nút này nên đổi thành type="submit" hoặc gọi form.submit() để gửi về Servlet nhé -->
-		            <button type="button" class="btn btn-primary px-5 fw-bold" onclick="goToStep(4)">
-		                Xác nhận đặt lịch <i class="bi bi-check-circle ms-1"></i>
-		            </button>
+		            <button type="button" class="btn btn-primary px-5 fw-bold" id="btn-final-submit" onclick="submitBookingForm()">
+			            Thanh toán VNPAY <i class="bi bi-credit-card ms-1"></i>
+			        </button>
 		        </div>
 		    </form>
 		</div>

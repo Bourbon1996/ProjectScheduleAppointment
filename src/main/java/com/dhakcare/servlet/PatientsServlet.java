@@ -96,17 +96,16 @@ public class PatientsServlet extends HttpServlet {
 
             if (isSaved) {
                 
-                session.setAttribute("SUCCESS_MSG", "🎉 Thêm hồ sơ bệnh nhân thành công!");
+                session.setAttribute("SUCCESS_MSG", "Thêm hồ sơ bệnh nhân thành công!");
             } else {
-                session.setAttribute("ERROR_MSG", "❌ Lỗi: Không thể lưu hồ sơ vào cơ sở dữ liệu!");
+                session.setAttribute("ERROR_MSG", "Lỗi: Không thể lưu hồ sơ vào cơ sở dữ liệu!");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            session.setAttribute("ERROR_MSG", "❌ Lỗi: Dữ liệu gửi lên không hợp lệ!");
+            session.setAttribute("ERROR_MSG", "Lỗi: Dữ liệu gửi lên không hợp lệ!");
         }
 
-        // 6. CHUYỂN HƯỚNG VỀ TRANG ĐẶT LỊCH (/appointment) NHƯ Ý ÔNG
         response.sendRedirect(request.getContextPath() + "/appointment");
 	}
 

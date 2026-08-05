@@ -275,3 +275,23 @@
     background-color: #cbd5e1;
     color: #1e293b;
 }
+
+/* Hiệu ứng cho thẻ chọn thanh toán */
+.payment-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid #e9ecef;
+}
+.payment-card:hover {
+    border-color: #b3d7ff;
+}
+.payment-radio:checked + .payment-card {
+    border-color: #0066cc !important;
+    background-color: #f0f7ff !important;
+}
+.payment-radio:checked + .payment-card .check-icon {
+    display: block !important;
+}
+.payment-radio:not(:checked) + .payment-card .check-icon {
+    display: none !important;
+}

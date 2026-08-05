@@ -53,7 +53,7 @@
                         </c:when>
                         <c:otherwise>
                             <button class="btn btn-slot slot-available" 
-                                    onclick="selectTimeSlot('${doctor.id}', '${doctor.user.fullName}', '${slot.startTime} - ${slot.endTime}')">
+                                    onclick="selectTimeSlot('${slot.id}','${doctor.id}', '${doctor.user.fullName}', '${slot.startTime} - ${slot.endTime}', '${doctor.examinationFee}')">
                                 ${slot.startTime} - ${slot.endTime}
                             </button>
                         </c:otherwise>

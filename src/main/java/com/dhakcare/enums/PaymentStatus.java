@@ -1,7 +1,7 @@
 package com.dhakcare.enums;
 
 public enum PaymentStatus {
-    PENDING,
+	UNPAID,
     PAID,
-    FAILED
+    REFUNDED
 }

@@ -85,13 +85,14 @@ function validateAndGoToStep3() {
     document.getElementById("conf-department").textContent = deptSelect;
     document.getElementById("conf-time").textContent = time;
     document.getElementById("conf-doctor").textContent = doctor || "Bác sĩ phân công tự động";
+	document.getElementById("price-form").textContent = parseFloat(bookingData.price).toLocaleString('vi-VN') + " đồng";
+	document.getElementById("price").textContent = parseFloat(bookingData.price).toLocaleString('vi-VN') + " đồng";
 
     
     document.getElementById("hidden-patient-id").value = selectedPatientData.id;
-    document.getElementById("hidden-date").value = date;
-    document.getElementById("hidden-time").value = time;
-    document.getElementById("hidden-doc").value = doctor;
-
+	
+	console.log(bookingData);
+	console.log(selectedPatientData);
     goToStep(3);
 }
 
@@ -182,4 +183,54 @@ document.addEventListener('hidden.bs.modal', function () {
         document.activeElement.blur();
     }
 });
+
+function updatePaymentMethod(method) {
+    // 1. Lưu vào thẻ hidden để đẩy xuống Servlet
+    document.getElementById("hidden-payment-method").value = method;
+    
+    // 2. Đổi màu nút cho hợp ngữ cảnh
+    const btnSubmit = document.getElementById("btn-final-submit");
+    if (method === 'VNPAY') {
+        btnSubmit.innerHTML = 'Thanh toán VNPAY <i class="bi bi-credit-card ms-1"></i>';
+        btnSubmit.className = 'btn btn-primary px-5 fw-bold';
+    } else {
+        btnSubmit.innerHTML = 'Xác nhận Đặt lịch <i class="bi bi-check-circle ms-1"></i>';
+        btnSubmit.className = 'btn btn-success px-5 fw-bold';
+    }
+}
+
+function submitBookingForm() {
+    const form = document.getElementById("realSubmitForm");
+    const formData = new FormData(form);
+
+    // Gửi dữ liệu ngầm bằng fetch API (AJAX)
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json()) // Nhận dữ liệu dạng JSON từ Servlet trả về
+    .then(data => {
+        if (data.status === 'VNPAY') {
+            // Trường hợp 1: Chọn VNPAY -> Lấy link rồi đá sang trang VNPay
+            window.location.href = data.redirectUrl;
+            
+        } else if (data.status === 'SUCCESS') {
+            // Trường hợp 2: Chọn Tiền mặt -> Điền mã phiếu khám rồi nhảy thẳng sang Bước 4
+            const codeEl = document.querySelector("#step-pane-4 .text-primary"); // Chỗ hiển thị mã phiếu
+            if(codeEl) {
+                codeEl.textContent = "#UMC-2026-" + data.appointmentId;
+            }
+            
+            // Chuyển giao diện sang bước 4 mượt mà không reload trang
+            goToStep(4);
+            
+        } else {
+            alert("⚠️ Lỗi: " + (data.message || "Không thể tạo lịch khám!"));
+        }
+    })
+    .catch(error => {
+        console.error("Lỗi hệ thống:", error);
+        alert("⚠️ Đã xảy ra lỗi kết nối đến máy chủ!");
+    });
+}
 

@@ -42,7 +42,7 @@ public class Department {
     
     @Builder.Default
     @Column(name = "base_price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal basePrice = new BigDecimal("150000.00");
+    private BigDecimal basePrice = new BigDecimal("150000");
     
     @OneToMany(mappedBy = "department")
     private List<Doctor> doctors;
@@ -56,5 +56,6 @@ public class Department {
 
     @OneToMany(mappedBy = "parent") 
     private List<Department> subDepartments;
+    
 
 }
