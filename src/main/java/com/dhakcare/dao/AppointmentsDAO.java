@@ -15,4 +15,7 @@ public interface AppointmentsDAO extends GenericDAO<Appointment> {
     public boolean removeDepartmentByDepartmentId(String id);
     public Integer findMaxQueueNumberByDoctorAndDate(Doctor doctor, LocalDate date);
     public List<Appointment> findByUser(User user);
+    public List<Appointment> findByDoctorUser(User user);
+    public List<Object[]> getTopDepartments(int limit);
+    public List<Object[]> getTopDoctors(int limit);
 }

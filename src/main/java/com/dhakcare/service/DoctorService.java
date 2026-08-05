@@ -11,6 +11,7 @@ public interface DoctorService {
 	public Long getTotalDoctor();
 	public boolean removeDepartmentByDepartmentId(String id);
 	public List<Doctor> getDoctorbyDeptId(String id);
+	public Doctor getByUser(com.dhakcare.entity.User user);
 
 
 }

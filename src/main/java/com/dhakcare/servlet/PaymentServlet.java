@@ -1,6 +1,14 @@
 package com.dhakcare.servlet;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.dhakcare.service.PaymentService;
 import com.dhakcare.service.impl.PaymentServiceImpl;
@@ -30,19 +38,44 @@ public class PaymentServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("vnpay_return".equals(action)) {
-           
+            
+            // --- BẮT ĐẦU: Xác minh chữ ký VNPay ---
+            // Lấy tất cả tham số VNPay trả về (trừ vnp_SecureHash)
+            Map<String, String> fields = new HashMap<>();
+            Enumeration<String> params = request.getParameterNames();
+            while (params.hasMoreElements()) {
+                String fieldName = params.nextElement();
+                String fieldValue = request.getParameter(fieldName);
+                if (fieldValue != null && !fieldValue.isEmpty()
+                        && !fieldName.equals("vnp_SecureHash") 
+                        && !fieldName.equals("vnp_SecureHashType")
+                        && !fieldName.equals("action")) {
+                    fields.put(fieldName, URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                }
+            }
+
+            // Tính lại chữ ký từ các tham số nhận được
+            String signValue = VNPayConfig.hashAllFields(fields);
+            // Lấy chữ ký VNPay gửi về
+            String vnpSecureHash = request.getParameter("vnp_SecureHash");
+            
             String responseCode = request.getParameter("vnp_ResponseCode");
             String txnRef = request.getParameter("vnp_TxnRef");
 
-            if ("00".equals(responseCode)) {
-            	
-            		paymentService.updatePaymentSuccess(txnRef);
-            		
-                response.sendRedirect(request.getContextPath() + "/appointment?status=success&code=" + txnRef);
+            // So sánh chữ ký: nếu khớp → dữ liệu chưa bị giả mạo
+            if (signValue != null && signValue.equals(vnpSecureHash)) {
+                if ("00".equals(responseCode)) {
+                    paymentService.updatePaymentSuccess(txnRef);
+                    response.sendRedirect(request.getContextPath() + "/appointment?status=success&code=" + txnRef);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/appointment?status=failed");
+                }
             } else {
-                
+                // Chữ ký không khớp → dữ liệu bị giả mạo!
+                System.err.println("VNPay: Chữ ký không hợp lệ! txnRef=" + txnRef);
                 response.sendRedirect(request.getContextPath() + "/appointment?status=failed");
             }
+            // --- KẾT THÚC: Xác minh chữ ký VNPay ---
         }
     }
 
@@ -65,4 +98,4 @@ public class PaymentServlet extends HttpServlet {
             }
         }
     }
-}
+}

@@ -171,6 +171,28 @@
 							</li>
 
 							<!-- Chỉnh sửa thông tin -->
+							<c:if test="${sessionScope.user.role == 'DOCTOR'}">
+								<li>
+								    <a class="dropdown-item text-primary fw-bold"
+								       href="${ctx}/doctor-portal">
+								        <i class="bi bi-briefcase-medical me-2"></i>
+								        Doctor Portal
+								    </a>
+								</li>
+								<li><hr class="dropdown-divider"></li>
+							</c:if>
+							
+							<c:if test="${sessionScope.user.role == 'ADMIN'}">
+								<li>
+								    <a class="dropdown-item text-primary fw-bold"
+								       href="${ctx}/admin/dashboard">
+								        <i class="bi bi-speedometer2 me-2"></i>
+								        Admin Portal
+								    </a>
+								</li>
+								<li><hr class="dropdown-divider"></li>
+							</c:if>
+
 							<li>
 							    <a class="dropdown-item"
 							       href="${ctx}/account/edit-profile">

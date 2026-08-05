@@ -86,6 +86,21 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 	    }
 	}
 
-	
-	
+	@Override
+	public Doctor findByUser(com.dhakcare.entity.User user) {
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "SELECT d FROM Doctor d WHERE d.user.id = :userId";
+			var query = em.createQuery(jpql, Doctor.class);
+			query.setParameter("userId", user.getId());
+			return query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+	}
 }

@@ -76,7 +76,7 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 		EntityManager em = JpaUtil.getEntityManager();
 	    try {
 	        String jpql = "SELECT MAX(a.queueNumber) FROM Appointment a "
-	                    + "WHERE a.doctor = :doctor AND a.slot.date = :date";
+	                    + "WHERE a.doctor = :doctor AND a.slot.workDate = :date";
 	        
 	        TypedQuery<Integer> query = em.createQuery(jpql, Integer.class);
 	        query.setParameter("doctor", doctor);
@@ -86,19 +86,86 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 	        return max != null ? max : 0;
 	    } catch (Exception e) {
 	        return 0;
+	    } finally {
+	        if (em != null && em.isOpen()) {
+	            em.close();
+	        }
 	    }
 	}
 	
 	@Override
 	public List<Appointment> findByUser(User user) {
 		EntityManager em = JpaUtil.getEntityManager();
-	    String jpql = "SELECT a FROM Appointment a WHERE a.bookedBy = :user ORDER BY a.createdAt DESC";
-	    TypedQuery<Appointment> query = em.createQuery(jpql, Appointment.class);
-	    query.setParameter("user", user);
-	    return query.getResultList();
+		try {
+		    String jpql = "SELECT a FROM Appointment a WHERE a.bookedBy = :user ORDER BY a.createdAt DESC";
+		    TypedQuery<Appointment> query = em.createQuery(jpql, Appointment.class);
+		    query.setParameter("user", user);
+		    return query.getResultList();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    return java.util.Collections.emptyList();
+		} finally {
+		    if (em != null && em.isOpen()) {
+		        em.close();
+		    }
+		}
 	}
 
-	
-	
-	
+	@Override
+	public List<Appointment> findByDoctorUser(User user) {
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+		    String jpql = "SELECT a FROM Appointment a WHERE a.doctor.user = :user ORDER BY a.createdAt DESC";
+		    TypedQuery<Appointment> query = em.createQuery(jpql, Appointment.class);
+		    query.setParameter("user", user);
+		    return query.getResultList();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    return java.util.Collections.emptyList();
+		} finally {
+		    if (em != null && em.isOpen()) {
+		        em.close();
+		    }
+		}
+	}
+
+	@Override
+	public java.util.List<Object[]> getTopDepartments(int limit) {
+		var em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "SELECT a.department, COUNT(a) FROM Appointment a " +
+					"WHERE a.status IN ('CONFIRMED', 'COMPLETED') " +
+					"GROUP BY a.department ORDER BY COUNT(a) DESC";
+			return em.createQuery(jpql, Object[].class)
+					.setMaxResults(limit)
+					.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new java.util.ArrayList<>();
+		} finally {
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+	}
+
+	@Override
+	public java.util.List<Object[]> getTopDoctors(int limit) {
+		var em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "SELECT a.doctor, COUNT(a) FROM Appointment a " +
+					"WHERE a.status IN ('CONFIRMED', 'COMPLETED') " +
+					"GROUP BY a.doctor ORDER BY COUNT(a) DESC";
+			return em.createQuery(jpql, Object[].class)
+					.setMaxResults(limit)
+					.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new java.util.ArrayList<>();
+		} finally {
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+	}
 }

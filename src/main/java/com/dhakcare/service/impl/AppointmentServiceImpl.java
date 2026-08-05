@@ -65,53 +65,126 @@ public class AppointmentServiceImpl implements AppointmentService {
 			
 			trans.begin();
 			
-			 Patient patient = patientDao.findById(patientId);
-			    Department dept = deptDao.findById(deptId);
-			    Doctor doctor = doctorDao.findById(doctorId);
-			    DoctorScheduleSlot slot = slotDao.findById(slotId);
+			// Dùng chính EntityManager này để tất cả nằm trong 1 transaction
+			Patient patient = em.find(Patient.class, patientId);
+			Department dept = em.find(Department.class, deptId);
+			Doctor doctor = em.find(Doctor.class, doctorId);
+			DoctorScheduleSlot slot = em.find(DoctorScheduleSlot.class, slotId);
+			
+			// Re-attach loggedInUser vào persistence context hiện tại
+			User managedUser = em.find(User.class, loggedInUser.getId());
 			    
-			    LocalDate bookingDate = slot.getWorkDate();
-			    Integer maxQueue = dao.findMaxQueueNumberByDoctorAndDate(doctor, bookingDate);
-			    int nextQueueNumber = maxQueue + 1;
+			LocalDate bookingDate = slot.getWorkDate();
+			
+			// Tìm queue number lớn nhất trong cùng EM
+			String jpql = "SELECT MAX(a.queueNumber) FROM Appointment a "
+			            + "WHERE a.doctor = :doctor AND a.slot.workDate = :date";
+			Integer maxQueue = em.createQuery(jpql, Integer.class)
+			        .setParameter("doctor", doctor)
+			        .setParameter("date", bookingDate)
+			        .getSingleResult();
+			int nextQueueNumber = (maxQueue != null ? maxQueue : 0) + 1;
 
-			    Appointment appointment = new Appointment();
-			    appointment.setPatient(patient);
-			    appointment.setDoctor(doctor);
-			    appointment.setDepartment(dept);
-			    appointment.setSlot(slot);
-			    appointment.setQueueNumber(nextQueueNumber);
-			    appointment.setBookedBy(loggedInUser);
-			    appointment.setStatus(AppointmentStatus.PENDING);
-			    appointment.setPaymentStatus(PaymentStatus.UNPAID);
-			    appointment.setCreatedAt(LocalDateTime.now());
+			Appointment appointment = new Appointment();
+			appointment.setPatient(patient);
+			appointment.setDoctor(doctor);
+			appointment.setDepartment(dept);
+			appointment.setSlot(slot);
+			appointment.setQueueNumber(nextQueueNumber);
+			appointment.setBookedBy(managedUser);
+			appointment.setStatus(AppointmentStatus.PENDING);
+			appointment.setPaymentStatus(PaymentStatus.UNPAID);
+			appointment.setCreatedAt(LocalDateTime.now());
 
-			    dao.create(appointment);
-			    Long totalAppointments = dao.count();
+			em.persist(appointment);
+			
+			// Đếm tổng appointments trong cùng EM
+			Long totalAppointments = em.createQuery(
+			        "SELECT COUNT(a) FROM Appointment a", Long.class)
+			        .getSingleResult();
 			    
-			    trans.commit();
+			trans.commit();
 			    
-			    Map<String, Object> statsData = new HashMap<>();
-		        statsData.put("totalAppointments", totalAppointments);
-		        
-		        AdminDashboardWS.broadcast(WsEventType.NEW_APPOINTMENT, statsData);
-		        
-			    return appointment;
+			Map<String, Object> statsData = new HashMap<>();
+			statsData.put("totalAppointments", totalAppointments);
+			AdminDashboardWS.broadcast(WsEventType.NEW_APPOINTMENT, statsData);
+			        
+			return appointment;
 			    
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
-			trans.rollback();
+			if (trans != null && trans.isActive()) {
+				trans.rollback();
+			}
 			return null;
 		} finally {
-			em.close();
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
 		}
-		
-	   
 	}
 
 	@Override
 	public List<Appointment> getAppointmentsByUser(User user) {
-		// TODO Auto-generated method stub
 		return dao.findByUser(user);
+	}
+
+	@Override
+	public List<Appointment> getAppointmentsByDoctorUser(User user) {
+		return dao.findByDoctorUser(user);
+	}
+
+	@Override
+	public boolean cancelAppointment(Long id) {
+		var em = JpaUtil.getEntityManager();
+		var trans = em.getTransaction();
+		try {
+			trans.begin();
+			Appointment appointment = em.find(Appointment.class, id);
+			if (appointment != null) {
+				appointment.setStatus(AppointmentStatus.CANCELLED);
+				em.merge(appointment);
+			}
+			trans.commit();
+			return true;
+		} catch (Exception e) {
+			if (trans != null && trans.isActive()) trans.rollback();
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (em != null && em.isOpen()) em.close();
+		}
+	}
+
+	@Override
+	public boolean completeAppointment(Long id) {
+		var em = JpaUtil.getEntityManager();
+		var trans = em.getTransaction();
+		try {
+			trans.begin();
+			Appointment appointment = em.find(Appointment.class, id);
+			if (appointment != null) {
+				appointment.setStatus(AppointmentStatus.COMPLETED);
+				em.merge(appointment);
+			}
+			trans.commit();
+			return true;
+		} catch (Exception e) {
+			if (trans != null && trans.isActive()) trans.rollback();
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (em != null && em.isOpen()) em.close();
+		}
+	}
+
+	@Override
+	public java.util.List<Object[]> getTopDepartments(int limit) {
+		return dao.getTopDepartments(limit);
+	}
+
+	@Override
+	public java.util.List<Object[]> getTopDoctors(int limit) {
+		return dao.getTopDoctors(limit);
 	}
 }

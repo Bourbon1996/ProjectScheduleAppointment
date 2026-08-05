@@ -11,6 +11,7 @@ public interface DoctorDAO extends GenericDAO<Doctor>{
 	public Long countTotalDoctor();
 	public boolean removeDepartmentByDepartmentId(String id);
 	public List<Doctor> finDoctorbyDeptId(String id);
+	public Doctor findByUser(com.dhakcare.entity.User user);
 
 
   

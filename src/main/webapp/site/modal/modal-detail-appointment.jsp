@@ -83,10 +83,13 @@
 							</div>
 
 							<!-- Footer Modal -->
-							<div class="modal-footer bg-white border-top-0 py-3 rounded-bottom-4">
+							<div class="modal-footer bg-white border-top-0 py-3 rounded-bottom-4 flex-wrap">
 								<button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Đóng</button>
 								<c:if test="${item.status == 'PENDING'}">
-									<button type="button" class="btn btn-outline-danger px-4 rounded-pill">Hủy lịch khám</button>
+									<button type="button" class="btn btn-outline-danger px-4 rounded-pill" onclick="cancelAppointment(${item.id})">Hủy lịch khám</button>
+								</c:if>
+								<c:if test="${(item.status == 'CONFIRMED' || item.status == 'PENDING') && (sessionScope.user.role == 'ADMIN' || sessionScope.user.role == 'DOCTOR')}">
+									<button type="button" class="btn btn-success px-4 rounded-pill" onclick="completeAppointment(${item.id})">Hoàn thành</button>
 								</c:if>
 							</div>
 
@@ -94,4 +97,56 @@
 					</div>
 				</div>
 			</c:forEach>
+			
+			<script>
+				function cancelAppointment(id) {
+					if (confirm('Bạn có chắc chắn muốn hủy lịch khám này không?')) {
+						fetch('${ctx}/appointment/cancel', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/x-www-form-urlencoded',
+							},
+							body: 'id=' + id
+						})
+						.then(response => response.json())
+						.then(data => {
+							if (data.status === 'SUCCESS') {
+								alert(data.message);
+								window.location.reload();
+							} else {
+								alert(data.message || 'Hủy lịch thất bại');
+							}
+						})
+						.catch(error => {
+							console.error('Error:', error);
+							alert('Có lỗi xảy ra khi hủy lịch.');
+						});
+					}
+				}
+				
+				function completeAppointment(id) {
+					if (confirm('Bạn có chắc chắn muốn hoàn thành phiếu khám này?')) {
+						fetch('${ctx}/appointment/complete', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/x-www-form-urlencoded',
+							},
+							body: 'id=' + id
+						})
+						.then(response => response.json())
+						.then(data => {
+							if (data.status === 'SUCCESS') {
+								alert(data.message);
+								window.location.reload();
+							} else {
+								alert(data.message || 'Cập nhật thất bại');
+							}
+						})
+						.catch(error => {
+							console.error('Error:', error);
+							alert('Có lỗi xảy ra khi cập nhật.');
+						});
+					}
+				}
+			</script>
 		</c:if>

@@ -44,7 +44,9 @@ public class DoctorServiceImpl implements DoctorService {
 	}
 	
 
-	
-	
-	
+	@Override
+	public Doctor getByUser(com.dhakcare.entity.User user) {
+		return dao.findByUser(user);
+	}
+
 }

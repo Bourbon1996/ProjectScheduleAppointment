@@ -65,11 +65,26 @@ public class DoctorscheduleslotsDAOImpl extends GenericDAOImpl<DoctorScheduleSlo
 	        e.printStackTrace();
 	        return Collections.emptyList();
 	    } finally {
-	        
 	        if (em != null && em.isOpen()) {
 	            em.close();
 	        }
 	    }
+	}
+	public List<DoctorScheduleSlot> findByDoctorUser(com.dhakcare.entity.User user) {
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "SELECT s FROM DoctorScheduleSlot s WHERE s.doctor.user.id = :userId ORDER BY s.workDate DESC, s.startTime ASC";
+			var query = em.createQuery(jpql, DoctorScheduleSlot.class);
+			query.setParameter("userId", user.getId());
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		} finally {
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
 	}
 
 }

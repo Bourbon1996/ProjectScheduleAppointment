@@ -35,7 +35,6 @@ public class UserDAOImpl extends GenericDAOImpl<User> implements UserDAO {
 	    	 return users.get(0);
     	} catch (Exception e){
     		e.printStackTrace();
-			em.getTransaction().rollback();
 			return null;
 			
 		} finally {
@@ -62,7 +61,6 @@ public class UserDAOImpl extends GenericDAOImpl<User> implements UserDAO {
 	    	 return users.get(0);
     	} catch (Exception e){
     		e.printStackTrace();
-			em.getTransaction().rollback();
 			return null;
 			
 		} finally {
@@ -80,7 +78,6 @@ public class UserDAOImpl extends GenericDAOImpl<User> implements UserDAO {
 			return query.getSingleResult();
 		} catch (Exception e){
     		e.printStackTrace();
-			em.getTransaction().rollback();
 			return 0L;
 			
 		} finally {

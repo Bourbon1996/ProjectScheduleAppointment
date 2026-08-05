@@ -124,16 +124,30 @@ public class AuthServlet extends HttpServlet {
 		XAuth.setUser(user);
 		
 		if (XAuth.isAdmin()) {
-			XPath.redirect("/admin/dashboard");// neu la admin se dua ve dasboard
+			XPath.redirect("/admin/dashboard");
 			return;
 		}
 		
-		if(XAuth.backToSavedUrl()) { //dang nhap thanh cong tra ve URL da luu 
+		if (XAuth.isDoctor()) {
+			XPath.redirect("/doctor-portal");
 			return;
 		}
+		
+		String savedUrl = (String) XAttr.getSession("saved-url");
+		if (savedUrl != null && !savedUrl.isBlank()) {
+			XAttr.removeSession("saved-url");
+			if (!savedUrl.contains("forgot-password") && 
+			    !savedUrl.contains("login") && 
+			    !savedUrl.contains("register")) {
+				XPath.redirect(savedUrl);
+				return;
+			}
+		}
 	
-	    if (referer != null && !referer.isEmpty()) {
-
+	    if (referer != null && !referer.isEmpty() && 
+	        !referer.contains("forgot-password") && 
+	        !referer.contains("login") && 
+	        !referer.contains("register")) {
 	    	XPath.redirect(referer);
 	    } else {
 	        XPath.redirect("/home/index");

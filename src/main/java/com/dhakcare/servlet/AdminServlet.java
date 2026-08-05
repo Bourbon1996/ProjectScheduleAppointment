@@ -32,6 +32,8 @@ public class AdminServlet extends HttpServlet {
 	
 	private DoctorService doctorService = new DoctorServiceImpl();
 	private DepartmentService departmentService = new DepartmentServiceImpl();
+	private com.dhakcare.service.AppointmentService appointmentService = new com.dhakcare.service.impl.AppointmentServiceImpl();
+	private com.dhakcare.service.PaymentService paymentService = new com.dhakcare.service.impl.PaymentServiceImpl();
 	
        
     /**
@@ -69,6 +71,19 @@ public class AdminServlet extends HttpServlet {
 			request.setAttribute("totalDoctor", doctorService.getTotalDoctor());
 			request.setAttribute("totalPatient", patientService.getTotalPatient());
 			request.setAttribute("totalDepartment", departmentService.getTotalDepartment());
+			
+			// Analytics data
+			int currentYear = java.time.LocalDate.now().getYear();
+			java.util.List<java.math.BigDecimal> monthlyRevenue = paymentService.getMonthlyRevenue(currentYear);
+			request.setAttribute("monthlyRevenue", monthlyRevenue);
+			request.setAttribute("currentYear", currentYear);
+			
+			java.util.List<Object[]> topDepartments = appointmentService.getTopDepartments(5);
+			request.setAttribute("topDepartments", topDepartments);
+			
+			java.util.List<Object[]> topDoctors = appointmentService.getTopDoctors(5);
+			request.setAttribute("topDoctors", topDoctors);
+			
 			request.getRequestDispatcher("/admin/views/dashboard.jsp").forward(request, response);
 		}
 	}

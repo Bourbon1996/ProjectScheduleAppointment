@@ -55,26 +55,43 @@ public class PaymentServiceImpl implements PaymentService{
 			
 			trans.begin();
 
-		    Payment payment = dao.findByTransactionCode(txnRef);
+			// Tìm payment bằng chính EM này (thay vì gọi DAO riêng)
+			String jpql = "SELECT p FROM Payment p WHERE p.transactionCode = :txnRef";
+			Payment payment = em.createQuery(jpql, Payment.class)
+			        .setParameter("txnRef", txnRef)
+			        .getResultStream()
+			        .findFirst()
+			        .orElse(null);
 		    
 		    if (payment != null) {
 		       
 		        payment.setStatus(TransactionStatus.SUCCESS); 
 		        payment.setPaidAt(LocalDateTime.now()); 
 		        
-		        
 		        Appointment appointment = payment.getAppointment();
 		        if (appointment != null) {
 		            appointment.setPaymentStatus(PaymentStatus.PAID); 
 		            appointment.setStatus(AppointmentStatus.CONFIRMED); 
-		            
-		            appointmentsDAO.update(appointment);
+		            // Không cần gọi merge vì appointment đã managed trong EM này
+
+		            // Send Email and WebSocket Notification
+		            com.dhakcare.utils.XMail.sendBookingSuccess(appointment);
+		            if (appointment.getDoctor() != null) {
+		            	com.dhakcare.websocket.NotificationWebSocket.sendNotification(
+		            			appointment.getDoctor().getId(), 
+		            			"{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Bạn có một lịch hẹn mới!\"}");
+		            }
 		        }
 	
-		        dao.update(payment);
+		        // Không cần gọi merge cho payment vì nó cũng đã managed
 		        
-		        Long totalAppointments = appointmentsDAO.count();
-		        BigDecimal totalRevenue = dao.calculateTotal();
+		        // Đếm tổng trong cùng EM
+		        Long totalAppointments = em.createQuery(
+		                "SELECT COUNT(a) FROM Appointment a", Long.class)
+		                .getSingleResult();
+		        BigDecimal totalRevenue = em.createQuery(
+		                "SELECT COALESCE(SUM(p.amount), 0) FROM Payment p WHERE p.status = 'SUCCESS'", BigDecimal.class)
+		                .getSingleResult();
 		        
 		        trans.commit();
 
@@ -82,15 +99,24 @@ public class PaymentServiceImpl implements PaymentService{
 		        statsData.put("totalAppointments", totalAppointments);
 		        statsData.put("totalRevenue", totalRevenue);
 	
-		      
 		        AdminDashboardWS.broadcast(WsEventType.PAYMENT_SUCCESS, statsData);
+		    } else {
+		        trans.commit(); // Không tìm thấy payment, commit rỗng
 		    }
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
-			trans.rollback();
+			if (trans != null && trans.isActive()) {
+				trans.rollback();
+			}
 		} finally {
-			em.close();
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
 		}
+	}
+
+	@Override
+	public java.util.List<BigDecimal> getMonthlyRevenue(int year) {
+		return dao.getMonthlyRevenue(year);
 	}
 }

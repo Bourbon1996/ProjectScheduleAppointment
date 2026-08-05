@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dhakcare.dto.CalendarDay;
 import com.dhakcare.dto.MonthCalendar;
@@ -30,6 +32,7 @@ import com.dhakcare.utils.VNPayUtil;
 import com.dhakcare.utils.XAuth;
 import com.dhakcare.utils.XParam;
 import com.dhakcare.utils.XPath;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -45,8 +48,9 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet({
 	"/appointment",
 	"/appointment/create",
-	"/appointment/history"
-	
+	"/appointment/history",
+	"/appointment/cancel",
+	"/appointment/complete"
 })
 @MultipartConfig
 public class AppointmentsServlet extends HttpServlet {
@@ -57,6 +61,7 @@ public class AppointmentsServlet extends HttpServlet {
 	private DoctorService doctorservice = new DoctorServiceImpl();
 	private AppointmentService appointmentService = new AppointmentServiceImpl();
 	private PaymentService paymentService = new PaymentServiceImpl();
+	private final ObjectMapper objectMapper = new ObjectMapper();
     /**
      * Default constructor. 
      */
@@ -183,7 +188,10 @@ public class AppointmentsServlet extends HttpServlet {
 	           
 	            User loggedInUser = XAuth.getUser();
 	            if (loggedInUser == null) {
-	                response.getWriter().write("{\"status\":\"ERROR\", \"message\":\"Vui lòng đăng nhập lại!\"}");
+	                Map<String, Object> errMap = new HashMap<>();
+	                errMap.put("status", "ERROR");
+	                errMap.put("message", "Vui lòng đăng nhập lại!");
+	                response.getWriter().write(objectMapper.writeValueAsString(errMap));
 	                return;
 	            }
 
@@ -200,23 +208,66 @@ public class AppointmentsServlet extends HttpServlet {
 	            paymentService.createPayment(appointment, finalPrice, paymentMethod, txnRef);
 
 	            
+	            Map<String, Object> jsonMap = new HashMap<>();
 	            if ("VNPAY".equals(paymentMethod)) {
 	               
 	                double amountDouble = finalPrice.doubleValue();
 	                String paymentUrl = VNPayUtil.createPaymentUrl(amountDouble, txnRef, request);
 
-	                String jsonResponse = "{\"status\":\"VNPAY\", \"redirectUrl\":\"" + paymentUrl + "\"}";
-	                response.getWriter().write(jsonResponse);
-
+	                jsonMap.put("status", "VNPAY");
+	                jsonMap.put("redirectUrl", paymentUrl);
 	            } else {
+	                jsonMap.put("status", "SUCCESS");
+	                jsonMap.put("appointmentId", newAppointmentId);
 	                
-	                String jsonResponse = "{\"status\":\"SUCCESS\", \"appointmentId\":" + newAppointmentId + "}";
-	                response.getWriter().write(jsonResponse);
+	                // Send Email and WebSocket Notification since no VNPAY callback will happen
+	                com.dhakcare.utils.XMail.sendBookingSuccess(appointment);
+	                if (appointment.getDoctor() != null) {
+	                	com.dhakcare.websocket.NotificationWebSocket.sendNotification(
+	                			appointment.getDoctor().getId(), 
+	                			"{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Bạn có một lịch hẹn mới!\"}");
+	                }
 	            }
+	            response.getWriter().write(objectMapper.writeValueAsString(jsonMap));
 
 	        } catch (Exception e) {
 	            e.printStackTrace();
-	            response.getWriter().write("{\"status\":\"ERROR\", \"message\":\"" + e.getMessage() + "\"}");
+	            Map<String, Object> errMap = new HashMap<>();
+	            errMap.put("status", "ERROR");
+	            errMap.put("message", "Đã xảy ra lỗi khi đặt lịch. Vui lòng thử lại.");
+	            response.getWriter().write(objectMapper.writeValueAsString(errMap));
+	        }
+	    } else if (XPath.is("/appointment/cancel")) {
+	        try {
+	            Long id = XParam.getLong("id");
+	            boolean success = appointmentService.cancelAppointment(id);
+	            Map<String, Object> res = new HashMap<>();
+	            if (success) {
+	                res.put("status", "SUCCESS");
+	                res.put("message", "Đã hủy lịch thành công.");
+	            } else {
+	                res.put("status", "ERROR");
+	                res.put("message", "Hủy lịch thất bại.");
+	            }
+	            response.getWriter().write(objectMapper.writeValueAsString(res));
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    } else if (XPath.is("/appointment/complete")) {
+	        try {
+	            Long id = XParam.getLong("id");
+	            boolean success = appointmentService.completeAppointment(id);
+	            Map<String, Object> res = new HashMap<>();
+	            if (success) {
+	                res.put("status", "SUCCESS");
+	                res.put("message", "Đã cập nhật trạng thái hoàn thành.");
+	            } else {
+	                res.put("status", "ERROR");
+	                res.put("message", "Cập nhật thất bại.");
+	            }
+	            response.getWriter().write(objectMapper.writeValueAsString(res));
+	        } catch (Exception e) {
+	            e.printStackTrace();
 	        }
 	    }
 	}

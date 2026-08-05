@@ -11,6 +11,8 @@ public interface DoctorscheduleslotsDAO extends GenericDAO<DoctorScheduleSlot> {
 	public boolean deleteByDoctorId(String id);
 	
 	public List<DoctorScheduleSlot> findSlotsByDoctorAndDate(String id, LocalDate workDate);
+	
+	public List<DoctorScheduleSlot> findByDoctorUser(com.dhakcare.entity.User user);
 
 
 }

@@ -106,64 +106,97 @@
                       method="post"
                       id="forgotPasswordForm">
 
-                    <!-- Email -->
-                    <div class="auth-form-group">
+                    <!-- Lưu trữ step hiện tại để gửi về server -->
+                    <input type="hidden" name="step" value="${empty step ? 'send_otp' : step}">
 
-                        <label for="forgotEmail">
+                    <c:choose>
+                        <c:when test="${step == 'verify_otp'}">
+                            <!-- Bước 2: Xác nhận OTP -->
+                            <div class="auth-form-group">
+                                <label for="forgotEmail">Email nhận OTP</label>
+                                <div class="auth-field-wrapper">
+                                    <i class="bi bi-envelope auth-field-icon"></i>
+                                    <input type="email" id="forgotEmail" name="email" value="<c:out value='${email}'/>" readonly class="form-control" style="background-color: #f8f9fa;">
+                                </div>
+                            </div>
 
-                            Địa chỉ email
-                            <span class="auth-required">*</span>
+                            <div class="auth-form-group mt-3">
+                                <label for="otp">Nhập mã OTP (6 số) <span class="auth-required">*</span></label>
+                                <div class="auth-field-wrapper">
+                                    <i class="bi bi-key auth-field-icon"></i>
+                                    <input type="text" id="otp" name="otp" placeholder="Nhập mã OTP từ email" maxlength="6" required>
+                                </div>
+                            </div>
+                            
+                            <div class="forgot-password-note mt-2">
+                                <i class="bi bi-info-circle"></i>
+                                <span>Mã OTP có hiệu lực trong 5 phút. Vui lòng kiểm tra hộp thư rác nếu không thấy.</span>
+                            </div>
 
-                        </label>
+                            <button type="submit" class="auth-submit-button auth-register-submit mt-3">
+                                <i class="bi bi-check-circle-fill"></i> Xác nhận OTP
+                            </button>
+                        </c:when>
 
-                        <div class="auth-field-wrapper">
+                        <c:when test="${step == 'reset_password'}">
+                            <!-- Bước 3: Đổi mật khẩu -->
+                            <div class="auth-form-group">
+                                <label for="forgotEmail">Tài khoản</label>
+                                <div class="auth-field-wrapper">
+                                    <i class="bi bi-envelope auth-field-icon"></i>
+                                    <input type="email" id="forgotEmail" name="email" value="<c:out value='${email}'/>" readonly class="form-control" style="background-color: #f8f9fa;">
+                                </div>
+                            </div>
 
-                            <i class="bi bi-envelope auth-field-icon"></i>
+                            <div class="auth-form-group mt-3">
+                                <label for="newPassword">Mật khẩu mới <span class="auth-required">*</span></label>
+                                <div class="auth-field-wrapper">
+                                    <i class="bi bi-lock auth-field-icon"></i>
+                                    <input type="password" id="newPassword" name="newPassword" placeholder="Nhập mật khẩu mới" minlength="6" required>
+                                </div>
+                            </div>
 
-                            <input type="email"
-                                   id="forgotEmail"
-                                   name="email"
-                                   value="<c:out value='${email}'/>"
-                                   placeholder="Nhập địa chỉ email đã đăng ký"
-                                   maxlength="100"
-                                   autocomplete="email"
-                                   required>
+                            <div class="auth-form-group mt-3">
+                                <label for="confirmPassword">Xác nhận mật khẩu <span class="auth-required">*</span></label>
+                                <div class="auth-field-wrapper">
+                                    <i class="bi bi-shield-lock auth-field-icon"></i>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Nhập lại mật khẩu mới" minlength="6" required>
+                                </div>
+                            </div>
 
-                        </div>
+                            <button type="submit" class="auth-submit-button auth-register-submit mt-3">
+                                <i class="bi bi-shield-check"></i> Đổi mật khẩu
+                            </button>
+                        </c:when>
 
-                    </div>
+                        <c:otherwise>
+                            <!-- Bước 1: Gửi OTP (Mặc định) -->
+                            <!-- Email -->
+                            <div class="auth-form-group">
+                                <label for="forgotEmail">Địa chỉ email <span class="auth-required">*</span></label>
+                                <div class="auth-field-wrapper">
+                                    <i class="bi bi-envelope auth-field-icon"></i>
+                                    <input type="email" id="forgotEmail" name="email" value="<c:out value='${email}'/>" placeholder="Nhập địa chỉ email đã đăng ký" maxlength="100" autocomplete="email" required>
+                                </div>
+                            </div>
 
-                    <!-- Ghi chú -->
-                    <div class="forgot-password-note">
+                            <!-- Ghi chú -->
+                            <div class="forgot-password-note">
+                                <i class="bi bi-info-circle"></i>
+                                <span>Hệ thống sẽ gửi mã xác thực (OTP) đến địa chỉ email của bạn.</span>
+                            </div>
 
-                        <i class="bi bi-info-circle"></i>
-
-                        <span>
-                            Hệ thống sẽ gửi thông tin khôi phục
-                            đến địa chỉ email của bạn.
-                        </span>
-
-                    </div>
-
-                    <!-- Nút gửi -->
-                    <button type="submit"
-                            class="auth-submit-button auth-register-submit">
-
-                        <i class="bi bi-send-fill"></i>
-                        Gửi đến email
-
-                    </button>
+                            <!-- Nút gửi -->
+                            <button type="submit" class="auth-submit-button auth-register-submit">
+                                <i class="bi bi-send-fill"></i> Gửi mã OTP
+                            </button>
+                        </c:otherwise>
+                    </c:choose>
 
                     <!-- Mở lại popup đăng nhập -->
-                    <p class="auth-register-text auth-register-footer">
-
+                    <p class="auth-register-text auth-register-footer mt-3">
                         Đã nhớ mật khẩu?
-
-                        <a href="#"
-                           id="openLoginFromForgot">
-                            Quay lại đăng nhập
-                        </a>
-
+                        <a href="#" id="openLoginFromForgot">Quay lại đăng nhập</a>
                     </p>
 
                 </form>

@@ -24,9 +24,31 @@ public class DoctorScheduleSlotServiceImpl implements DoctorScheduleSlotService 
 	}
 
 	@Override
+	public List<DoctorScheduleSlot> findByDoctorUser(com.dhakcare.entity.User user) {
+		return dao.findByDoctorUser(user);
+	}
+
+	@Override
 	public DoctorScheduleSlot getById(String id) {
-		// TODO Auto-generated method stub
-		return dao.findById(id);
+		try {
+			return dao.findById(Long.parseLong(id));
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean createSlot(DoctorScheduleSlot slot) {
+		return dao.create(slot);
+	}
+
+	@Override
+	public boolean deleteSlot(String id) {
+		try {
+			return dao.delete(Long.parseLong(id));
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

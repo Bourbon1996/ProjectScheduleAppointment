@@ -175,6 +175,66 @@
 	
 	        </section>
 	
+	        <!-- Analytics Section -->
+	        <section class="row g-4 mt-1">
+	            <div class="col-xl-8">
+	                <div class="dashboard-panel">
+	                    <div class="panel-header">
+	                        <div>
+	                            <h3>Biểu đồ Doanh thu (Năm ${currentYear})</h3>
+	                        </div>
+	                    </div>
+	                    <div style="height: 400px; padding: 20px;">
+	                        <canvas id="revenueChart"></canvas>
+	                    </div>
+	                </div>
+	            </div>
+	            
+	            <div class="col-xl-4">
+	                <div class="dashboard-panel">
+	                    <div class="panel-header">
+	                        <div>
+	                            <h3>Top Chuyên Khoa</h3>
+	                        </div>
+	                    </div>
+	                    <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead><tr><th>Khoa</th><th>Lượt khám</th></tr></thead>
+                                <tbody>
+                                <c:forEach var="item" items="${topDepartments}">
+                                    <tr>
+                                        <td>${item[0].name}</td>
+                                        <td><strong>${item[1]}</strong></td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+	                </div>
+	                
+                    <div class="dashboard-panel mt-4">
+	                    <div class="panel-header">
+	                        <div>
+	                            <h3>Top Bác sĩ</h3>
+	                        </div>
+	                    </div>
+	                    <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead><tr><th>Bác sĩ</th><th>Lượt khám</th></tr></thead>
+                                <tbody>
+                                <c:forEach var="item" items="${topDoctors}">
+                                    <tr>
+                                        <td>BS. ${item[0].user.fullName}</td>
+                                        <td><strong>${item[1]}</strong></td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+	                </div>
+	            </div>
+	        </section>
+	
 	        <!-- Nội dung phía dưới -->
 	        <section class="row g-4 mt-1">
 	
@@ -419,10 +479,54 @@
 	</main>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <script >
+    <script>
     	const CTX = "${ctx}";
-    </script>]
-    <script type="text/javascript" src = "${ctx}/assets/js/admin/dashboard.js"></script>
+        
+        // Render Revenue Chart
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctxChart = document.getElementById('revenueChart');
+            if (ctxChart) {
+                var monthlyRevenueData = ${monthlyRevenue != null ? monthlyRevenue : '[]'};
+                
+                new Chart(ctxChart, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                        datasets: [{
+                            label: 'Doanh thu (VNĐ)',
+                            data: monthlyRevenueData,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <script type="text/javascript" src="${ctx}/assets/js/admin/dashboard.js"></script>
 </body>
 </html>

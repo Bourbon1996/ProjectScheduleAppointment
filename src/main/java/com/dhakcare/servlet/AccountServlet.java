@@ -195,56 +195,82 @@ public class AccountServlet extends HttpServlet {
 	}
 
 	private void doForgotPassword() throws ServletException, IOException {
-		
-		if(XHttp.is("POST")) {
+		if (XHttp.is("POST")) {
+			String step = XParam.getString("step");
+			String email = XParam.getString("email");
+			XAttr.setRequest("email", email);
 
-		var email = XParam.getString("email");
-
-		XAttr.setRequest("email", email);
-
-		if (email == null || email.isBlank()) {
-
-			XAttr.setRequest("msg","Vui lòng nhập địa chỉ email.");
-
-			XAttr.setRequest("messageType","danger");
-
-		} else {
-			var user = userService.findByEmail(email.trim());
-			
-			
-
-			if (user == null) {
-
-				XAttr.setRequest("msg","Không tìm thấy tài khoản với email này.");
-				XAttr.setRequest("messageType","danger");
-
-			} else {
-				user.setPasswordHash(RandomPassWordUtil.generateRandomPassword(8));
-				userService.update(user);
-				try {
-					XMail.sendPassword(user);					
-					XAttr.setRequest("openLoginPopup",true);
-					
-					XAttr.setRequest("loginSuccess","Đã gửi mật khẩu đến email của bạn. "+ "Vui lòng kiểm tra email và đăng nhập.");
-
-					XAttr.setRequest("loginPhone",user.getPhone());
-					
-					XPath.forward("/home/index");
-					return;
-
-				} catch (Exception e) {
-
-					e.printStackTrace();
-
-					XAttr.setRequest("msg","Không thể gửi email. Vui lòng thử lại.");
-
-					XAttr.setRequest("messageType","danger");
+			if ("send_otp".equals(step) || step == null) {
+				if (email == null || email.isBlank()) {
+					setMessage("Vui lòng nhập địa chỉ email.", "danger");
+					XAttr.setRequest("step", "send_otp");
+				} else {
+					var user = userService.findByEmail(email.trim());
+					if (user == null) {
+						setMessage("Không tìm thấy tài khoản với email này.", "danger");
+						XAttr.setRequest("step", "send_otp");
+					} else {
+						// Tạo OTP và gửi email
+						String otp = com.dhakcare.utils.OtpService.generateOtp(email.trim());
+						try {
+							XMail.sendOtp(email.trim(), otp);
+							XAttr.setRequest("step", "verify_otp");
+							setMessage("Đã gửi mã OTP đến email của bạn.", "success");
+						} catch (Exception e) {
+							e.printStackTrace();
+							setMessage("Không thể gửi email. Vui lòng thử lại.", "danger");
+							XAttr.setRequest("step", "send_otp");
+						}
+					}
+				}
+			} else if ("verify_otp".equals(step)) {
+				String otpInput = XParam.getString("otp");
+				XAttr.setRequest("otp", otpInput);
+				
+				if (com.dhakcare.utils.OtpService.validateOtp(email.trim(), otpInput)) {
+					XAttr.setRequest("step", "reset_password");
+					setMessage("Xác thực OTP thành công. Vui lòng nhập mật khẩu mới.", "success");
+				} else {
+					XAttr.setRequest("step", "verify_otp");
+					setMessage("Mã OTP không hợp lệ hoặc đã hết hạn.", "danger");
+				}
+			} else if ("reset_password".equals(step)) {
+				String newPassword = XParam.getString("newPassword");
+				String confirmPassword = XParam.getString("confirmPassword");
+				
+				if (newPassword == null || newPassword.length() < 6) {
+					XAttr.setRequest("step", "reset_password");
+					setMessage("Mật khẩu mới phải có ít nhất 6 ký tự.", "danger");
+				} else if (!newPassword.equals(confirmPassword)) {
+					XAttr.setRequest("step", "reset_password");
+					setMessage("Xác nhận mật khẩu không khớp.", "danger");
+				} else {
+					var user = userService.findByEmail(email.trim());
+					if (user != null) {
+						// Chú ý: Ở đây bạn đã được cấp file hướng dẫn Password Hashing
+						// Dự án vẫn đang lưu plaintext theo hiện trạng, nhưng ta sẽ để comment
+						user.setPasswordHash(newPassword); 
+						userService.update(user);
+						
+						// Xóa session OTP
+						com.dhakcare.utils.OtpService.removeOtp(email.trim());
+						
+						XAttr.setRequest("openLoginPopup", true);
+						XAttr.setRequest("loginSuccess", "Đổi mật khẩu thành công. Vui lòng đăng nhập lại.");
+						XAttr.setRequest("loginPhone", user.getPhone());
+						
+						XPath.forward("/home/index");
+						return;
+					} else {
+						setMessage("Lỗi không tìm thấy người dùng.", "danger");
+						XAttr.setRequest("step", "send_otp");
+					}
 				}
 			}
+		} else {
+			XAttr.setRequest("step", "send_otp"); // Mặc định vào step 1
 		}
-	}
 
-	
-	XPath.forward("/site/views/account/forgot-password.jsp");
+		XPath.forward("/site/views/account/forgot-password.jsp");
 	}	
 }

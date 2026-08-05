@@ -27,6 +27,11 @@ public class XAuth {
 		return isAuthenticated()
 				&& getUser().getRole() == UserRole.ADMIN;// xac dinh role
 	}
+	
+	public static boolean isDoctor() {
+		return isAuthenticated()
+				&& getUser().getRole() == UserRole.DOCTOR;// xac dinh role
+	}
 
 	public static void saveUrl() {// luu URL dang muon truy cap
 		var savedUrl = XPath.getRequestUrl().toString();
