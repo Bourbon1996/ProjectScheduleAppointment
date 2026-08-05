@@ -70,6 +70,10 @@
 
 			<li class="nav-item"><a class="nav-link" href="${ctx}/home/doctor">Bác
 					sĩ</a></li>
+					
+			<c:if test="${not empty sessionScope.user}">
+				<li class="nav-item"><a class="nav-link" href="${ctx}/appointment/history"> Lịch sử đặt lịch</a></li>
+			</c:if>
 
 			<li class="nav-item dropdown mega-dropdown"><a
 				class="nav-link dropdown-toggle-custom" href="#" role="button"
@@ -112,9 +116,6 @@
 						</div>
 					</div>
 				</div></li>
-
-			<li class="nav-item"><a class="nav-link" href="#">Hỗ trợ
-					người bệnh</a></li>
 
 			<li class="nav-item ms-auto"><a
 				class="nav-link appointment-link" href="${ctx}/appointment"> Đặt

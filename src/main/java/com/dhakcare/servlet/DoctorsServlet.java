@@ -50,7 +50,7 @@ public class DoctorsServlet extends HttpServlet {
 	            
 	            try {
 
-	                Doctor doctor = doctorservice.getById(idStr);
+	                Doctor doctor = doctorservice.getById(Long.parseLong(idStr));
 
 	                if (doctor != null) {
 	                    request.setAttribute("doctor", doctor);
@@ -71,7 +71,7 @@ public class DoctorsServlet extends HttpServlet {
 	    	
 	    	appointmentService.deleteByDoctorId(id);
 	    	slotService.deleteByDoctorId(id);
-	    	doctorservice.deleteById(id);
+	    	doctorservice.deleteById(Long.parseLong(id));
 	    	
 	    	response.sendRedirect(request.getContextPath()+"/admin/doctor");
 	    	return;

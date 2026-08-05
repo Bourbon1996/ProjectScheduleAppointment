@@ -48,9 +48,16 @@ public class AuthServlet extends HttpServlet {
     		
     		
     		String referer = request.getHeader("Referer");
+    		
+    		
 
     	    if (referer != null && !referer.isEmpty()) {
-
+    	    	
+    	    	if(referer.contains("/admin")) {
+        			XPath.redirect("/home/index");
+        			return;
+        		}
+    	    	
     	    	response.sendRedirect(referer);
     	    	return;
     	    } else {

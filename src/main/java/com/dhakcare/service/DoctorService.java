@@ -6,8 +6,8 @@ import com.dhakcare.entity.Doctor;
 
 public interface DoctorService {
 	public List<Doctor> getAll();
-	public Doctor getById(String id);
-	public boolean deleteById(String id);
+	public Doctor getById(Long id);
+	public boolean deleteById(Long id);
 	public Long getTotalDoctor();
 	public boolean removeDepartmentByDepartmentId(String id);
 	public List<Doctor> getDoctorbyDeptId(String id);

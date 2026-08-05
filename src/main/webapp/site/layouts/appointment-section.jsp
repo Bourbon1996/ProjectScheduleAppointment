@@ -294,15 +294,14 @@
 			
 			</div>
 		
-		    <!-- Form chính thức để Submit về Servlet -->
+		    
 		    <form action="${ctx}/appointment/create" method="POST" id="realSubmitForm">
-		        <!-- 🔥 SỬA LẠI ID THẺ HIDDEN CHO KHỚP 100% VỚI JAVASCRIPT 🔥 -->
+		        
 		        <input type="hidden" name="patientId" id="hidden-patient-id">
 		        <input type="hidden" name="examDate" id="hidden-date">
 		        <input type="hidden" name="departmentId" id="hidden-dept">
 		        <input type="hidden" name="slotId" id="hidden-slot">
 		        <input type="hidden" name="doctorId" id="hidden-doc">
-		        <input type="hidden" name="UserId" value = "${SessionScope.user.id}">
 		        <input type="hidden" name="paymentMethod" id="hidden-payment-method" value="VNPAY">
 		
 		        <div class="d-flex justify-content-between">
@@ -310,7 +309,7 @@
 		                <i class="bi bi-arrow-left me-1"></i> Quay lại
 		            </button>
 		            
-		            <!-- Khi làm thật bấm nút này nên đổi thành type="submit" hoặc gọi form.submit() để gửi về Servlet nhé -->
+		           
 		            <button type="button" class="btn btn-primary px-5 fw-bold" id="btn-final-submit" onclick="submitBookingForm()">
 			            Thanh toán VNPAY <i class="bi bi-credit-card ms-1"></i>
 			        </button>
@@ -329,10 +328,10 @@
                 Mã phiếu khám của bạn là <strong class="text-primary">#UMC-2026-9823</strong>. Vui lòng đến trước giờ hẹn 15 phút để làm thủ tục.
             </p>
             <div class="d-flex justify-content-center gap-3">
-                <a href="${ctx}/" class="btn btn-outline-primary px-4">
+                <a href="${ctx}/home/index" class="btn btn-outline-primary px-4">
                     <i class="bi bi-house me-1"></i> Về trang chủ
                 </a>
-                <a href="${ctx}/lich-su-kham" class="btn btn-primary px-4">
+                <a href="${ctx}/appointment/history" class="btn btn-primary px-4">
                     Xem lịch sử khám <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
@@ -341,3 +340,20 @@
     </div>
     </div>
 <script src="${ctx}/assets/js/client/appointment-flow.js"></script>
+
+<c:if test="${isPaymentSuccess}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 1. Điền mã giao dịch/mã phiếu khám vào Bước 4
+            const codeEl = document.querySelector("#step-pane-4 .text-primary");
+            if (codeEl) {
+                codeEl.textContent = "#UMC-2026-${txnCode}";
+            }
+            
+            // 2. Ép hệ thống chuyển giao diện thẳng sang Bước 4 mượt mà
+            if (typeof goToStep === 'function') {
+                goToStep(4);
+            }
+        });
+    </script>
+</c:if>
