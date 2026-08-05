@@ -744,5 +744,61 @@ header {
     background-color: #f0f8ff !important;
     color: var(--text-color);
 }
+
+/* =========================
+   RESPONSIVE HEADER MOBILE
+========================= */
+
+@media (max-width: 767px) {
+
+    .hospital-navbar {
+        padding: 8px 12px;
+    }
+
+    .nav-logo {
+        height: 40px;
+    }
+
+    .hospital-navbar .navbar-collapse {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .hospital-navbar .navbar-nav {
+        width: 100%;
+    }
+
+    .hospital-navbar .nav-item {
+        width: 100%;
+        height: auto;
+    }
+
+    .hospital-navbar .nav-link {
+        width: 100%;
+        min-height: 44px;
+
+        padding: 10px 12px;
+
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .appointment-link {
+        width: 100%;
+
+        margin: 10px 0 !important;
+
+        justify-content: center;
+    }
+
+    .navbar-icon {
+        width: 42px !important;
+        height: 42px !important;
+        min-height: 42px !important;
+
+        margin: 8px 8px 8px 0 !important;
+    }
+}
+
 /* END FOOTER */
 
