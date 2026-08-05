@@ -1,9 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     
-    const ctx = "${ctx}";
     const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-    const wsUrl = protocol + window.location.host + ctx + "/ws/admin-dashboard";
+    const wsUrl = protocol + window.location.host + CTX + "/ws/admin-dashboard";
     
     let socket = new WebSocket(wsUrl);
 

@@ -419,6 +419,10 @@
 	</main>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src = "/assets/js/admin/dashboard.js"></script>
+    
+    <script >
+    	const CTX = "${ctx}";
+    </script>]
+    <script type="text/javascript" src = "${ctx}/assets/js/admin/dashboard.js"></script>
 </body>
 </html>
