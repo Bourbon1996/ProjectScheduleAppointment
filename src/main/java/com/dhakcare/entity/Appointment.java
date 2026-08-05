@@ -1,8 +1,6 @@
 package com.dhakcare.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import com.dhakcare.enums.AppointmentStatus;
 import com.dhakcare.enums.PaymentStatus;

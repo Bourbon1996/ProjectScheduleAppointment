@@ -61,7 +61,7 @@ html {
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    color: #fff;
+    color: #fff !important;
     font-size: 18px;
     font-weight: 700;
 }

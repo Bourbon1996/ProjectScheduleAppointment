@@ -9,7 +9,6 @@ public interface DoctorDAO extends GenericDAO<Doctor>{
 
 
 	public Long countTotalDoctor();
-	public boolean deleteById(String Id);
 	public boolean removeDepartmentByDepartmentId(String id);
 	public List<Doctor> finDoctorbyDeptId(String id);
 

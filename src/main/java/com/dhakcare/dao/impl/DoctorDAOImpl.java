@@ -34,31 +34,6 @@ public class DoctorDAOImpl extends GenericDAOImpl<Doctor> implements DoctorDAO{
 		}
 	}
 
-	@Override
-	public boolean deleteById(String id) {
-		EntityManager em = JpaUtil.getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-
-		String jpql = "DELETE FROM Doctor d WHERE d.id = :doctorId";
-		try {
-			transaction.begin();
-			
-			var query = em.createQuery(jpql);
-			query.setParameter("doctorId", Long.parseLong(id));
-			int result = query.executeUpdate();
-			
-			transaction.commit();
-			
-			return result >= 0;
-			
-		} catch (Exception e){
-			e.printStackTrace();
-			transaction.rollback();
-			return false;
-		} finally {
-			em.close();
-		}
-	}
 
 	@Override
 	public boolean removeDepartmentByDepartmentId(String id) {

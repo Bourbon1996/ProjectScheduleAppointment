@@ -11,18 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dateInput.valueAsDate = tomorrow;
     }
 	
-	const targetPane = document.getElementById("stepper-1");
-	if(targetPane.classList.contains('completed')){
-		const modalDateEl = document.getElementById('modalDate');
-							    
-			if (modalDateEl) {
-							        
-				const modalDate = bootstrap.Modal.getOrCreateInstance(modalDateEl);
-				modalDate.show();
-			}
-	}
-	
-	
 });
 
 
@@ -147,7 +135,7 @@ function goToStep(stepNumber) {
 
         stepItem.classList.remove('active', 'completed');
 
-        if (i < stepNumber) {
+        if (i <= stepNumber) {
             stepItem.classList.add('completed');
             stepItem.querySelector('.step-icon').innerHTML = '<i class="bi bi-check-lg"></i>';
         } else if (i === stepNumber) {
@@ -200,30 +188,33 @@ function updatePaymentMethod(method) {
 }
 
 function submitBookingForm() {
+    
+    const patientId = document.getElementById("hidden-patient-id").value;
+    const deptId = document.getElementById("hidden-dept").value;
+    const slotId = document.getElementById("hidden-slot").value;
+    const doctorId = document.getElementById("hidden-doc").value;
+
+    console.log(patientId)
+	console.log(deptId)
+	console.log(slotId)
+	console.log(doctorId)
+
     const form = document.getElementById("realSubmitForm");
     const formData = new FormData(form);
 
-    // Gửi dữ liệu ngầm bằng fetch API (AJAX)
+    // Tiến hành fetch như bình thường...
     fetch(form.action, {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json()) // Nhận dữ liệu dạng JSON từ Servlet trả về
+    .then(response => response.json())
     .then(data => {
         if (data.status === 'VNPAY') {
-            // Trường hợp 1: Chọn VNPAY -> Lấy link rồi đá sang trang VNPay
             window.location.href = data.redirectUrl;
-            
         } else if (data.status === 'SUCCESS') {
-            // Trường hợp 2: Chọn Tiền mặt -> Điền mã phiếu khám rồi nhảy thẳng sang Bước 4
-            const codeEl = document.querySelector("#step-pane-4 .text-primary"); // Chỗ hiển thị mã phiếu
-            if(codeEl) {
-                codeEl.textContent = "#UMC-2026-" + data.appointmentId;
-            }
-            
-            // Chuyển giao diện sang bước 4 mượt mà không reload trang
+            const codeEl = document.querySelector("#step-pane-4 .text-primary");
+            if(codeEl) codeEl.textContent = "#UMC-2026-" + data.appointmentId;
             goToStep(4);
-            
         } else {
             alert("⚠️ Lỗi: " + (data.message || "Không thể tạo lịch khám!"));
         }
