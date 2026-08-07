@@ -1,4 +1,4 @@
-package com.dhakcare.ws;
+package com.dhakcare.websocket;
 
 import com.dhakcare.dto.WsMessage;
 import com.dhakcare.enums.WsEventType;

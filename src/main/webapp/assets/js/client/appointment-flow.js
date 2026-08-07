@@ -18,24 +18,44 @@ function openSpecificModal(modalType) {
         modal.show();
     } 
     else if (modalType === 'dept') {
-        
-        if (!bookingData.dateValue) {
-            alert("Vui lòng chọn ngày khám trước!");
-            openSpecificModal('date');
-            return;
-        }
         const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDept'));
         modal.show();
     } 
     else if (modalType === 'doctor') {
-        if (!bookingData.deptId) {
-            alert("Vui lòng chọn chuyên khoa trước!");
-            openSpecificModal('dept');
-            return;
+        if (!bookingData.dateValue || !bookingData.deptId) {
+            // Nếu chưa chọn ngày hoặc khoa, mở modal chọn bác sĩ chung
+            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalOnlyDoctor')); 
+            modal.show();
+        } else {
+            // Nếu đã chọn ngày và khoa, gọi API lấy giờ khám rồi mới mở modal
+            fetch('/scheduleappointment/api/get-doctors?deptId=' + bookingData.deptId + '&workdate=' + bookingData.dateValue)
+                .then(response => response.text())
+                .then(htmlString => {
+                    const modalSlotBody = document.querySelector("#modalDoctor .modal-body");
+                    modalSlotBody.innerHTML = htmlString;
+                    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDoctor')); 
+                    modal.show();
+                });
         }
-        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalDoctor')); 
-        modal.show();
     }
+}
+
+function selectOnlyDoctor(id, fullName, deptId, deptName, fee) {
+    bookingData.doctorId = id;
+    bookingData.doctorName = fullName;
+    bookingData.deptId = deptId;
+    bookingData.deptName = deptName;
+    bookingData.price = fee;
+
+    document.getElementById("input-display-doctor").value = fullName;
+    document.getElementById("input-display-dept").value = deptName;
+
+    let price = document.querySelector("#display-total-price");
+    let priceFmt = parseFloat(fee);
+    price.textContent = priceFmt.toLocaleString('vi-VN') + " đồng";
+
+    const modalInstance = bootstrap.Modal.getInstance(document.getElementById('modalOnlyDoctor'));
+    if (modalInstance) modalInstance.hide();
 }
 
 function changeModal(hideModalId, showModalId) {
@@ -63,7 +83,9 @@ function selectDate(dateVal, dateStr) {
 	
 	document.querySelector("#input-display-date").value = dateStr;
 	    
-    changeModal('modalDate', 'modalDept');
+    const hideEl = document.getElementById('modalDate');
+    const hideInstance = bootstrap.Modal.getInstance(hideEl);
+    if (hideInstance) hideInstance.hide();
 }
 
 function selectDept(id, name, priceStr) {
@@ -77,21 +99,9 @@ function selectDept(id, name, priceStr) {
     let priceFmt = parseFloat(priceStr);
     price.textContent = priceFmt.toLocaleString('vi-VN') + " đồng";
 	
-    const dateVal = bookingData.dateValue; 
-    
-    fetch('/scheduleappointment/api/get-doctors?deptId=' + id + '&workdate=' + dateVal)
-        .then(response => response.text())
-        .then(htmlString => {
-            
-            const modalSlotBody = document.querySelector("#modalDoctor .modal-body");
-            modalSlotBody.innerHTML = htmlString;
-
-            changeModal('modalDept', 'modalDoctor');
-        })
-        .catch(error => {
-            console.error("Lỗi:", error);
-            alert("Lỗi mạng, không tải được danh sách bác sĩ!");
-        });
+    const hideEl = document.getElementById('modalDept');
+    const hideInstance = bootstrap.Modal.getInstance(hideEl);
+    if (hideInstance) hideInstance.hide();
 }
 
 function selectTimeSlot(slotId, docId, docName, timeStr, fee) {
@@ -135,7 +145,7 @@ function updateMainForm() {
     setHidden("hidden-doc", bookingData.doctorId);
     setHidden("hidden-slot", bookingData.slotId);
 
-    document.getElementById("btn-next-step2").disabled = false;
+    document.getElementById("btn-next-step1").disabled = false;
 }
 
 function backToDateModal() {

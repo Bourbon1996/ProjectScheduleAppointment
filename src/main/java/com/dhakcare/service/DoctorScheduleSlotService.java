@@ -11,5 +11,6 @@ public interface DoctorScheduleSlotService {
 	public List<DoctorScheduleSlot> findByDoctorUser(com.dhakcare.entity.User user);
 	public DoctorScheduleSlot getById(String id);
 	public boolean createSlot(DoctorScheduleSlot slot);
+	public boolean updateSlot(DoctorScheduleSlot slot);
 	public boolean deleteSlot(String id);
 }

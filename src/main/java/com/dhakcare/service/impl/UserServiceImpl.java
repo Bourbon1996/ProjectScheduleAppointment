@@ -12,7 +12,7 @@ import com.dhakcare.enums.UserRole;
 import com.dhakcare.enums.UserStatus;
 import com.dhakcare.enums.WsEventType;
 import com.dhakcare.service.UserService;
-import com.dhakcare.ws.AdminDashboardWS;
+import com.dhakcare.websocket.AdminDashboardWS;
 
 
 public class UserServiceImpl implements UserService {

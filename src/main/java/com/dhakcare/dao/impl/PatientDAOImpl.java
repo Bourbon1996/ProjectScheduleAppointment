@@ -25,6 +25,13 @@ public class PatientDAOImpl extends GenericDAOImpl<Patient> implements PatientsD
         
         try {
             trans.begin();
+            
+            if (patient.getUser() != null && patient.getUser().getId() != null) {
+            	// Attach the user to this EntityManager context
+            	com.dhakcare.entity.User managedUser = em.getReference(com.dhakcare.entity.User.class, patient.getUser().getId());
+            	patient.setUser(managedUser);
+            }
+            
             em.persist(patient); 
             trans.commit();
             return true;

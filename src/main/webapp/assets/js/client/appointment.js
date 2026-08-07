@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-function selectProfileFromDB(element, id, fullName, phone, dob, gender, bhyt, relationship) {
+function selectProfileFromDB(element, id, fullName, phone, dob, gender, bhyt, relationship, isFullProfile) {
 
     document.querySelectorAll('.profile-card').forEach(card => {
         card.classList.remove('selected');
@@ -34,19 +34,31 @@ function selectProfileFromDB(element, id, fullName, phone, dob, gender, bhyt, re
         dob: dob,
         gender: gender,
         bhyt: bhyt,
-        relationship: relationship
+        relationship: relationship,
+        isFullProfile: isFullProfile
     };
 	
 
-    const nextBtn = document.getElementById("btn-next-step1");
+    const nextBtn = document.getElementById("btn-next-step2");
     if (nextBtn) nextBtn.disabled = false;
 }
 
+function validateAndGoToStep2() {
+    const date = document.getElementById("input-display-date").value;
+    const time = document.getElementById("input-display-time").value;
+    const deptSelect = document.getElementById("input-display-dept").value;
+
+    if (!date || !deptSelect || !time ) {
+        alert("⚠️ Vui lòng chọn đầy đủ Ngày khám, Chuyên khoa và Giờ khám!");
+        return;
+    }
+    goToStep(2);
+}
 
 function validateAndGoToStep3() {
     if (!selectedPatientData) {
-        alert("⚠️ Vui lòng chọn 1 hồ sơ bệnh nhân ở Bước 1 trước khi tiếp tục!");
-        goToStep(1);
+        alert("⚠️ Vui lòng chọn 1 hồ sơ bệnh nhân ở Bước 2 trước khi tiếp tục!");
+        goToStep(2);
         return;
     }
 
@@ -62,7 +74,13 @@ function validateAndGoToStep3() {
     
     // --> Thông tin bệnh nhân
     document.getElementById("conf-patient-name").textContent = selectedPatientData.fullName;
-    document.getElementById("conf-patient-dob").textContent = `${formatDate(selectedPatientData.dob)} (${selectedPatientData.gender})`;
+    
+    if (selectedPatientData.isFullProfile) {
+        document.getElementById("conf-patient-dob").textContent = `${formatDate(selectedPatientData.dob)} (${selectedPatientData.gender})`;
+    } else {
+        document.getElementById("conf-patient-dob").textContent = "Hồ sơ đặt lịch nhanh";
+    }
+    
     document.getElementById("conf-patient-phone").textContent = selectedPatientData.phone;
     document.getElementById("conf-patient-bhyt").textContent = (selectedPatientData.bhyt && selectedPatientData.bhyt !== 'null') 
         ? selectedPatientData.bhyt 
@@ -81,6 +99,29 @@ function validateAndGoToStep3() {
 	
 	console.log(bookingData);
 	console.log(selectedPatientData);
+    
+    // Xử lý VNPAY restriction
+    const vnpayRadio = document.getElementById("pay-vnpay");
+    const vnpayLabel = document.querySelector('label[for="pay-vnpay"]');
+    const cashRadio = document.getElementById("pay-cash");
+    const quickProfileWarning = document.getElementById("quick-profile-warning");
+    
+    if (vnpayRadio && cashRadio) {
+        if (!selectedPatientData.isFullProfile) {
+            vnpayRadio.disabled = true;
+            vnpayRadio.checked = false;
+            cashRadio.checked = true;
+            updatePaymentMethod('CASH');
+            
+            if (vnpayLabel) vnpayLabel.classList.add('text-muted');
+            if (quickProfileWarning) quickProfileWarning.classList.remove('d-none');
+        } else {
+            vnpayRadio.disabled = false;
+            if (vnpayLabel) vnpayLabel.classList.remove('text-muted');
+            if (quickProfileWarning) quickProfileWarning.classList.add('d-none');
+        }
+    }
+
     goToStep(3);
 }
 
@@ -89,40 +130,6 @@ function goToStep(stepNumber) {
     document.querySelectorAll('.step-pane').forEach(pane => {
         pane.classList.remove('active');
     });
-	
-    if (stepNumber === 2) {
-        if (lastConfirmedPatientId !== null && lastConfirmedPatientId !== selectedPatientData.id) {
-            
-            // 1. Xóa sạch dữ liệu hiển thị trên màn hình
-            document.querySelector("#input-display-date").value = "";
-            document.querySelector("#input-display-dept").value = "";
-            document.querySelector("#input-display-time").value = "";
-            document.querySelector("#input-display-doctor").value = "";
-            
-            const totalPriceEl = document.getElementById("display-total-price");
-            if (totalPriceEl) totalPriceEl.textContent = "";
-
-            document.querySelectorAll(".check-status-icon").forEach(icon => {
-                icon.classList.add("d-none");
-            });
-
-            const btnNextStep2 = document.getElementById("btn-next-step2");
-            if (btnNextStep2) btnNextStep2.disabled = true;
-
-            if (typeof bookingData !== 'undefined') {
-                bookingData.dateValue = "";       
-                bookingData.dateDisplay = "";     
-                bookingData.deptId = "";          
-                bookingData.deptName = "";        
-                bookingData.doctorId = "";        
-                bookingData.doctorName = "";      
-                bookingData.timeSlot = "";        
-                bookingData.price = "";
-            }
-        }
-        
-        lastConfirmedPatientId = selectedPatientData.id;
-    }
 
     const targetPane = document.getElementById(`step-pane-${stepNumber}`);
     if (targetPane) {

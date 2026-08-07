@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     
-                    <a href="${ctx}/appointment/${doctor.id}" class="btn-custom btn-primary-custom w-100 mt-4">
+                    <a href="${ctx}/appointment?doctorId=${doctor.id}" class="btn-custom btn-primary-custom w-100 mt-4">
                         Đặt lịch khám ngay <i class="bi bi-calendar-check ms-1"></i>
                     </a>
                 </div>

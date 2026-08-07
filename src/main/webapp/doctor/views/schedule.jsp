@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>Doctor Portal - Quản lý Giờ rảnh</title>
 <%@ include file="/admin/shared/page-admin.jsp" %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body class="bg-light">
 	<%@ include file="/doctor/shared/header.jsp" %>
@@ -32,80 +33,91 @@
 				<c:remove var="error" scope="session"/>
 			</c:if>
 
-			<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-				<div class="card-body p-0">
-					<div class="table-responsive">
-						<table class="table table-hover align-middle mb-0">
-							<thead class="bg-light text-secondary text-uppercase fs-7">
-								<tr>
-									<th class="ps-4">Ngày làm việc</th>
-									<th>Khung giờ</th>
-									<th>Số bệnh nhân tối đa</th>
-									<th>Đã đặt</th>
-									<th>Trạng thái</th>
-									<th class="text-end pe-4">Thao tác</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:choose>
-									<c:when test="${not empty slotList}">
-										<c:forEach var="item" items="${slotList}">
-											<tr>
-												<td class="ps-4 fw-bold text-dark">${item.workDate}</td>
-												<td>
-													<span class="badge bg-light text-primary border px-2 py-1">${item.startTime} - ${item.endTime}</span>
-												</td>
-												<td>${item.maxPatients} người</td>
-												<td>
-													<span class="${item.bookedCount >= item.maxPatients ? 'text-danger fw-bold' : 'text-success fw-bold'}">
-														${item.bookedCount} / ${item.maxPatients}
-													</span>
-												</td>
-												<td>
-													<c:choose>
-														<c:when test="${item.status == 'AVAILABLE'}">
-															<span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">Còn trống</span>
-														</c:when>
-														<c:otherwise>
-															<span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">Đã kín</span>
-														</c:otherwise>
-													</c:choose>
-												</td>
-												<td class="text-end pe-4">
-													<c:if test="${item.bookedCount == 0}">
-														<form action="${doc}/schedule/delete" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa khung giờ này?');">
-															<input type="hidden" name="id" value="${item.id}">
-															<button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-																<i class="bi bi-trash"></i> Xóa
-															</button>
-														</form>
-													</c:if>
-													<c:if test="${item.bookedCount > 0}">
-														<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" disabled title="Đã có bệnh nhân đặt, không thể xóa">
-															<i class="bi bi-lock"></i> Khóa
-														</button>
-													</c:if>
-												</td>
-											</tr>
-										</c:forEach>
-									</c:when>
-									<c:otherwise>
-										<tr>
-											<td colspan="6" class="text-center py-5">
-												<div class="py-4">
-													<i class="bi bi-calendar-x display-5 text-muted opacity-50 d-block mb-3"></i>
-													<h5 class="text-secondary fw-semibold">Bạn chưa có lịch rảnh nào</h5>
-													<p class="text-muted">Hãy nhấn "Thêm Khung giờ" để bắt đầu nhận bệnh nhân.</p>
+			<c:choose>
+				<c:when test="${not empty groupedSlots}">
+					<div class="row g-4">
+						<c:forEach var="entry" items="${groupedSlots}">
+							<c:set var="workDate" value="${entry.key}" />
+							<c:set var="daySlots" value="${entry.value}" />
+							
+							<div class="col-12">
+								<div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+									<div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+										<h5 class="fw-bold text-primary mb-0">
+											<i class="bi bi-calendar-event me-2"></i>Ngày: 
+											<fmt:parseDate value="${workDate}" pattern="yyyy-MM-dd" var="parsedWorkDate" type="date" />
+											<fmt:formatDate value="${parsedWorkDate}" pattern="dd-MM-yyyy" />
+										</h5>
+									</div>
+									<div class="card-body">
+										<div class="d-flex flex-wrap gap-3">
+											<c:forEach var="item" items="${daySlots}">
+												<c:set var="isFull" value="${item.status == 'FULL'}" />
+												<c:set var="isClosed" value="${item.status == 'CLOSED'}" />
+												<!-- Prevent division by zero just in case -->
+												<c:set var="maxPatients" value="${item.maxPatients > 0 ? item.maxPatients : 1}" />
+												<c:set var="percentage" value="${(item.bookedCount / maxPatients) * 100}" />
+												
+												<div class="position-relative" style="min-width: 170px;">
+													<!-- Khung giờ (Pill) -->
+													<div class="border rounded-4 p-3 text-center ${isClosed ? 'bg-light text-muted border-light' : (isFull ? 'bg-danger-subtle border-danger-subtle text-danger' : 'bg-white shadow-sm border-primary-subtle')}">
+														<div class="fw-bold fs-6 mb-1">${item.startTime} - ${item.endTime}</div>
+														<div class="small fw-semibold ${isClosed ? 'text-muted' : (isFull ? 'text-danger' : 'text-success')}">
+															<c:choose>
+																<c:when test="${isClosed}">Đã nghỉ / Hủy ca</c:when>
+																<c:when test="${isFull}">Đã kín chỗ</c:when>
+																<c:otherwise>${item.bookedCount} / ${item.maxPatients} bệnh nhân</c:otherwise>
+															</c:choose>
+														</div>
+														
+														<!-- Progress bar mini -->
+														<c:if test="${!isClosed}">
+															<div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+															  <div class="progress-bar ${isFull ? 'bg-danger' : (percentage > 70 ? 'bg-warning' : 'bg-success')}" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+															</div>
+														</c:if>
+														
+														<!-- Thao tác hover (Delete/Close) -->
+														<div class="mt-3 d-flex justify-content-center gap-2">
+															<c:if test="${!isClosed}">
+																<c:if test="${item.bookedCount == 0}">
+																	<form action="${ctx}/doctor-portal/schedule/delete" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa khung giờ này?');">
+																		<input type="hidden" name="id" value="${item.id}">
+																		<button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3" title="Xóa">
+																			<i class="bi bi-trash"></i> Xóa
+																		</button>
+																	</form>
+																</c:if>
+																<c:if test="${item.bookedCount > 0}">
+																	<form action="${ctx}/doctor-portal/schedule/close" method="POST" class="d-inline" onsubmit="return confirm('CẢNH BÁO: Đã có bệnh nhân đặt lịch! Nếu XIN NGHỈ, hệ thống sẽ tự động HỦY toàn bộ lịch hẹn và gửi Email. Tiếp tục?');">
+																		<input type="hidden" name="id" value="${item.id}">
+																		<button type="submit" class="btn btn-sm btn-outline-warning rounded-pill px-3" title="Xin nghỉ ca khám">
+																			<i class="bi bi-x-octagon"></i> Nghỉ
+																		</button>
+																	</form>
+																</c:if>
+															</c:if>
+														</div>
+													</div>
 												</div>
-											</td>
-										</tr>
-									</c:otherwise>
-								</c:choose>
-							</tbody>
-						</table>
+											</c:forEach>
+										</div>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
 					</div>
-				</div>
-			</div>
+				</c:when>
+				<c:otherwise>
+					<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+						<div class="card-body text-center py-5">
+							<i class="bi bi-calendar-x display-5 text-muted opacity-50 d-block mb-3"></i>
+							<h5 class="text-secondary fw-semibold">Bạn chưa có lịch rảnh nào</h5>
+							<p class="text-muted">Hãy nhấn "Thêm Khung giờ" để bắt đầu nhận bệnh nhân.</p>
+						</div>
+					</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</main>
 
@@ -113,7 +125,7 @@
 	<div class="modal fade" id="addSlotModal" tabindex="-1" aria-labelledby="addSlotModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-lg">
 			<div class="modal-content border-0 shadow rounded-4">
-				<form action="${doc}/schedule/add" method="POST">
+				<form action="${ctx}/doctor-portal/schedule/add" method="POST" id="addScheduleForm">
 					<div class="modal-header border-bottom-0 pt-4 px-4 pb-0">
 						<h5 class="modal-title fw-bold text-dark" id="addSlotModalLabel">Thêm Khung Giờ Rảnh</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -121,57 +133,100 @@
 					<div class="modal-body px-4 py-4">
 						<div class="row mb-4">
 							<div class="col-md-6 mb-3 mb-md-0">
-								<label class="form-label fw-semibold text-secondary">Ngày làm việc <span class="text-danger">*</span></label>
-								<input type="date" class="form-control rounded-3" name="workDate" required>
+								<label class="form-label fw-semibold text-secondary">Ngày bắt đầu áp dụng <span class="text-danger">*</span></label>
+								<div class="input-group">
+									<span class="input-group-text bg-white"><i class="bi bi-calendar3"></i></span>
+									<input type="text" class="form-control" id="workDateInput" name="workDate" placeholder="Chọn ngày" required>
+								</div>
 							</div>
 							<div class="col-md-6">
 								<label class="form-label fw-semibold text-secondary">Lặp lại lịch <span class="text-danger">*</span></label>
-								<div class="d-flex flex-column gap-2 mt-2">
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="recurrence" id="recurDay" value="DAY" checked>
-										<label class="form-check-label" for="recurDay">Chỉ áp dụng cho ngày đã chọn</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="recurrence" id="recurWeek" value="WEEK">
-										<label class="form-check-label" for="recurWeek">Áp dụng cho tất cả các ngày trong tuần (T2-CN)</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="recurrence" id="recurMonth" value="MONTH">
-										<label class="form-check-label" for="recurMonth">Áp dụng cho tất cả các ngày trong tháng</label>
-									</div>
+								
+								<div class="btn-group w-100 mb-2" role="group">
+									<input type="radio" class="btn-check" name="recurrence" id="recurDay" value="DAY" autocomplete="off" checked>
+									<label class="btn btn-outline-primary" for="recurDay">Ngày</label>
+									
+									<input type="radio" class="btn-check" name="recurrence" id="recurWeek" value="WEEK" autocomplete="off">
+									<label class="btn btn-outline-primary" for="recurWeek">Tuần</label>
+									
+									<input type="radio" class="btn-check" name="recurrence" id="recurMonth" value="MONTH" autocomplete="off">
+									<label class="btn btn-outline-primary" for="recurMonth">Tháng</label>
 								</div>
+								
+								<div id="weekdaySelector" class="d-none mt-2">
+									<div class="d-flex flex-wrap gap-1">
+										<c:forEach var="day" items="T2,T3,T4,T5,T6,T7,CN" varStatus="st">
+											<c:set var="val" value="${st.index + 1}" />
+											<!-- Backend uses 1=Mon, 2=Tue... 7=Sun based on java.time.DayOfWeek -->
+											<input type="checkbox" class="btn-check weekday-checkbox" name="recurDays" id="day${val}" value="${val}">
+											<label class="btn btn-sm btn-outline-secondary rounded-pill" for="day${val}">${day}</label>
+										</c:forEach>
+									</div>
+									<small class="text-muted mt-1 d-block"><i class="bi bi-info-circle me-1"></i>Chọn các thứ trong tuần để lặp lại</small>
+								</div>
+								
 							</div>
 						</div>
 						
 						<div class="mb-4">
 							<label class="form-label fw-semibold text-secondary d-flex justify-content-between">
 								<span>Khung giờ làm việc <span class="text-danger">*</span></span>
-								<div class="form-check m-0">
-									<input class="form-check-input" type="checkbox" id="selectAllTimes">
-									<label class="form-check-label text-primary" style="cursor:pointer;" for="selectAllTimes">Chọn tất cả</label>
-								</div>
 							</label>
-							<div class="row g-2">
-								<c:forEach var="h" begin="6" end="19">
-									<c:set var="startHour" value="${h < 10 ? '0' : ''}${h}:00" />
-									<c:set var="endHour" value="${(h+1) < 10 ? '0' : ''}${h+1}:00" />
-									<div class="col-4 col-sm-3 col-md-2">
-										<input type="checkbox" class="btn-check time-slot-checkbox" name="timeSlots" id="timeSlot_${h}" value="${startHour}-${endHour}">
-										<label class="btn btn-outline-primary w-100 py-2 fs-7" for="timeSlot_${h}">${startHour} - ${endHour}</label>
+							
+							<div class="row g-3">
+								<!-- Ca Sáng -->
+								<div class="col-md-6">
+									<div class="d-flex justify-content-between align-items-center mb-2">
+										<h6 class="fw-bold text-dark m-0"><i class="bi bi-brightness-alt-high text-warning me-1"></i>Ca Sáng</h6>
+										<button type="button" class="btn btn-sm btn-light text-primary fw-semibold rounded-pill px-3" onclick="selectAll('MORNING')">Chọn tất cả</button>
 									</div>
-								</c:forEach>
+									<div class="row g-2">
+										<c:forEach var="h" begin="6" end="11">
+											<c:set var="startHour" value="${h < 10 ? '0' : ''}${h}:00" />
+											<c:set var="endHour" value="${(h+1) < 10 ? '0' : ''}${h+1}:00" />
+											<div class="col-6 col-sm-4">
+												<input type="checkbox" class="btn-check time-slot-checkbox ts-morning" name="timeSlots" id="timeSlot_${h}" value="${startHour}-${endHour}">
+												<label class="btn btn-outline-primary w-100 py-1 fs-7 rounded-pill" for="timeSlot_${h}">${startHour} - ${endHour}</label>
+											</div>
+										</c:forEach>
+									</div>
+								</div>
+								
+								<!-- Ca Chiều -->
+								<div class="col-md-6">
+									<div class="d-flex justify-content-between align-items-center mb-2">
+										<h6 class="fw-bold text-dark m-0"><i class="bi bi-moon-stars text-info me-1"></i>Ca Chiều/Tối</h6>
+										<button type="button" class="btn btn-sm btn-light text-primary fw-semibold rounded-pill px-3" onclick="selectAll('AFTERNOON')">Chọn tất cả</button>
+									</div>
+									<div class="row g-2">
+										<c:forEach var="h" begin="12" end="19">
+											<c:set var="startHour" value="${h < 10 ? '0' : ''}${h}:00" />
+											<c:set var="endHour" value="${(h+1) < 10 ? '0' : ''}${h+1}:00" />
+											<div class="col-6 col-sm-4">
+												<input type="checkbox" class="btn-check time-slot-checkbox ts-afternoon" name="timeSlots" id="timeSlot_${h}" value="${startHour}-${endHour}">
+												<label class="btn btn-outline-primary w-100 py-1 fs-7 rounded-pill" for="timeSlot_${h}">${startHour} - ${endHour}</label>
+											</div>
+										</c:forEach>
+									</div>
+								</div>
 							</div>
 						</div>
 
 						<div class="mb-3">
-							<label class="form-label fw-semibold text-secondary">Số lượng bệnh nhân tối đa mỗi khung giờ <span class="text-danger">*</span></label>
-							<input type="number" class="form-control rounded-3" name="maxPatients" min="1" max="50" value="10" required>
-					
+							<label class="form-label fw-semibold text-secondary">Số lượng bệnh nhân tối đa / ca <span class="text-danger">*</span></label>
+							<div class="d-flex align-items-center gap-2">
+								<button type="button" class="btn btn-outline-secondary rounded-circle" style="width:36px;height:36px;" onclick="stepPatients(-1)"><i class="bi bi-dash"></i></button>
+								<input type="number" class="form-control text-center fw-bold text-primary fs-5 bg-light border-0" id="maxPatientsInput" name="maxPatients" min="1" max="50" value="10" style="width: 80px;" readonly>
+								<button type="button" class="btn btn-outline-secondary rounded-circle" style="width:36px;height:36px;" onclick="stepPatients(1)"><i class="bi bi-plus"></i></button>
+							</div>
 						</div>
 					</div>
-					<div class="modal-footer border-top-0 pb-4 px-4">
-						<button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
-						<button type="submit" class="btn btn-success rounded-pill px-4">Lưu khung giờ</button>
+					<div class="modal-footer border-top-0 pb-4 px-4 d-flex justify-content-between align-items-center">
+						<div id="visualFeedback" class="text-success fw-semibold small"></div>
+						<div>
+							<button type="button" class="btn btn-light rounded-pill px-4 me-2" data-bs-dismiss="modal">Hủy</button>
+							<button type="submit" class="btn btn-success rounded-pill px-4">Lưu khung giờ</button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -179,11 +234,88 @@
 	</div>
 	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 	<script>
-		document.getElementById('selectAllTimes').addEventListener('change', function() {
-			var checkboxes = document.querySelectorAll('.time-slot-checkbox');
-			checkboxes.forEach(cb => cb.checked = this.checked);
+		// Init Flatpickr
+		flatpickr("#workDateInput", {
+			dateFormat: "Y-m-d",
+			altInput: true,
+			altFormat: "d-m-Y",
+			mode: "range",
+			minDate: "today",
+			defaultDate: "today",
+			onChange: updateFeedback
 		});
+
+		// Stepper Logic
+		function stepPatients(step) {
+			const input = document.getElementById('maxPatientsInput');
+			let val = parseInt(input.value) || 0;
+			val += step;
+			if (val < 1) val = 1;
+			if (val > 50) val = 50;
+			input.value = val;
+		}
+
+		// Segmented Control Logic
+		const recurrenceRadios = document.querySelectorAll('input[name="recurrence"]');
+		const weekdaySelector = document.getElementById('weekdaySelector');
+		
+		recurrenceRadios.forEach(r => {
+			r.addEventListener('change', (e) => {
+				if (e.target.value === 'DAY') {
+					weekdaySelector.classList.add('d-none');
+				} else {
+					weekdaySelector.classList.remove('d-none');
+				}
+				updateFeedback();
+			});
+		});
+
+		// Select All Time Slots Logic
+		function selectAll(type) {
+			const selector = type === 'MORNING' ? '.ts-morning' : '.ts-afternoon';
+			const checkboxes = document.querySelectorAll(selector);
+			const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+			checkboxes.forEach(cb => cb.checked = !allChecked);
+			updateFeedback();
+		}
+
+		// Feedback Logic
+		const timeSlots = document.querySelectorAll('.time-slot-checkbox');
+		const weekdayCheckboxes = document.querySelectorAll('.weekday-checkbox');
+		
+		timeSlots.forEach(cb => cb.addEventListener('change', updateFeedback));
+		weekdayCheckboxes.forEach(cb => cb.addEventListener('change', updateFeedback));
+
+		function updateFeedback() {
+			const slotsSelected = document.querySelectorAll('.time-slot-checkbox:checked').length;
+			const recurType = document.querySelector('input[name="recurrence"]:checked').value;
+			const daysSelected = document.querySelectorAll('.weekday-checkbox:checked').length;
+			
+			const fb = document.getElementById('visualFeedback');
+			if (slotsSelected === 0) {
+				fb.textContent = 'Vui lòng chọn ít nhất 1 khung giờ';
+				fb.className = 'text-danger fw-semibold small';
+				return;
+			}
+			
+			let text = '';
+			if (recurType === 'DAY') {
+				text = 'Sẽ tạo ' + slotsSelected + ' khung giờ cho 1 ngày.';
+			} else if (recurType === 'WEEK') {
+				if (daysSelected === 0) text = 'Vui lòng chọn ngày trong tuần.';
+				else text = 'Sẽ tạo ' + slotsSelected + ' khung giờ/ngày x ' + daysSelected + ' ngày = ' + (slotsSelected * daysSelected) + ' slot (Mỗi tuần).';
+			} else if (recurType === 'MONTH') {
+				if (daysSelected === 0) text = 'Vui lòng chọn ngày trong tuần.';
+				else text = 'Sẽ tạo ' + slotsSelected + ' khung giờ cho các thứ đã chọn trong tháng.';
+			}
+			
+			fb.textContent = text;
+			fb.className = (daysSelected === 0 && recurType !== 'DAY') ? 'text-danger fw-semibold small' : 'text-success fw-semibold small';
+		}
+		
+		updateFeedback();
 	</script>
 </body>
 </html>

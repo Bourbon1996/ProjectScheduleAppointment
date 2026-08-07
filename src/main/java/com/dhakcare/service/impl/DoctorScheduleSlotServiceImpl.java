@@ -43,6 +43,11 @@ public class DoctorScheduleSlotServiceImpl implements DoctorScheduleSlotService 
 	}
 
 	@Override
+	public boolean updateSlot(DoctorScheduleSlot slot) {
+		return dao.update(slot) != null;
+	}
+
+	@Override
 	public boolean deleteSlot(String id) {
 		try {
 			return dao.delete(Long.parseLong(id));

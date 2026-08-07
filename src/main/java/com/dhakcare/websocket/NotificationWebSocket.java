@@ -12,21 +12,33 @@ import jakarta.websocket.Session;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 
-@ServerEndpoint("/ws/notifications/{doctorId}")
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.Set;
+
+@ServerEndpoint("/ws/notifications/{role}/{userId}")
 public class NotificationWebSocket {
 
     private static final Map<Long, Session> connectedDoctors = new ConcurrentHashMap<>();
+    private static final Set<Session> connectedAdmins = new CopyOnWriteArraySet<>();
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("doctorId") Long doctorId) {
-        connectedDoctors.put(doctorId, session);
-        System.out.println("Doctor " + doctorId + " connected to WebSocket. Total connections: " + connectedDoctors.size());
+    public void onOpen(Session session, @PathParam("role") String role, @PathParam("userId") Long userId) {
+        if ("doctor".equalsIgnoreCase(role)) {
+            connectedDoctors.put(userId, session);
+            System.out.println("Doctor " + userId + " connected. Total doctors: " + connectedDoctors.size());
+        } else if ("admin".equalsIgnoreCase(role)) {
+            connectedAdmins.add(session);
+            System.out.println("Admin connected. Total admins: " + connectedAdmins.size());
+        }
     }
 
     @OnClose
-    public void onClose(Session session, @PathParam("doctorId") Long doctorId) {
-        connectedDoctors.remove(doctorId);
-        System.out.println("Doctor " + doctorId + " disconnected from WebSocket.");
+    public void onClose(Session session, @PathParam("role") String role, @PathParam("userId") Long userId) {
+        if ("doctor".equalsIgnoreCase(role)) {
+            connectedDoctors.remove(userId);
+        } else if ("admin".equalsIgnoreCase(role)) {
+            connectedAdmins.remove(session);
+        }
     }
 
     @OnError
@@ -36,22 +48,28 @@ public class NotificationWebSocket {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        // We probably don't need to handle incoming messages from the doctor for now.
+        // Not used
     }
 
-    /**
-     * Sends a notification to a specific doctor.
-     * @param doctorId the doctor's ID
-     * @param message the JSON message to send
-     */
-    public static void sendNotification(Long doctorId, String message) {
+    public static void sendToDoctor(Long doctorId, String message) {
         Session session = connectedDoctors.get(doctorId);
         if (session != null && session.isOpen()) {
             try {
                 session.getBasicRemote().sendText(message);
             } catch (IOException e) {
-                System.err.println("Failed to send WebSocket message to doctor " + doctorId);
                 e.printStackTrace();
+            }
+        }
+    }
+
+    public static void sendToAdmins(String message) {
+        for (Session session : connectedAdmins) {
+            if (session.isOpen()) {
+                try {
+                    session.getBasicRemote().sendText(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

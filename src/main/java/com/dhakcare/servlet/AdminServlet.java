@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class AdminServlet
  */
-@WebServlet({"/admin/dashboard", "/admin/doctor", "/admin/user", "/admin/department"})
+@WebServlet({"/admin/dashboard", "/admin/doctor", "/admin/user", "/admin/department", "/admin/appointment", "/admin/patient"})
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService userService = new UserServiceImpl();
@@ -66,6 +66,32 @@ public class AdminServlet extends HttpServlet {
 			List<User> listUser = userService.findAll();
 			request.setAttribute("listAccount", listUser);
 			request.getRequestDispatcher("/admin/views/user-manager.jsp").forward(request, response);
+		}else if(path.contains("/appointment")) {
+			List<com.dhakcare.entity.Appointment> listApt = appointmentService.findAll();
+			String search = request.getParameter("search");
+			String status = request.getParameter("status");
+			
+			if (search != null && !search.isBlank()) {
+			    String s = search.toLowerCase();
+			    listApt.removeIf(a -> !((a.getId() + "").contains(s) || a.getPatient().getFullName().toLowerCase().contains(s) || a.getPatient().getPhone().contains(s)));
+			}
+			if (status != null && !status.isBlank()) {
+			    listApt.removeIf(a -> !a.getStatus().name().equals(status));
+			}
+			
+			request.setAttribute("listAppointments", listApt);
+			request.getRequestDispatcher("/admin/views/appointment-manager.jsp").forward(request, response);
+		}else if(path.contains("/patient")) {
+			List<com.dhakcare.entity.Patient> listPatient = patientService.findAll();
+			String search = request.getParameter("search");
+			
+			if (search != null && !search.isBlank()) {
+			    String s = search.toLowerCase();
+			    listPatient.removeIf(p -> !(p.getFullName().toLowerCase().contains(s) || p.getPhone().contains(s)));
+			}
+			
+			request.setAttribute("listPatients", listPatient);
+			request.getRequestDispatcher("/admin/views/patient-manager.jsp").forward(request, response);
 		}else if(path.contains("/dashboard")) {
 			request.setAttribute("totalUser", userService.getTotalUser());
 			request.setAttribute("totalDoctor", doctorService.getTotalDoctor());
@@ -83,6 +109,12 @@ public class AdminServlet extends HttpServlet {
 			
 			java.util.List<Object[]> topDoctors = appointmentService.getTopDoctors(5);
 			request.setAttribute("topDoctors", topDoctors);
+			
+			List<com.dhakcare.entity.Appointment> allAppointments = appointmentService.findAll();
+			if (allAppointments.size() > 5) {
+			    allAppointments = allAppointments.subList(0, 5);
+			}
+			request.setAttribute("latestAppointments", allAppointments);
 			
 			request.getRequestDispatcher("/admin/views/dashboard.jsp").forward(request, response);
 		}

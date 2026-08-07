@@ -54,6 +54,18 @@
                         Quản lý Bác Sĩ
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/admin/appointment">
+                        Lịch Hẹn
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/admin/patient">
+                        Bệnh Nhân
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link"
@@ -138,3 +150,52 @@
 
     </div>
 </nav>
+
+<!-- Toast Container for Notifications -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+  <div id="adminNotificationToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body" id="adminNotificationMessage">
+        <!-- Message will be injected here -->
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<c:if test="${not empty sessionScope.user and sessionScope.user.role == 'ADMIN'}">
+<script>
+    (function() {
+        var adminId = "${sessionScope.user.id}";
+        var host = window.location.host;
+        var ctx = "${pageContext.request.contextPath}";
+        var wsProtocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+        
+        var ws = new WebSocket(wsProtocol + host + ctx + "/ws/notifications/admin/" + adminId);
+        
+        ws.onopen = function(event) {
+            console.log("Connected to Admin Notification WebSocket.");
+        };
+        
+        ws.onmessage = function(event) {
+            console.log("Received notification: ", event.data);
+            try {
+                var data = JSON.parse(event.data);
+                var toastEl = document.getElementById('adminNotificationToast');
+                var msgEl = document.getElementById('adminNotificationMessage');
+                if (toastEl && msgEl) {
+                    msgEl.textContent = data.message || "Có thông báo mới!";
+                    var toast = new bootstrap.Toast(toastEl);
+                    toast.show();
+                }
+            } catch(e) {
+                console.error("Error parsing websocket message", e);
+            }
+        };
+        
+        ws.onclose = function(event) {
+            console.log("Disconnected from Admin Notification WebSocket.");
+        };
+    })();
+</script>
+</c:if>

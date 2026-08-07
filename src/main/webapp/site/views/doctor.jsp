@@ -59,12 +59,11 @@
                 </div>
             </div>
             
-            <!-- Phần nút bấm phía dưới -->
             <div class="doctor-actions">
                 <a href="${ctx}/doctor/detail/${doctor.id}" class="btn-custom btn-outline-primary-custom">
                     Xem hồ sơ <i class="bi bi-chevron-right"></i>
                 </a>
-                <a href="${ctx}/appointment/${doctor.id}" class="btn-custom btn-primary-custom">
+                <a href="${ctx}/appointment?doctorId=${doctor.id}" class="btn-custom btn-primary-custom">
                     Đặt lịch khám <i class="bi bi-calendar-event"></i>
                 </a>
             </div>

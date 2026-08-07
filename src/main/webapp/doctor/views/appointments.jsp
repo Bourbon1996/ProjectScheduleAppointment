@@ -19,6 +19,11 @@
 					<h2 class="fw-bold text-dark mb-1"><i class="bi bi-calendar2-check text-primary me-2"></i>Danh sách Lịch hẹn</h2>
 					<p class="text-muted mb-0">Quản lý và xác nhận các lịch khám của bệnh nhân</p>
 				</div>
+				<form method="GET" action="${ctx}/doctor-portal/appointments" class="d-flex align-items-center gap-2">
+                    <label for="filterDate" class="fw-bold text-secondary mb-0 text-nowrap">Lọc theo ngày:</label>
+                    <input type="date" name="filterDate" id="filterDate" class="form-control" value="${param.filterDate}" onchange="this.form.submit()">
+                    <a href="${ctx}/doctor-portal/appointments" class="btn btn-outline-secondary" title="Bỏ lọc"><i class="bi bi-x-circle"></i></a>
+                </form>
 			</div>
 
 			<!-- Bảng dữ liệu lịch sử -->
@@ -48,7 +53,10 @@
 													<small class="text-muted">${item.patient.user.phone}</small>
 												</td>
 												<td>
-													<div class="fw-medium text-dark">${item.slot.workDate}</div>
+													<div class="fw-medium text-dark">
+														<fmt:parseDate value="${item.slot.workDate}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
+														<fmt:formatDate value="${parsedDate}" pattern="dd-MM-yyyy" />
+													</div>
 													<small class="text-danger fw-semibold">${item.slot.startTime} - ${item.slot.endTime}</small>
 												</td>
 												<td>

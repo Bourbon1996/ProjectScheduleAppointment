@@ -31,7 +31,7 @@
                     <c:forEach items="${khoaCha.subDepartments}" var="khoaCon">
                         <div class="col">
 						    
-						    <a href="<c:url value='/department/detail?id=${khoaCon.id}'/>" class="text-decoration-none">
+						    <a href="${ctx}/chuyen-khoa/${khoaCon.id}" class="text-decoration-none">
 
 						        <div class="card h-100 shadow-sm border-0 umc-card d-flex flex-column align-items-center justify-content-center">
 						            

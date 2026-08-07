@@ -5,7 +5,7 @@
         <!-- Logo -->
         <a class="navbar-brand admin-logo" href="${doc}">
             <img src="${ctx}/assets/img/logo.png" alt="Logo">
-            <span class="text-primary fw-bold">Doctor Portal</span>
+            <span class="fw-bold">Doctor Portal</span>
         </a>
 
         <!-- Nút ba gạch trên tablet/mobile -->
@@ -23,7 +23,10 @@
                     <a class="nav-link" href="${doc}/appointments">Quản lý Lịch hẹn</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${doc}/schedule">Quản lý Lịch rảnh</a>
+                    <a class="nav-link" href="${doc}/schedule">Quản lý Lịch làm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${doc}/patients">Lịch sử Bệnh nhân</a>
                 </li>
             </ul>
 
@@ -40,7 +43,7 @@
                     <c:otherwise>
                         <div class="admin-user dropdown">
                             <a href="#" class="admin-avatar" data-bs-toggle="dropdown" aria-expanded="false" title="Tài khoản">
-                                <i class="bi bi-person-badge-fill"></i>
+                                <i class="bi bi-person-check-fill"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end admin-account-menu">
                                 <li class="px-3 py-2 text-muted fw-bold border-bottom">
@@ -90,7 +93,7 @@
         var ctx = "${ctx}";
         var wsProtocol = window.location.protocol === "https:" ? "wss://" : "ws://";
         
-        var ws = new WebSocket(wsProtocol + host + ctx + "/ws/notifications/" + doctorId);
+        var ws = new WebSocket(wsProtocol + host + ctx + "/ws/notifications/doctor/" + doctorId);
         
         ws.onopen = function(event) {
             console.log("Connected to Doctor Notification WebSocket.");

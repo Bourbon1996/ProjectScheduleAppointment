@@ -9,12 +9,12 @@
     <div class="booking-stepper-container mb-4">
         <div class="stepper-wrapper">
             <div class="step-item active" id="stepper-1">
-                <div class="step-icon"><i class="bi bi-person"></i></div>
-                <div class="step-label">Hồ sơ</div>
+                <div class="step-icon"><i class="bi bi-file-earmark-medical"></i></div>
+                <div class="step-label">Thông tin khám</div>
             </div>
             <div class="step-item" id="stepper-2">
-                <div class="step-icon"><i class="bi bi-file-earmark-medical"></i></div>
-                <div class="step-label">Chọn thông tin khám</div>
+                <div class="step-icon"><i class="bi bi-person"></i></div>
+                <div class="step-label">Hồ sơ</div>
             </div>
             <div class="step-item" id="stepper-3">
                 <div class="step-icon"><i class="bi bi-calendar-check"></i></div>
@@ -28,11 +28,11 @@
     </div>
 
     <!-- 2. KHUNG NỘI DUNG FORM -->
-    <div class="step-content-box">
+    <div class="step-content-box d-flex flex-column">
         
-        <!-- BƯỚC 1: CHỌN HỒ SƠ -->
-		<!-- BƯỚC 1: QUẢN LÝ & CHỌN HỒ SƠ -->
-		<div class="step-pane active" id="step-pane-1">
+		<!-- BƯỚC 2: CHỌN HỒ SƠ -->
+		<!-- BƯỚC 2: QUẢN LÝ & CHỌN HỒ SƠ -->
+		<div class="step-pane" id="step-pane-2" style="order: 2;">
 		    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
 		        <h5 class="step-title mb-0 border-0 pb-0">Chọn hồ sơ đặt khám</h5>
 		        <!-- Nút mở Modal Tạo hồ sơ -->
@@ -43,7 +43,7 @@
 		
 		    <!-- KHUVỰC HIỆN THỊ DANH SÁCH HỒ SƠ -->
 		    <!-- Vùng hiển thị danh sách hồ sơ ở Bước 1 -->
-			<div class="row g-3">
+			<div class="row g-3" id="patient-list-container">
 			    <!-- Trường hợp rỗng: Chưa có hồ sơ nào trong DB -->
 			    <c:if test="${empty patientList}">
 			        <div class="col-12 text-center py-5 my-3 bg-light rounded-3 border border-dashed">
@@ -57,44 +57,68 @@
 			
 			    <!-- Trường hợp có hồ sơ: Lặp danh sách từ DB ra -->
 			    <c:forEach var="p" items="${patientList}">
+			        <c:set var="isFullProfile" value="${not empty p.dateOfBirth and not empty p.cccd}" />
 			        <div class="col-md-6">
 			            <div class="profile-card d-flex align-items-center justify-content-between p-3" 
-			                 onclick="selectProfileFromDB(this, '${p.id}', '${p.fullName}', '${p.phone}', '${p.dateOfBirth}', '${p.gender}', '${p.healthInsuranceCode}')">
+			                 data-isfull="${isFullProfile}"
+			                 onclick="selectProfileFromDB(this, '${p.id}', '${p.fullName}', '${p.phone}', '${p.dateOfBirth}', '${p.gender}', '${p.healthInsuranceCode}', '${p.relationship}', ${isFullProfile})">
 			                <div class="d-flex align-items-center">
 			                    <div class="profile-icon me-3"><i class="bi bi-person-fill"></i></div>
 			                    <div>
-			                        <h6 class="mb-1 fw-bold text-primary">${p.fullName}</h6>
-			                        <p class="mb-0 text-muted small"><i class="bi bi-calendar3 me-1"></i> ${p.dateOfBirth} (${p.gender})</p>
+			                        <h6 class="mb-1 fw-bold text-primary">${p.fullName} 
+			                            <c:if test="${!isFullProfile}">
+			                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.7rem;">Hồ sơ nhanh</span>
+			                            </c:if>
+			                        </h6>
+			                        <c:if test="${isFullProfile}">
+			                            <p class="mb-0 text-muted small"><i class="bi bi-calendar3 me-1"></i> ${p.dateOfBirth} (${p.gender})</p>
+			                        </c:if>
 			                        <p class="mb-0 text-muted small"><i class="bi bi-telephone me-1"></i> ${p.phone}</p>
 			                    </div>
 			                </div>
-			                <i class="bi bi-check-circle-fill text-primary fs-4 d-none check-icon"></i>
+			                <div class="d-flex align-items-center gap-2">
+			                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation(); editProfile('${p.id}', '${p.fullName}', '${p.phone}', '${p.dateOfBirth}', '${p.gender}', '${p.address}', '${p.healthInsuranceCode}', '${p.emergencyContact}', '${p.relationship}', '${p.cccd}', '${p.email}')" title="Sửa hồ sơ">
+			                        <i class="bi bi-pencil"></i>
+			                    </button>
+			                    <form action="${ctx}/patient/delete" method="POST" style="margin:0" onsubmit="return confirm('Bạn có chắc chắn muốn xóa hồ sơ này? (Lưu ý: Không thể xóa nếu đã có lịch khám liên kết)');">
+			                        <input type="hidden" name="patientId" value="${p.id}">
+			                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();" title="Xóa hồ sơ">
+			                            <i class="bi bi-trash"></i>
+			                        </button>
+			                    </form>
+			                    <i class="bi bi-check-circle-fill text-primary fs-4 d-none check-icon ms-2"></i>
+			                </div>
 			            </div>
 			        </div>
 			    </c:forEach>
 			</div>
 		
-		    <div class="d-flex justify-content-end mt-4">
+		    <div class="d-flex justify-content-between mt-4">
+		        <button type="button" class="btn btn-outline-secondary px-4 py-2" onclick="goToStep(1)">
+		            <i class="bi bi-arrow-left me-1"></i> Quay lại Bước 1
+		        </button>
 		        <!-- Nút Tiếp tục mặc định bị khóa (disabled) nếu chưa chọn hồ sơ nào -->
-		        <button type="button" class="btn btn-primary px-4 py-2" id="btn-next-step1" onclick="goToStep(2)" disabled>
+		        <button type="button" class="btn btn-primary px-4 py-2" id="btn-next-step2" onclick="validateAndGoToStep3()" disabled>
 		            Tiếp tục <i class="bi bi-arrow-right ms-1"></i>
 		        </button>
 		    </div>
 		</div>
 		
 		<!-- ========================================================== -->
-		<!-- MODAL TẠO MỚI HỒ SƠ (Ánh xạ theo Entity Patient & Appointment) -->
+		<!-- MODAL TẠO MỚI & SỬA HỒ SƠ -->
 		<!-- ========================================================== -->
 		<%@ include file="/site/layouts/appointment-form.jsp" %>
+		<%@ include file="/site/modal/modal-edit-patient.jsp" %>
 
 
 
-	<!-- BƯỚC 2: CHỌN THÔNG TIN KHÁM (GIAO DIỆN CHUẨN UMC) -->
+	<!-- BƯỚC 1: CHỌN THÔNG TIN KHÁM (GIAO DIỆN CHUẨN UMC) -->
         <jsp:include page="/site/modal/modal-date.jsp" />
 		<jsp:include page="/site/modal/modal-department.jsp" />
 		<jsp:include page="/site/modal/modal-doctor.jsp" />
+		<jsp:include page="/site/modal/modal-only-doctor.jsp" />
 
-		<div class="step-pane" id="step-pane-2">
+		<div class="step-pane active" id="step-pane-1" style="order: 1;">
 		    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
 		        
 		        <!-- Header & Nút kích hoạt luồng chọn Popup -->
@@ -200,12 +224,9 @@
 		        </div>
 		
 		        <!-- NÚT ĐIỀU HƯỚNG BƯỚC -->
-		        <div class="d-flex justify-content-between pt-2">
-		            <button type="button" class="btn btn-outline-secondary px-4 py-2" onclick="goToStep(1)">
-		                <i class="bi bi-arrow-left me-1"></i> Quay lại Bước 1
-		            </button>
+		        <div class="d-flex justify-content-end pt-2">
 		            <!-- Nút này bị mờ (disabled) cho đến khi chọn xong Popup thứ 3 -->
-		            <button type="button" class="btn btn-primary px-5 py-2 fw-bold" id="btn-next-step2" disabled onclick="validateAndGoToStep3()">
+		            <button type="button" class="btn btn-primary px-5 py-2 fw-bold" id="btn-next-step1" disabled onclick="validateAndGoToStep2()">
 		                Tiếp tục <i class="bi bi-arrow-right ms-1"></i>
 		            </button>
 		        </div>
@@ -251,13 +272,20 @@
 		    
 		    <!-- KHỐI CHỌN PHƯƠNG THỨC THANH TOÁN -->
 			<h5 class="step-title mb-3"><i class="bi bi-credit-card text-primary me-2"></i>Phương thức thanh toán</h5>
+			
+			<!-- CẢNH BÁO HỒ SƠ NHANH -->
+			<div id="quick-profile-warning" class="alert alert-warning d-none mb-3" role="alert">
+			    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+			    Hồ sơ này chưa đầy đủ thông tin định danh (CCCD, Ngày sinh). <strong>Vui lòng thanh toán trực tiếp tại quầy</strong> để bổ sung thông tin.
+			</div>
+			
 			<div class="row g-3 mb-4">
 			    
 			    <!-- Lựa chọn 1: VNPAY -->
 			    <div class="col-md-6">
-			        <label class="w-100 h-100 m-0">
+			        <label class="w-100 h-100 m-0" for="pay-vnpay">
 			            <!-- Thẻ input bị ẩn đi, dùng CSS ở trên để bắt sự kiện checked -->
-			            <input type="radio" name="paymentMethod" value="VNPAY" class="d-none payment-radio" checked onchange="updatePaymentMethod('VNPAY')">
+			            <input type="radio" name="paymentMethod" id="pay-vnpay" value="VNPAY" class="d-none payment-radio" checked onchange="updatePaymentMethod('VNPAY')">
 			            <div class="card payment-card h-100 rounded-3">
 			                <div class="card-body d-flex align-items-center p-3">
 			                    <div class="me-3 p-2 bg-white rounded shadow-sm border">
@@ -275,8 +303,8 @@
 			
 			    <!-- Lựa chọn 2: THANH TOÁN TẠI QUẦY -->
 			    <div class="col-md-6">
-			        <label class="w-100 h-100 m-0">
-			            <input type="radio" name="paymentMethod" value="CASH" class="d-none payment-radio" onchange="updatePaymentMethod('CASH')">
+			        <label class="w-100 h-100 m-0" for="pay-cash">
+			            <input type="radio" name="paymentMethod" id="pay-cash" value="CASH" class="d-none payment-radio" onchange="updatePaymentMethod('CASH')">
 			            <div class="card payment-card h-100 rounded-3">
 			                <div class="card-body d-flex align-items-center p-3">
 			                    <div class="me-3 p-2 bg-light rounded border">
@@ -306,7 +334,7 @@
 		
 		        <div class="d-flex justify-content-between">
 		            <button type="button" class="btn btn-outline-secondary px-4" onclick="goToStep(2)">
-		                <i class="bi bi-arrow-left me-1"></i> Quay lại
+		                <i class="bi bi-arrow-left me-1"></i> Quay lại Bước 2
 		            </button>
 		            
 		           
@@ -337,8 +365,37 @@
             </div>
         </div>
 
-    </div>
-    </div>
+    	<!-- SCRIPT XỬ LÝ ?doctorId TỪ URL -->
+	<script>
+	document.addEventListener("DOMContentLoaded", function () {
+	    const params = new URLSearchParams(window.location.search);
+	    const doctorIdUrl = params.get('doctorId');
+	    
+	    if (doctorIdUrl) {
+	        let doctorFound = null;
+	        <c:forEach var="doc" items="${listDoctor}">
+	            if ('${doc.id}' === doctorIdUrl) {
+	                doctorFound = {
+	                    id: '${doc.id}',
+	                    fullName: '${doc.user.fullName}',
+	                    deptId: '${doc.department.id}',
+	                    deptName: '${doc.department.name}',
+	                    fee: '${doc.examinationFee}'
+	                };
+	            }
+	        </c:forEach>
+	
+	        if (doctorFound) {
+	            setTimeout(() => {
+	                selectOnlyDoctor(doctorFound.id, doctorFound.fullName, doctorFound.deptId, doctorFound.deptName, doctorFound.fee);
+	            }, 500); // Wait for DOM and modals to be ready
+	        }
+	    }
+	});
+	</script>
+	
+</div>
+<!-- JS FLOW -->
 <script src="${ctx}/assets/js/client/appointment-flow.js"></script>
 
 <c:if test="${isPaymentSuccess}">

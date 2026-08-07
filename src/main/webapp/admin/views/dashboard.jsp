@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ include file="/admin/shared/page.jsp" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -272,120 +273,59 @@
 	
 	                            <tbody>
 	
-	                                <!-- Dữ liệu mẫu -->
-	                                <tr>
-	                                    <td>#LH001</td>
-	
-	                                    <td>
-	                                        <div class="patient-info">
-	                                            <div class="patient-avatar">
-	                                                N
-	                                            </div>
-	
-	                                            <div>
-	                                                <strong>Nguyễn Văn An</strong>
-	                                                <span>0901234567</span>
-	                                            </div>
-	                                        </div>
-	                                    </td>
-	
-	                                    <td>BS. Trần Minh Tuấn</td>
-	
-	                                    <td>
-	                                        <span>28/07/2026</span>
-	                                        <small>08:30</small>
-	                                    </td>
-	
-	                                    <td>
-	                                        <span class="status-badge status-confirmed">
-	                                            Đã xác nhận
-	                                        </span>
-	                                    </td>
-	
-	                                    <td>
-	                                        <a href="${ctx}/admin/appointments/detail?id=1"
-	                                           class="action-button"
-	                                           title="Xem chi tiết">
-	                                            <i class="bi bi-eye"></i>
-	                                        </a>
-	                                    </td>
-	                                </tr>
-	
-	                                <tr>
-	                                    <td>#LH002</td>
-	
-	                                    <td>
-	                                        <div class="patient-info">
-	                                            <div class="patient-avatar">
-	                                                T
-	                                            </div>
-	
-	                                            <div>
-	                                                <strong>Trần Thị Mai</strong>
-	                                                <span>0912345678</span>
-	                                            </div>
-	                                        </div>
-	                                    </td>
-	
-	                                    <td>BS. Nguyễn Hoàng Nam</td>
-	
-	                                    <td>
-	                                        <span>28/07/2026</span>
-	                                        <small>10:00</small>
-	                                    </td>
-	
-	                                    <td>
-	                                        <span class="status-badge status-pending">
-	                                            Chờ xác nhận
-	                                        </span>
-	                                    </td>
-	
-	                                    <td>
-	                                        <a href="${ctx}/admin/appointments/detail?id=2"
-	                                           class="action-button"
-	                                           title="Xem chi tiết">
-	                                            <i class="bi bi-eye"></i>
-	                                        </a>
-	                                    </td>
-	                                </tr>
-	
-	                                <tr>
-	                                    <td>#LH003</td>
-	
-	                                    <td>
-	                                        <div class="patient-info">
-	                                            <div class="patient-avatar">
-	                                                L
-	                                            </div>
-	
-	                                            <div>
-	                                                <strong>Lê Minh Khang</strong>
-	                                                <span>0923456789</span>
-	                                            </div>
-	                                        </div>
-	                                    </td>
-	
-	                                    <td>BS. Phạm Thanh Hà</td>
-	
-	                                    <td>
-	                                        <span>29/07/2026</span>
-	                                        <small>14:30</small>
-	                                    </td>
-	
-	                                    <td>
-	                                        <span class="status-badge status-completed">
-	                                            Đã hoàn thành
-	                                        </span>
-	                                    </td>
-	
-	                                    <td>
-	                                        <a href="${ctx}/admin/appointments/detail?id=3"
-	                                           class="action-button"
-	                                           title="Xem chi tiết">
-	                                            <i class="bi bi-eye"></i>
-	                                        </a>
-	                                    </td>
-	                                </tr>
+	                                <c:choose>
+	                                    <c:when test="${not empty latestAppointments}">
+	                                        <c:forEach var="apt" items="${latestAppointments}">
+	                                            <tr>
+	                                                <td>#DHAK-${apt.id}</td>
+	                                                <td>
+	                                                    <div class="patient-info">
+	                                                        <div class="patient-avatar">
+	                                                            ${fn:substring(apt.patient.fullName, 0, 1)}
+	                                                        </div>
+	                                                        <div>
+	                                                            <strong>${apt.patient.fullName}</strong>
+	                                                            <span>${apt.patient.phone}</span>
+	                                                        </div>
+	                                                    </div>
+	                                                </td>
+	                                                <td>BS. ${apt.doctor.user.fullName}</td>
+	                                                <td>
+	                                                    <span>${apt.slot != null ? apt.slot.workDate : 'N/A'}</span>
+	                                                    <small>${apt.slot != null ? apt.slot.startTime : ''}</small>
+	                                                </td>
+	                                                <td>
+	                                                    <c:choose>
+	                                                        <c:when test="${apt.status == 'PENDING'}">
+	                                                            <span class="status-badge status-pending">Chờ xác nhận</span>
+	                                                        </c:when>
+	                                                        <c:when test="${apt.status == 'CONFIRMED'}">
+	                                                            <span class="status-badge status-confirmed">Đã xác nhận</span>
+	                                                        </c:when>
+	                                                        <c:when test="${apt.status == 'COMPLETED'}">
+	                                                            <span class="status-badge status-completed">Đã khám</span>
+	                                                        </c:when>
+	                                                        <c:otherwise>
+	                                                            <span class="status-badge status-cancelled">Đã hủy</span>
+	                                                        </c:otherwise>
+	                                                    </c:choose>
+	                                                </td>
+	                                                <td>
+	                                                    <a href="${ctx}/admin/appointment"
+	                                                       class="action-button"
+	                                                       title="Xem chi tiết">
+	                                                        <i class="bi bi-eye"></i>
+	                                                    </a>
+	                                                </td>
+	                                            </tr>
+	                                        </c:forEach>
+	                                    </c:when>
+	                                    <c:otherwise>
+	                                        <tr>
+	                                            <td colspan="6" class="text-center py-4 text-muted">Chưa có lịch hẹn nào</td>
+	                                        </tr>
+	                                    </c:otherwise>
+	                                </c:choose>
 	
 	                            </tbody>
 	                        </table>

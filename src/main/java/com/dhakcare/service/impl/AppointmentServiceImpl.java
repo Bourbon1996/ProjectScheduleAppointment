@@ -27,7 +27,7 @@ import com.dhakcare.enums.PaymentStatus;
 import com.dhakcare.enums.WsEventType;
 import com.dhakcare.service.AppointmentService;
 import com.dhakcare.utils.JpaUtil;
-import com.dhakcare.ws.AdminDashboardWS;
+import com.dhakcare.websocket.AdminDashboardWS;
 
 public class AppointmentServiceImpl implements AppointmentService {
 	AppointmentsDAO dao = new AppointmentDAOImpl();
@@ -71,6 +71,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 			Doctor doctor = em.find(Doctor.class, doctorId);
 			DoctorScheduleSlot slot = em.find(DoctorScheduleSlot.class, slotId);
 			
+			if (slot.getStatus() == com.dhakcare.enums.SlotStatus.FULL || slot.getStatus() == com.dhakcare.enums.SlotStatus.CLOSED) {
+				if (trans != null && trans.isActive()) trans.rollback();
+				return null;
+			}
+			
 			// Re-attach loggedInUser vào persistence context hiện tại
 			User managedUser = em.find(User.class, loggedInUser.getId());
 			    
@@ -97,6 +102,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 			appointment.setCreatedAt(LocalDateTime.now());
 
 			em.persist(appointment);
+			
+			// Cập nhật số lượng đã đặt của slot
+			slot.setBookedCount(slot.getBookedCount() + 1);
+			if (slot.getBookedCount() >= slot.getMaxPatients()) {
+				slot.setStatus(com.dhakcare.enums.SlotStatus.FULL);
+			}
+			em.merge(slot);
 			
 			// Đếm tổng appointments trong cùng EM
 			Long totalAppointments = em.createQuery(
@@ -129,10 +141,25 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return dao.findByUser(user);
 	}
 
-	@Override
-	public List<Appointment> getAppointmentsByDoctorUser(User user) {
-		return dao.findByDoctorUser(user);
-	}
+    @Override
+    public List<Appointment> getAppointmentsByDoctorUser(User user) {
+        return dao.findByDoctorUser(user);
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsBySlot(Long slotId) {
+        return dao.findBySlotId(slotId);
+    }
+
+    @Override
+    public Appointment getById(Long id) {
+        return dao.findById(id);
+    }
+
+    @Override
+    public List<Appointment> findAll() {
+        return dao.findAll();
+    }
 
 	@Override
 	public boolean cancelAppointment(Long id) {
@@ -143,6 +170,17 @@ public class AppointmentServiceImpl implements AppointmentService {
 			Appointment appointment = em.find(Appointment.class, id);
 			if (appointment != null) {
 				appointment.setStatus(AppointmentStatus.CANCELLED);
+				
+				// Giảm số lượng đã đặt của slot
+				DoctorScheduleSlot slot = appointment.getSlot();
+				if (slot != null && slot.getBookedCount() > 0) {
+					slot.setBookedCount(slot.getBookedCount() - 1);
+					if (slot.getStatus() == com.dhakcare.enums.SlotStatus.FULL && slot.getBookedCount() < slot.getMaxPatients()) {
+						slot.setStatus(com.dhakcare.enums.SlotStatus.AVAILABLE);
+					}
+					em.merge(slot);
+				}
+				
 				em.merge(appointment);
 			}
 			trans.commit();
@@ -186,5 +224,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public java.util.List<Object[]> getTopDoctors(int limit) {
 		return dao.getTopDoctors(limit);
+	}
+
+	@Override
+	public boolean updateAppointment(Appointment appointment) {
+		return dao.update(appointment) != null;
 	}
 }

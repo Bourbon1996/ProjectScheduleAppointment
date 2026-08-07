@@ -223,10 +223,12 @@ public class AppointmentsServlet extends HttpServlet {
 	                // Send Email and WebSocket Notification since no VNPAY callback will happen
 	                com.dhakcare.utils.XMail.sendBookingSuccess(appointment);
 	                if (appointment.getDoctor() != null) {
-	                	com.dhakcare.websocket.NotificationWebSocket.sendNotification(
+	                	com.dhakcare.websocket.NotificationWebSocket.sendToDoctor(
 	                			appointment.getDoctor().getId(), 
 	                			"{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Bạn có một lịch hẹn mới!\"}");
 	                }
+	                com.dhakcare.websocket.NotificationWebSocket.sendToAdmins(
+	                        "{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Có một lịch hẹn mới được đặt!\"}");
 	            }
 	            response.getWriter().write(objectMapper.writeValueAsString(jsonMap));
 
@@ -240,11 +242,51 @@ public class AppointmentsServlet extends HttpServlet {
 	    } else if (XPath.is("/appointment/cancel")) {
 	        try {
 	            Long id = XParam.getLong("id");
-	            boolean success = appointmentService.cancelAppointment(id);
+	            User loggedInUser = XAuth.getUser();
+	            Appointment apt = appointmentService.getById(id);
 	            Map<String, Object> res = new HashMap<>();
+
+	            if (apt == null || loggedInUser == null || !apt.getBookedBy().getId().equals(loggedInUser.getId())) {
+	                res.put("status", "ERROR");
+	                res.put("message", "Không tìm thấy lịch hẹn hoặc không có quyền.");
+	                response.getWriter().write(objectMapper.writeValueAsString(res));
+	                return;
+	            }
+	
+	            boolean canCancel = false;
+	            if (apt.getStatus() == com.dhakcare.enums.AppointmentStatus.PENDING) {
+	                canCancel = true;
+	            } else if (apt.getStatus() == com.dhakcare.enums.AppointmentStatus.CONFIRMED) {
+	                if (apt.getSlot() != null) {
+	                    java.time.LocalDate slotDate = apt.getSlot().getWorkDate();
+	                    java.time.LocalTime slotTime = apt.getSlot().getStartTime();
+	                    java.time.LocalDateTime scheduleDateTime = java.time.LocalDateTime.of(slotDate, slotTime);
+	                    if (java.time.LocalDateTime.now().plusHours(24).isBefore(scheduleDateTime)) {
+	                        canCancel = true;
+	                    }
+	                }
+	            }
+
+	            if (!canCancel) {
+	                res.put("status", "ERROR");
+	                res.put("message", "Chỉ có thể hủy lịch chờ xác nhận hoặc lịch đã xác nhận trước 24 giờ.");
+	                response.getWriter().write(objectMapper.writeValueAsString(res));
+	                return;
+	            }
+
+	            boolean success = appointmentService.cancelAppointment(id);
 	            if (success) {
 	                res.put("status", "SUCCESS");
 	                res.put("message", "Đã hủy lịch thành công.");
+	                
+	                if (apt.getDoctor() != null) {
+	                    com.dhakcare.websocket.NotificationWebSocket.sendToDoctor(
+	                            apt.getDoctor().getId(), 
+	                            "{\"type\": \"APPOINTMENT_CANCELLED\", \"message\": \"Bệnh nhân " + apt.getPatient().getFullName() + " vừa hủy một lịch hẹn.\"}");
+	                }
+	                com.dhakcare.websocket.NotificationWebSocket.sendToAdmins(
+	                        "{\"type\": \"APPOINTMENT_CANCELLED\", \"message\": \"Bệnh nhân " + apt.getPatient().getFullName() + " vừa hủy một lịch hẹn.\"}");
+	                
 	            } else {
 	                res.put("status", "ERROR");
 	                res.put("message", "Hủy lịch thất bại.");
@@ -256,14 +298,21 @@ public class AppointmentsServlet extends HttpServlet {
 	    } else if (XPath.is("/appointment/complete")) {
 	        try {
 	            Long id = XParam.getLong("id");
-	            boolean success = appointmentService.completeAppointment(id);
+	            Appointment apt = appointmentService.getById(id);
 	            Map<String, Object> res = new HashMap<>();
-	            if (success) {
-	                res.put("status", "SUCCESS");
-	                res.put("message", "Đã cập nhật trạng thái hoàn thành.");
+	            
+	            if (apt != null && apt.getPaymentStatus() == com.dhakcare.enums.PaymentStatus.PAID) {
+	                boolean success = appointmentService.completeAppointment(id);
+	                if (success) {
+	                    res.put("status", "SUCCESS");
+	                    res.put("message", "Đã cập nhật trạng thái hoàn thành.");
+	                } else {
+	                    res.put("status", "ERROR");
+	                    res.put("message", "Cập nhật thất bại.");
+	                }
 	            } else {
 	                res.put("status", "ERROR");
-	                res.put("message", "Cập nhật thất bại.");
+	                res.put("message", "Bệnh nhân chưa thanh toán. Không thể hoàn thành phiếu khám này!");
 	            }
 	            response.getWriter().write(objectMapper.writeValueAsString(res));
 	        } catch (Exception e) {

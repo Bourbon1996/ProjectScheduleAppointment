@@ -9,7 +9,7 @@ import com.dhakcare.dao.impl.PatientDAOImpl;
 import com.dhakcare.entity.Patient;
 import com.dhakcare.enums.WsEventType;
 import com.dhakcare.service.PatientService;
-import com.dhakcare.ws.AdminDashboardWS;
+import com.dhakcare.websocket.AdminDashboardWS;
 
 public class PatientServiceImpl implements PatientService {
 	
@@ -25,14 +25,13 @@ public class PatientServiceImpl implements PatientService {
             System.out.println("Lỗi: Số điện thoại không được để trống!");
             return false;
         }
-        if (patient.getDateOfBirth() == null) {
-            System.out.println("Lỗi: Ngày sinh không hợp lệ!");
-            return false;
-        }
-
         patient.setFullName(patient.getFullName().trim().toUpperCase());
         patient.setPhone(patient.getPhone().trim());
-        patient.setAddress(patient.getAddress().trim());
+        if (patient.getAddress() != null) patient.setAddress(patient.getAddress().trim());
+        if (patient.getCccd() != null) patient.setCccd(patient.getCccd().trim());
+        if (patient.getEmail() != null) patient.setEmail(patient.getEmail().trim());
+        if (patient.getHealthInsuranceCode() != null) patient.setHealthInsuranceCode(patient.getHealthInsuranceCode().trim());
+        if (patient.getEmergencyContact() != null) patient.setEmergencyContact(patient.getEmergencyContact().trim());
 
         var newPatient = patientsDAO.insert(patient);
         
@@ -65,5 +64,19 @@ public class PatientServiceImpl implements PatientService {
 		return patientsDAO.findById(id);
 	}
 
+	@Override
+	public boolean updatePatient(Patient patient) {
+		return patientsDAO.update(patient) != null;
+	}
+
+	@Override
+	public boolean deleteById(Long id) {
+		return patientsDAO.delete(id);
+	}
+
+	@Override
+	public java.util.List<Patient> findAll() {
+		return patientsDAO.findAll();
+	}
 
 }

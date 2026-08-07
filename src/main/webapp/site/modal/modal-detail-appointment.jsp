@@ -89,7 +89,14 @@
 									<button type="button" class="btn btn-outline-danger px-4 rounded-pill" onclick="cancelAppointment(${item.id})">Hủy lịch khám</button>
 								</c:if>
 								<c:if test="${(item.status == 'CONFIRMED' || item.status == 'PENDING') && (sessionScope.user.role == 'ADMIN' || sessionScope.user.role == 'DOCTOR')}">
-									<button type="button" class="btn btn-success px-4 rounded-pill" onclick="completeAppointment(${item.id})">Hoàn thành</button>
+									<c:choose>
+										<c:when test="${item.paymentStatus == 'PAID'}">
+											<button type="button" class="btn btn-success px-4 rounded-pill" onclick="completeAppointment(${item.id})">Hoàn thành</button>
+										</c:when>
+										<c:otherwise>
+											<button type="button" class="btn btn-secondary px-4 rounded-pill" disabled title="Chưa thể hoàn thành vì bệnh nhân chưa thanh toán">Hoàn thành</button>
+										</c:otherwise>
+									</c:choose>
 								</c:if>
 							</div>
 

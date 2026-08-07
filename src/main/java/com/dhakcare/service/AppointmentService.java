@@ -12,8 +12,12 @@ public interface AppointmentService {
 	public Appointment createAppointment(Long patientId, Long deptId, Long doctorId, Long slotId, User loggedInUser);
 	public List<Appointment> getAppointmentsByUser(User user);
 	public List<Appointment> getAppointmentsByDoctorUser(User user);
+	public List<Appointment> getAppointmentsBySlot(Long slotId);
+	public Appointment getById(Long id);
 	public boolean cancelAppointment(Long id);
 	public boolean completeAppointment(Long id);
+	public List<Appointment> findAll();
 	public java.util.List<Object[]> getTopDepartments(int limit);
 	public java.util.List<Object[]> getTopDoctors(int limit);
+	public boolean updateAppointment(Appointment appointment);
 }

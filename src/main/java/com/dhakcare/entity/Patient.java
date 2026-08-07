@@ -45,6 +45,12 @@ public class Patient {
 
     @Column(length = 20)
     private String phone;
+    
+    @Column(length = 12)
+    private String cccd;
+    
+    @Column(length = 100)
+    private String email;
     // ----------------------------
 
     @Column(name = "date_of_birth")
