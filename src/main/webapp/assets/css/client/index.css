@@ -355,7 +355,7 @@ header {
     background: var(--text-color);
 }
 
-@media (min-width: 576px) {
+@media (min-width: 992px) {
     .hospital-navbar .mega-dropdown:hover > .mega-menu-container {
         display: block !important;
         animation: fadeInDown 0.2s ease-in-out;
@@ -456,7 +456,7 @@ header {
     box-shadow: 0 2px 6px rgba(13, 104, 170, 0.08);
 }
 
-@media (min-width: 576px) {
+@media (min-width: 992px) {
     .hospital-navbar .mega-dropdown:hover > .mega-menu {
         display: block !important;
         animation: fadeInDown 0.2s ease-in-out;
@@ -746,57 +746,321 @@ header {
 }
 
 /* =========================
-   RESPONSIVE HEADER MOBILE
+   NAVBAR TOGGLER
+   NÚT MENU BA GẠCH
 ========================= */
 
-@media (max-width: 767px) {
+.hospital-brand {
+    padding: 0;
+    margin-right: 18px;
+}
 
+.hospital-navbar-toggler {
+    margin-right: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 7px;
+
+    box-shadow: none !important;
+}
+
+.hospital-navbar-toggler:focus {
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: none !important;
+}
+
+/* Chuyển biểu tượng ba gạch sang màu trắng */
+.hospital-navbar-toggler .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+}
+
+
+/* =========================
+   RESPONSIVE HEADER
+   TABLET VÀ MOBILE
+========================= */
+
+@media (max-width: 991.98px) {
+
+    /* Thanh Navbar */
     .hospital-navbar {
-        padding: 8px 12px;
+        padding: 8px 12px !important;
+    }
+
+    /* Logo */
+    .hospital-brand {
+        margin-right: 0;
+        padding: 0;
     }
 
     .nav-logo {
-        height: 40px;
+        height: 42px;
+        width: auto;
     }
 
+    /* Khu vực menu xổ xuống khi nhấn nút ba gạch */
     .hospital-navbar .navbar-collapse {
         width: 100%;
+
         margin-top: 10px;
+        padding-top: 10px;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
 
+    /* Danh sách menu */
     .hospital-navbar .navbar-nav {
         width: 100%;
+
+        align-items: stretch !important;
     }
 
+    /* Từng mục menu */
     .hospital-navbar .nav-item {
+        display: block;
+
         width: 100%;
         height: auto;
     }
 
+    /* Các liên kết menu */
     .hospital-navbar .nav-link {
+        display: flex;
+        align-items: center;
+
         width: 100%;
         min-height: 44px;
 
         padding: 10px 12px;
 
+        color: #ffffff;
+
         font-size: 14px;
+
         white-space: nowrap;
+
+        border-radius: 7px;
     }
 
+    .hospital-navbar .nav-link:not(.appointment-link):hover {
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.14);
+    }
+
+    /* Nút đặt lịch khám */
     .appointment-link {
         width: 100%;
 
+        height: 44px;
+        min-height: 44px !important;
+
         margin: 10px 0 !important;
+        padding: 0 16px !important;
 
         justify-content: center;
     }
 
+    /* Icon tài khoản và tìm kiếm */
     .navbar-icon {
         width: 42px !important;
         height: 42px !important;
         min-height: 42px !important;
 
         margin: 8px 8px 8px 0 !important;
+    }
+
+    /* Menu tài khoản */
+    .account-dropdown {
+        width: 100%;
+    }
+
+    .account-dropdown-menu {
+        position: static !important;
+
+        width: 100%;
+        min-width: 100%;
+
+        margin-top: 8px !important;
+
+        transform: none !important;
+    }
+
+    /* Không mở dropdown tài khoản bằng hover trên tablet/mobile */
+    .account-dropdown:hover > .dropdown-menu {
+        display: none;
+    }
+
+    .account-dropdown .dropdown-menu.show {
+        display: block;
+    }
+
+    /* Mega menu Chuyên khoa */
+    .hospital-navbar .mega-menu-container {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin-top: 0 !important;
+        padding: 12px !important;
+
+        border-radius: 8px !important;
+
+        box-shadow: none !important;
+    }
+
+    .hospital-navbar .mega-menu-content {
+        display: block !important;
+
+        width: 100%;
+        height: auto;
+    }
+
+    .hospital-navbar .parent-column {
+        width: 100%;
+        height: auto;
+
+        padding-right: 0;
+
+        border-right: none;
+    }
+
+    .hospital-navbar .parent-list {
+        width: 100%;
+
+        gap: 5px;
+    }
+
+    .hospital-navbar .parent-link {
+        width: 100%;
+
+        padding: 10px 12px;
+
+        font-size: 14px;
+    }
+
+    /* Bỏ vùng nối hover trên mobile */
+    .hospital-navbar .parent-link::after {
+        display: none;
+    }
+
+    /* Danh sách chuyên khoa con */
+    .hospital-navbar .child-column {
+        position: static;
+
+        width: 100%;
+        height: auto;
+
+        padding: 8px 0 0 14px;
+
+        background-color: transparent;
+    }
+
+    .hospital-navbar .child-scroll-box {
+        width: 100%;
+        height: auto;
+        max-height: 240px;
+
+        padding-right: 6px;
+    }
+
+    .hospital-navbar .child-link {
+        padding: 9px 12px;
+
+        font-size: 14px;
+    }
+
+    .hospital-navbar .child-column-placeholder {
+        display: none;
+    }
+
+    /* Mega menu Về bệnh viện */
+    .hospital-navbar .mega-menu {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: auto !important;
+
+        margin-top: 0 !important;
+
+        border-radius: 8px !important;
+
+        box-shadow: none !important;
+    }
+
+    .hospital-navbar .mega-menu-intro {
+        padding: 18px !important;
+
+        border-right: none;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .hospital-navbar .mega-menu-title {
+        font-size: 18px;
+    }
+
+    .hospital-navbar .mega-menu-intro p {
+        font-size: 13px;
+        text-align: left;
+    }
+
+    .hospital-navbar .about-links {
+        padding: 14px !important;
+    }
+
+    .hospital-navbar .about-link {
+        padding: 10px 12px;
+
+        font-size: 14px;
+    }
+}
+
+
+/* =========================
+   RESPONSIVE RIÊNG MOBILE
+========================= */
+
+@media (max-width: 575.98px) {
+
+    .hospital-navbar {
+        padding: 7px 10px !important;
+    }
+
+    .nav-logo {
+        height: 38px;
+    }
+
+    .hospital-navbar-toggler {
+        padding: 5px 8px;
+    }
+
+    .hospital-navbar .nav-link {
+        min-height: 42px;
+
+        padding: 9px 10px;
+
+        font-size: 13px;
+    }
+
+    .appointment-link {
+        height: 42px;
+        min-height: 42px !important;
+
+        font-size: 13px;
+    }
+
+    .navbar-icon {
+        width: 40px !important;
+        height: 40px !important;
+        min-height: 40px !important;
+    }
+
+    .hospital-navbar .mega-menu-intro {
+        padding: 14px !important;
+    }
+
+    .hospital-navbar .about-links {
+        padding: 10px !important;
     }
 }
 
