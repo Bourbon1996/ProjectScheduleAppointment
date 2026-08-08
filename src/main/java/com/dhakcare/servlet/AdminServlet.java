@@ -93,17 +93,107 @@ public class AdminServlet extends HttpServlet {
 			}
 			request.setAttribute("kpiMap", kpiMap);
 			
+			// Filter and Sort Doctors
+			String keyword = request.getParameter("keyword");
+			String gender = request.getParameter("gender");
+			String departmentId = request.getParameter("departmentId");
+			String experienceSort = request.getParameter("experienceSort");
+			String feeSort = request.getParameter("feeSort");
+
+			if (keyword != null && !keyword.isBlank()) {
+				String k = keyword.toLowerCase();
+				listDoctor.removeIf(d -> d.getUser() == null || d.getUser().getFullName() == null || !d.getUser().getFullName().toLowerCase().contains(k));
+			}
+			if (gender != null && !gender.isBlank()) {
+				listDoctor.removeIf(d -> d.getUser() == null || d.getUser().getGender() == null || !d.getUser().getGender().equals(gender));
+			}
+			if (departmentId != null && !departmentId.isBlank()) {
+				listDoctor.removeIf(d -> d.getDepartment() == null || !d.getDepartment().getId().toString().equals(departmentId));
+			}
+			
+			if (experienceSort != null && !experienceSort.isBlank()) {
+				listDoctor.sort((d1, d2) -> {
+					Integer y1 = d1.getExperienceYears() != null ? d1.getExperienceYears() : 0;
+					Integer y2 = d2.getExperienceYears() != null ? d2.getExperienceYears() : 0;
+					return experienceSort.equals("asc") ? y1.compareTo(y2) : y2.compareTo(y1);
+				});
+			} else if (feeSort != null && !feeSort.isBlank()) {
+				listDoctor.sort((d1, d2) -> {
+					java.math.BigDecimal f1 = d1.getExaminationFee() != null ? d1.getExaminationFee() : java.math.BigDecimal.ZERO;
+					java.math.BigDecimal f2 = d2.getExaminationFee() != null ? d2.getExaminationFee() : java.math.BigDecimal.ZERO;
+					return feeSort.equals("asc") ? f1.compareTo(f2) : f2.compareTo(f1);
+				});
+			}
+
 			request.setAttribute("listDoctor", listDoctor);
 			request.getRequestDispatcher("/admin/views/doctor-manager.jsp").forward(request, response);
 		}else if(path.contains("/department")) {
 			List<Department> listChildren = departmentService.getAllDepartmentChild();
 			List<Department> listParent = departmentService.getAllDepartmentParent();
 			
+			// Filter and Sort Departments
+			String keyword = request.getParameter("keyword");
+			String status = request.getParameter("status");
+			String sort = request.getParameter("sort");
+
+			if (keyword != null && !keyword.isBlank()) {
+				String k = keyword.toLowerCase();
+				listParent.removeIf(d -> d.getName() == null || !d.getName().toLowerCase().contains(k));
+				listChildren.removeIf(d -> d.getName() == null || !d.getName().toLowerCase().contains(k));
+			}
+			if (status != null && !status.isBlank()) {
+				listParent.removeIf(d -> d.getStatus() == null || !d.getStatus().equals(status));
+				listChildren.removeIf(d -> d.getStatus() == null || !d.getStatus().equals(status));
+			}
+			if (sort != null && !sort.isBlank()) {
+				java.util.Comparator<Department> comparator = (d1, d2) -> {
+					String n1 = d1.getName() != null ? d1.getName() : "";
+					String n2 = d2.getName() != null ? d2.getName() : "";
+					return sort.equals("az") ? n1.compareToIgnoreCase(n2) : n2.compareToIgnoreCase(n1);
+				};
+				listParent.sort(comparator);
+				listChildren.sort(comparator);
+			}
+
 			request.setAttribute("listDepartmentsParent", listParent);
 			request.setAttribute("listDepartmentsChild", listChildren);
 			request.getRequestDispatcher("/admin/views/department-manager.jsp").forward(request, response);
 		}else if(path.contains("/user")) {
 			List<User> listUser = userService.findAll();
+			
+			// Filter and Sort Users
+			String keyword = request.getParameter("keyword");
+			String gender = request.getParameter("gender");
+			String role = request.getParameter("role");
+			String status = request.getParameter("status");
+			String sort = request.getParameter("sort");
+
+			if (keyword != null && !keyword.isBlank()) {
+				String k = keyword.toLowerCase();
+				listUser.removeIf(u -> {
+					boolean mName = u.getFullName() != null && u.getFullName().toLowerCase().contains(k);
+					boolean mPhone = u.getPhone() != null && u.getPhone().contains(k);
+					boolean mEmail = u.getEmail() != null && u.getEmail().toLowerCase().contains(k);
+					return !(mName || mPhone || mEmail);
+				});
+			}
+			if (gender != null && !gender.isBlank()) {
+				listUser.removeIf(u -> u.getGender() == null || !u.getGender().equals(gender));
+			}
+			if (role != null && !role.isBlank()) {
+				listUser.removeIf(u -> u.getRole() == null || !u.getRole().name().equals(role));
+			}
+			if (status != null && !status.isBlank()) {
+				listUser.removeIf(u -> u.getStatus() == null || !u.getStatus().name().equals(status));
+			}
+			if (sort != null && !sort.isBlank()) {
+				listUser.sort((u1, u2) -> {
+					String n1 = u1.getFullName() != null ? u1.getFullName() : "";
+					String n2 = u2.getFullName() != null ? u2.getFullName() : "";
+					return sort.equals("az") ? n1.compareToIgnoreCase(n2) : n2.compareToIgnoreCase(n1);
+				});
+			}
+
 			request.setAttribute("listAccount", listUser);
 			request.getRequestDispatcher("/admin/views/user-manager.jsp").forward(request, response);
 		}else if(path.contains("/appointment")) {

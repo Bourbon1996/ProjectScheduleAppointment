@@ -16,6 +16,8 @@ import com.dhakcare.entity.Department;
 import com.dhakcare.entity.Doctor;
 import com.dhakcare.entity.Patient;
 import com.dhakcare.entity.User;
+import com.dhakcare.enums.AppointmentStatus;
+import com.dhakcare.enums.PaymentStatus;
 import com.dhakcare.service.AppointmentService;
 import com.dhakcare.service.DepartmentService;
 import com.dhakcare.service.DoctorService;
@@ -32,6 +34,7 @@ import com.dhakcare.utils.VNPayUtil;
 import com.dhakcare.utils.XAuth;
 import com.dhakcare.utils.XParam;
 import com.dhakcare.utils.XPath;
+import com.dhakcare.websocket.NotificationWebSocket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
@@ -40,7 +43,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class PaymentServlet
@@ -223,7 +225,7 @@ public class AppointmentsServlet extends HttpServlet {
 	                // Send Email and WebSocket Notification since no VNPAY callback will happen
 	                com.dhakcare.utils.XMail.sendBookingSuccess(appointment);
 	                if (appointment.getDoctor() != null) {
-	                	com.dhakcare.websocket.NotificationWebSocket.sendToDoctor(
+	                	NotificationWebSocket.sendToDoctor(
 	                			appointment.getDoctor().getId(), 
 	                			"{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Bạn có một lịch hẹn mới!\"}");
 	                }
@@ -254,9 +256,9 @@ public class AppointmentsServlet extends HttpServlet {
 	            }
 	
 	            boolean canCancel = false;
-	            if (apt.getStatus() == com.dhakcare.enums.AppointmentStatus.PENDING) {
+	            if (apt.getStatus() == AppointmentStatus.PENDING) {
 	                canCancel = true;
-	            } else if (apt.getStatus() == com.dhakcare.enums.AppointmentStatus.CONFIRMED) {
+	            } else if (apt.getStatus() == AppointmentStatus.CONFIRMED) {
 	                if (apt.getSlot() != null) {
 	                    java.time.LocalDate slotDate = apt.getSlot().getWorkDate();
 	                    java.time.LocalTime slotTime = apt.getSlot().getStartTime();
@@ -301,7 +303,7 @@ public class AppointmentsServlet extends HttpServlet {
 	            Appointment apt = appointmentService.getById(id);
 	            Map<String, Object> res = new HashMap<>();
 	            
-	            if (apt != null && apt.getPaymentStatus() == com.dhakcare.enums.PaymentStatus.PAID) {
+	            if (apt != null && apt.getPaymentStatus() == PaymentStatus.PAID) {
 	                boolean success = appointmentService.completeAppointment(id);
 	                if (success) {
 	                    res.put("status", "SUCCESS");
