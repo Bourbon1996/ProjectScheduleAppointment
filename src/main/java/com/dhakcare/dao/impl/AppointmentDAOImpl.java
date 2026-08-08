@@ -186,4 +186,22 @@ public class AppointmentDAOImpl extends GenericDAOImpl<Appointment>	implements A
 			}
 		}
 	}
+	
+	@Override
+	public List<Appointment> findByPatientId(Long patientId) {
+		EntityManager em = JpaUtil.getEntityManager();
+		try {
+			String jpql = "SELECT a FROM Appointment a WHERE a.patient.id = :patientId ORDER BY a.createdAt DESC";
+			TypedQuery<Appointment> query = em.createQuery(jpql, Appointment.class);
+			query.setParameter("patientId", patientId);
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return java.util.Collections.emptyList();
+		} finally {
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+	}
 }

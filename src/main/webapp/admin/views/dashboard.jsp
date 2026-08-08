@@ -54,13 +54,20 @@
 	            </div>
 	
 	            <div class="dashboard-date">
-	                <i class="bi bi-calendar3"></i>
-	                <span>Hôm nay</span>
+	                <form method="GET" action="${ctx}/admin/dashboard" class="d-flex align-items-center gap-2 m-0" id="filterTimeForm">
+	                    <i class="bi bi-calendar3"></i>
+	                    <select name="filterTime" class="form-select form-select-sm border-0 shadow-none fw-bold" style="background: transparent; color: inherit; width: 140px;" onchange="document.getElementById('filterTimeForm').submit()">
+	                        <option value="today" ${filterTime == 'today' ? 'selected' : ''}>Hôm nay</option>
+	                        <option value="month" ${filterTime == 'month' ? 'selected' : ''}>Tháng này</option>
+	                        <option value="year" ${filterTime == 'year' ? 'selected' : ''}>Năm nay</option>
+	                        <option value="all" ${filterTime == 'all' ? 'selected' : ''}>Toàn thời gian</option>
+	                    </select>
+	                </form>
 	            </div>
 	        </div>
 	
 	        <!-- Các thẻ thống kê -->
-	        <section class="row g-4">
+	        <section class="row g-4" id="dashboard-stats">
 	
 	            <!-- Tổng tài khoản -->
 	            <div class="col-xl-4 col-md-6">
@@ -142,8 +149,8 @@
 	                    </div>
 	
 	                    <div class="stat-content">
-	                        <p>Tổng lịch khám</p>
-	                        <h2 id="stat-totalSchedules">${empty totalSchedules ? 0 : totalSchedules}</h2>
+	                        <p>Lịch khám mới</p>
+	                        <h2 id="stat-totalSchedules">${empty filteredAppointments ? 0 : filteredAppointments}</h2>
 	                        <a href="${ctx}/admin/schedules">
 	                            Xem chi tiết
 	                            <i class="bi bi-arrow-right"></i>
@@ -160,9 +167,9 @@
 	                    </div>
 	
 	                    <div class="stat-content">
-	                        <p>Tổng doanh thu</p>
+	                        <p>Doanh thu mới</p>
 	                        <h2 id="stat-totalRevenue">
-	                            ${empty totalRevenue ? 0 : totalRevenue}
+	                            <fmt:formatNumber value="${empty filteredRevenue ? 0 : filteredRevenue}" pattern="#,###"/>
 	                            <small>VNĐ</small>
 	                        </h2>
 	
@@ -177,12 +184,12 @@
 	        </section>
 	
 	        <!-- Analytics Section -->
-	        <section class="row g-4 mt-1">
+	        <section class="row g-4 mt-1" id="dashboard-analytics">
 	            <div class="col-xl-8">
 	                <div class="dashboard-panel">
 	                    <div class="panel-header">
 	                        <div>
-	                            <h3>Biểu đồ Doanh thu (Năm ${currentYear})</h3>
+	                            <h3>Biểu đồ Kép (Năm ${currentYear})</h3>
 	                        </div>
 	                    </div>
 	                    <div style="height: 400px; padding: 20px;">
@@ -237,7 +244,7 @@
 	        </section>
 	
 	        <!-- Nội dung phía dưới -->
-	        <section class="row g-4 mt-1">
+	        <section class="row g-4 mt-1" id="dashboard-latest">
 	
 	            <!-- Danh sách lịch hẹn gần đây -->
 	            <div class="col-xl-8">
@@ -247,7 +254,7 @@
 	                    <div class="panel-header">
 	                        <div>
 	                            <h3>Lịch hẹn gần đây</h3>
-	                            <p>Danh sách các lịch hẹn mới nhất.</p>
+	                            <p>Nhật ký hoạt động mới nhất.</p>
 	                        </div>
 	
 	                        <a href="${ctx}/admin/appointment"
@@ -424,49 +431,105 @@
     
     <script>
     	const CTX = "${ctx}";
+        var revenueChartInstance = null;
         
-        // Render Revenue Chart
-        document.addEventListener("DOMContentLoaded", function() {
+        function initChart() {
             var ctxChart = document.getElementById('revenueChart');
             if (ctxChart) {
                 var monthlyRevenueData = ${monthlyRevenue != null ? monthlyRevenue : '[]'};
+                var monthlyAppointmentsData = ${monthlyAppointments != null ? monthlyAppointments : '[]'};
                 
-                new Chart(ctxChart, {
+                if (revenueChartInstance) {
+                    revenueChartInstance.destroy();
+                }
+                
+                revenueChartInstance = new Chart(ctxChart, {
                     type: 'bar',
                     data: {
                         labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-                        datasets: [{
+                        datasets: [
+                        {
+                            type: 'bar',
                             label: 'Doanh thu (VNĐ)',
                             data: monthlyRevenueData,
                             backgroundColor: 'rgba(54, 162, 235, 0.5)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1,
-                            borderRadius: 4
-                        }]
+                            borderRadius: 4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            type: 'line',
+                            label: 'Lượt khám',
+                            data: monthlyAppointmentsData,
+                            backgroundColor: 'rgba(255, 99, 132, 1)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            yAxisID: 'y1'
+                        }
+                        ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: {
-                                position: 'top',
-                            }
+                            legend: { position: 'top' }
                         },
                         scales: {
                             y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
                                 beginAtZero: true,
+                                title: { display: true, text: 'Doanh thu (VNĐ)' },
                                 ticks: {
-                                    callback: function(value, index, values) {
-                                        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+                                    callback: function(value) {
+                                        return new Intl.NumberFormat('vi-VN', { notation: "compact", compactDisplay: "short" }).format(value);
                                     }
                                 }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                beginAtZero: true,
+                                title: { display: true, text: 'Lượt khám' },
+                                grid: { drawOnChartArea: false }
                             }
                         }
                     }
                 });
             }
-        });
+        }
+        
+        document.addEventListener("DOMContentLoaded", initChart);
+        
+        function refreshAdminDashboard() {
+            var url = new URL(window.location.href);
+            fetch(url.toString())
+                .then(res => res.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    const sections = ['dashboard-stats', 'dashboard-latest'];
+                    sections.forEach(id => {
+                        const current = document.getElementById(id);
+                        const newest = doc.getElementById(id);
+                        if (current && newest) {
+                            current.innerHTML = newest.innerHTML;
+                        }
+                    });
+                    
+                    // Re-init chart because canvas is replaced
+                    // Wait, we can't extract JSON easily from HTML for chart re-init unless we put JSON in a data attribute.
+                    // Or we just fetch data via API, but since PJAX replaced the whole section, the script tag with data is NOT executed.
+                    // Let's reload the whole page for now, or just leave chart as is until full reload.
+                    // Better yet, just don't replace dashboard-analytics, only stats and latest!
+                })
+                .catch(err => console.error("Error PJAX:", err));
+        }
     </script>
-    <script type="text/javascript" src="${ctx}/assets/js/admin/dashboard.js"></script>
 </body>
 </html>

@@ -58,7 +58,7 @@
                                         
                                        
                                         <c:if test="${day.available}">
-                                            <button type="button" class="umc-day-btn available" 
+                                            <button type="button" class="umc-day-btn available" data-date="${day.dateString}"
                                                     onclick="selectDate('${day.dateString}', '${day.displayStr}')">
                                                 <span class="day-num">${day.dayNumber}</span>
                                                
@@ -71,7 +71,7 @@
                                       
 										<c:if test="${!day.available}">
 										   
-										    <button type="button" class="umc-day-btn disabled ${day.holiday ? 'is-holiday' : ''}" disabled>
+										    <button type="button" class="umc-day-btn disabled ${day.holiday ? 'is-holiday' : ''}" data-date="${day.dateString}" disabled>
 										        <span class="day-num">${day.dayNumber}</span>
 										        
 										       

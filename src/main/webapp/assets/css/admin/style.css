@@ -50,7 +50,7 @@ html {
 
 /* START HEADER */
 .admin-navbar {
-    height: 80px;
+    min-height: 80px;
     background-color: var(--primary-blue);
     padding: 0 24px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -78,7 +78,7 @@ html {
 .admin-menu {
     margin-left: 40px;
     gap: 12px;
-    height: 80px;
+    min-height: 80px;
     align-items: center;
 }
 
@@ -144,6 +144,27 @@ html {
     color: var(--primary-blue);
 }
 
+
+/* Responsive Admin Navbar */
+@media (max-width: 991.98px) {
+    .admin-navbar {
+        padding: 10px 15px;
+    }
+    .admin-menu {
+        margin-left: 0;
+        min-height: auto;
+        align-items: flex-start;
+        padding-top: 10px;
+    }
+    .admin-menu .nav-link {
+        padding: 10px 14px;
+        width: 100%;
+    }
+    .admin-account-wrapper {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+}
 
 /* END HEADER */
 

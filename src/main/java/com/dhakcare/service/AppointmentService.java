@@ -12,6 +12,7 @@ public interface AppointmentService {
 	public Appointment createAppointment(Long patientId, Long deptId, Long doctorId, Long slotId, User loggedInUser);
 	public List<Appointment> getAppointmentsByUser(User user);
 	public List<Appointment> getAppointmentsByDoctorUser(User user);
+	public List<Appointment> getAppointmentsByPatient(Long patientId);
 	public List<Appointment> getAppointmentsBySlot(Long slotId);
 	public Appointment getById(Long id);
 	public boolean cancelAppointment(Long id);

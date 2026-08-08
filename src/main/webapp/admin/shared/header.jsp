@@ -60,6 +60,20 @@
                         Lịch Hẹn
                     </a>
                 </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/admin/schedules">
+                        Xếp Lịch
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/admin/revenue">
+                        Quản lý Doanh thu
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link"
                        href="${pageContext.request.contextPath}/admin/patient">
@@ -195,6 +209,26 @@
         
         ws.onclose = function(event) {
             console.log("Disconnected from Admin Notification WebSocket.");
+        };
+        
+        // Admin Dashboard WebSocket for realtime stats
+        var wsDashboard = new WebSocket(wsProtocol + host + ctx + "/ws/admin-dashboard");
+        wsDashboard.onopen = function(event) {
+            console.log("Connected to Admin Dashboard WebSocket.");
+        };
+        
+        wsDashboard.onmessage = function(event) {
+            console.log("Received dashboard update: ", event.data);
+            if (typeof refreshAdminDashboard === 'function') {
+                refreshAdminDashboard();
+            }
+            if (typeof refreshAdminRevenue === 'function') {
+                refreshAdminRevenue();
+            }
+        };
+        
+        wsDashboard.onclose = function(event) {
+            console.log("Disconnected from Admin Dashboard WebSocket.");
         };
     })();
 </script>

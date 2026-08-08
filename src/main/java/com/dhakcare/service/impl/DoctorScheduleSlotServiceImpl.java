@@ -56,4 +56,9 @@ public class DoctorScheduleSlotServiceImpl implements DoctorScheduleSlotService 
 		}
 	}
 
+	@Override
+	public List<DoctorScheduleSlot> getAllSlots() {
+		return dao.findAll();
+	}
+
 }

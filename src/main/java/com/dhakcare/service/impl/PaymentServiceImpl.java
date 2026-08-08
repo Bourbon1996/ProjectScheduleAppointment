@@ -121,4 +121,9 @@ public class PaymentServiceImpl implements PaymentService{
 	public java.util.List<BigDecimal> getMonthlyRevenue(int year) {
 		return dao.getMonthlyRevenue(year);
 	}
+
+	@Override
+	public java.util.List<Payment> findAll() {
+		return dao.findAll();
+	}
 }

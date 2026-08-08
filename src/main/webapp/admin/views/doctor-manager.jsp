@@ -32,12 +32,10 @@
                 <tr>
                     <th>ID</th>
                     <th>Họ và tên</th>
-                    <th>Giới tính</th>
-                    <th>Email</th>
                     <th>Chuyên khoa</th>
-                    <th>Bằng cấp</th>
-                    <th>Kinh nghiệm</th>
-                    <th>Tiền khám</th>
+                    <th>Lịch làm việc (Ngày)</th>
+                    <th>Năng suất (Giờ)</th>
+                    <th>Tiến độ KPI (Khám)</th>
                     <th>Thao tác</th>
                 </tr>
             </thead>
@@ -51,22 +49,45 @@
                             ${doctor.user.fullName}
                         </td>
 
-                        <td>${doctor.user.gender}</td>
-
-                        <td>${doctor.user.email}</td>
-
                         <td>
                             ${doctor.department.name}
                         </td>
-
-                        <td>${doctor.title}</td>
-
+                        
+                        <c:set var="stats" value="${kpiMap[doctor.id]}" />
+                        <c:set var="kDays" value="${doctor.kpiDays != null ? doctor.kpiDays : 26}" />
+                        <c:set var="kHours" value="${doctor.kpiHours != null ? doctor.kpiHours : 156}" />
+                        <c:set var="kPats" value="${doctor.kpiPatients != null ? doctor.kpiPatients : 1500}" />
+                        
+                        <c:set var="workedDays" value="${stats != null ? stats['workedDays'] : 0}" />
+                        <c:set var="workedHours" value="${stats != null ? stats['workedHours'] : 0}" />
+                        <c:set var="workedPats" value="${stats != null ? stats['completedPatients'] : 0}" />
+                        
+                        <!-- Lịch làm việc (Ngày) -->
                         <td>
-                            ${doctor.experienceYears} năm
+                            <span class="${workedDays < kDays ? 'text-danger fw-bold' : 'text-success'}">
+                                ${workedDays} / ${kDays}
+                            </span>
                         </td>
-
+                        
+                        <!-- Năng suất (Giờ) -->
                         <td>
-                            ${doctor.examinationFee}
+                            <span class="${workedHours < kHours ? 'text-warning fw-bold' : 'text-success'}">
+                                ${workedHours} / ${kHours}
+                            </span>
+                        </td>
+                        
+                        <!-- Tiến độ KPI Khám -->
+                        <td style="width: 200px;">
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>${workedPats} / ${kPats}</span>
+                                <span><fmt:formatNumber value="${workedPats * 100 / kPats}" maxFractionDigits="0"/>%</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <c:set var="pct" value="${workedPats * 100 / kPats}" />
+                                <div class="progress-bar ${pct < 50 ? 'bg-danger' : (pct < 80 ? 'bg-warning' : 'bg-success')}" 
+                                     role="progressbar" 
+                                     style="width: ${pct > 100 ? 100 : pct}%;"></div>
+                            </div>
                         </td>
 
                         <td>

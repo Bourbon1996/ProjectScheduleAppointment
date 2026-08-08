@@ -17,6 +17,7 @@ public interface AppointmentsDAO extends GenericDAO<Appointment> {
     public List<Appointment> findByUser(User user);
     public List<Appointment> findByDoctorUser(User user);
     public List<Appointment> findBySlotId(Long slotId);
+    public List<Appointment> findByPatientId(Long patientId);
     public List<Object[]> getTopDepartments(int limit);
     public List<Object[]> getTopDoctors(int limit);
 }

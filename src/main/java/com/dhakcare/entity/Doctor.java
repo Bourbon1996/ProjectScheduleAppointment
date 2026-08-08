@@ -54,6 +54,19 @@ public class Doctor {
     private Integer experienceYears;
 
     private String description;
+    
+    // KPI Fields
+    @Builder.Default
+    @Column(name = "kpi_patients")
+    private Integer kpiPatients = 1500;
+    
+    @Builder.Default
+    @Column(name = "kpi_days")
+    private Integer kpiDays = 26;
+    
+    @Builder.Default
+    @Column(name = "kpi_hours")
+    private Integer kpiHours = 156;
 
     @OneToMany(mappedBy = "doctor")
     private List<DoctorScheduleSlot> slots;

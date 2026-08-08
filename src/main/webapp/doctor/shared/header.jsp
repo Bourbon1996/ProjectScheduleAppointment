@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/doctor/shared/page.jsp" %>
-<nav class="navbar navbar-expand-lg admin-navbar shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark admin-navbar shadow-sm">
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand admin-logo" href="${doc}">
@@ -110,6 +110,14 @@
                     // Use bootstrap toast
                     var toast = new bootstrap.Toast(toastEl);
                     toast.show();
+                }
+                
+                // Real-time hooks
+                if (typeof refreshDashboard === 'function') {
+                    refreshDashboard();
+                }
+                if (typeof refreshAppointments === 'function') {
+                    refreshAppointments();
                 }
             } catch(e) {
                 console.error("Error parsing websocket message", e);

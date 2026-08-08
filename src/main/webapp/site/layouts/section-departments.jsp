@@ -2,7 +2,7 @@
 <%@ include file="/site/shared/page.jsp" %>
     
 <div class="container mt-4">
-    <h1 class="title mb-4 text-center">Chuyên Khoa</h1>
+    <h1 class="title mb-4 text-center" id = "dept">Chuyên Khoa</h1>
     
     <ul class="nav nav-tabs fw-bold d-flex align-items-center justify-content-center" id="myTab" role="tablist">
         <c:forEach items="${listDepartmentsParent}" var="khoaCha" varStatus="status">

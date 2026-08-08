@@ -145,6 +145,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<Appointment> getAppointmentsByDoctorUser(User user) {
         return dao.findByDoctorUser(user);
     }
+    
+    @Override
+    public List<Appointment> getAppointmentsByPatient(Long patientId) {
+        return dao.findByPatientId(patientId);
+    }
 
     @Override
     public List<Appointment> getAppointmentsBySlot(Long slotId) {

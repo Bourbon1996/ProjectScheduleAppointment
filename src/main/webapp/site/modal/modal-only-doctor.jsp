@@ -16,7 +16,7 @@
                 </div>
                 <div class="row g-3" id="only-doctor-list">
                     <c:forEach var="doc" items="${listDoctor}">
-                        <div class="col-md-6 only-doc-item-filter">
+                        <div class="col-md-6 only-doc-item-filter" data-dept-id="${doc.department.id}">
                             <div class="card h-100 border rounded-3 p-3 text-start" style="cursor: pointer;" 
                                  onclick="selectOnlyDoctor('${doc.id}', '${doc.user.fullName}', '${doc.department.id}', '${doc.department.name}', '${doc.examinationFee}')">
                                 <div class="d-flex align-items-center">
@@ -42,9 +42,21 @@
 function filterOnlyDoctors() {
     const keyword = document.getElementById("searchOnlyDoctorInput").value.toLowerCase();
     const cards = document.querySelectorAll(".only-doc-item-filter");
+    
+    // bookingData is global from appointment-flow.js
+    let currentDept = null;
+    if (typeof bookingData !== 'undefined' && bookingData.deptId) {
+        currentDept = bookingData.deptId;
+    }
+    
     cards.forEach(card => {
         const docName = card.querySelector(".doc-name-filter").textContent.toLowerCase();
-        if (docName.includes(keyword)) {
+        const cardDeptId = card.getAttribute("data-dept-id");
+        
+        let matchSearch = docName.includes(keyword);
+        let matchDept = currentDept ? (cardDeptId === currentDept) : true;
+        
+        if (matchSearch && matchDept) {
             card.style.setProperty("display", "block", "important");
         } else {
             card.style.setProperty("display", "none", "important");

@@ -31,7 +31,7 @@
 			</div>
 
 			<!-- KPI Stats Cards -->
-			<div class="row g-3 mb-4">
+			<div class="row g-3 mb-4" id="dashboard-stats">
 				<!-- Đặt lịch hôm nay -->
 				<div class="col-6 col-lg-3">
 					<div class="card border-0 shadow-sm rounded-4 h-100 stat-card">
@@ -94,7 +94,7 @@
 			<div class="row g-4">
 				<!-- Top 5 Ca khám sớm nhất hôm nay -->
 				<div class="col-lg-7">
-					<div class="card border-0 shadow-sm rounded-4 h-100">
+					<div class="card border-0 shadow-sm rounded-4 h-100" id="dashboard-table-card">
 						<div class="card-header bg-white border-bottom pt-4 pb-3 px-4 rounded-top-4">
 							<h5 class="fw-bold text-dark mb-0">
 								<i class="bi bi-list-ol text-primary me-2"></i>Lịch khám hôm nay
@@ -209,7 +209,7 @@
 										<i class="bi bi-clock-fill fs-2 text-success"></i>
 									</div>
 									<div class="flex-grow-1">
-										<h5 class="fw-bold text-dark mb-1">Quản lý Lịch rảnh</h5>
+										<h5 class="fw-bold text-dark mb-1">Quản lý Lịch làm</h5>
 										<p class="text-muted small mb-2">Thiết lập khung giờ khám để bệnh nhân đặt lịch.</p>
 										<a href="${doc}/schedule" class="btn btn-sm btn-success rounded-pill px-4 fw-semibold shadow-sm">
 											Thiết lập <i class="bi bi-arrow-right ms-1"></i>
@@ -256,5 +256,30 @@
 	</main>
 	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		function refreshDashboard() {
+			fetch(window.location.href)
+				.then(res => res.text())
+				.then(html => {
+					const parser = new DOMParser();
+					const doc = parser.parseFromString(html, 'text/html');
+					
+					// Replace stats
+					const currentStats = document.getElementById('dashboard-stats');
+					const newStats = doc.getElementById('dashboard-stats');
+					if (currentStats && newStats) {
+						currentStats.innerHTML = newStats.innerHTML;
+					}
+					
+					// Replace table
+					const currentTable = document.getElementById('dashboard-table-card');
+					const newTable = doc.getElementById('dashboard-table-card');
+					if (currentTable && newTable) {
+						currentTable.innerHTML = newTable.innerHTML;
+					}
+				})
+				.catch(err => console.error("Error refreshing dashboard:", err));
+		}
+	</script>
 </body>
 </html>

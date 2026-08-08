@@ -13,4 +13,5 @@ public interface DoctorScheduleSlotService {
 	public boolean createSlot(DoctorScheduleSlot slot);
 	public boolean updateSlot(DoctorScheduleSlot slot);
 	public boolean deleteSlot(String id);
+	public List<DoctorScheduleSlot> getAllSlots();
 }

@@ -20,14 +20,22 @@
 					<p class="text-muted mb-0">Quản lý và xác nhận các lịch khám của bệnh nhân</p>
 				</div>
 				<form method="GET" action="${ctx}/doctor-portal/appointments" class="d-flex align-items-center gap-2">
-                    <label for="filterDate" class="fw-bold text-secondary mb-0 text-nowrap">Lọc theo ngày:</label>
-                    <input type="date" name="filterDate" id="filterDate" class="form-control" value="${param.filterDate}" onchange="this.form.submit()">
-                    <a href="${ctx}/doctor-portal/appointments" class="btn btn-outline-secondary" title="Bỏ lọc"><i class="bi bi-x-circle"></i></a>
+                    <label for="filterDate" class="fw-bold text-secondary mb-0 text-nowrap">Ngày:</label>
+                    <input type="text" name="filterDate" id="filterDate" class="form-control bg-white" placeholder="dd-MM-yyyy" value="${param.filterDate}">
+                    <label for="filterStatus" class="fw-bold text-secondary mb-0 text-nowrap ms-2">Trạng thái:</label>
+                    <select name="filterStatus" id="filterStatus" class="form-select" onchange="this.form.submit()">
+                        <option value="">Tất cả</option>
+                        <option value="PENDING" ${param.filterStatus == 'PENDING' ? 'selected' : ''}>Chờ xác nhận</option>
+                        <option value="CONFIRMED" ${param.filterStatus == 'CONFIRMED' ? 'selected' : ''}>Đã xác nhận</option>
+                        <option value="COMPLETED" ${param.filterStatus == 'COMPLETED' ? 'selected' : ''}>Đã hoàn thành</option>
+                        <option value="CANCELLED" ${param.filterStatus == 'CANCELLED' ? 'selected' : ''}>Đã hủy</option>
+                    </select>
+                    <a href="${ctx}/doctor-portal/appointments" class="btn btn-outline-secondary text-nowrap" title="Bỏ lọc">Xóa lọc</a>
                 </form>
 			</div>
 
 			<!-- Bảng dữ liệu lịch sử -->
-			<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+			<div class="card border-0 shadow-sm rounded-4 overflow-hidden" id="appointments-table-card">
 				<div class="card-body p-0">
 					<div class="table-responsive">
 						<table class="table table-hover align-middle mb-0">
@@ -49,8 +57,8 @@
 											<tr>
 												<td class="ps-4 fw-bold text-primary">#DHAK-${item.id}</td>
 												<td>
-													<div class="fw-semibold text-dark">${item.patient.user.fullName}</div>
-													<small class="text-muted">${item.patient.user.phone}</small>
+													<div class="fw-semibold text-dark">${item.patient.fullName}</div>
+													<small class="text-muted">${item.patient.phone}</small>
 												</td>
 												<td>
 													<div class="fw-medium text-dark">
@@ -117,6 +125,35 @@
 	</main>
 	
 	<%@ include file="/site/modal/modal-detail-appointment.jsp" %>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		flatpickr("#filterDate", {
+			dateFormat: "Y-m-d",
+			altInput: true,
+			altFormat: "d-m-Y",
+			onChange: function(selectedDates, dateStr, instance) {
+				document.getElementById('filterDate').form.submit();
+			}
+		});
+
+		function refreshAppointments() {
+			fetch(window.location.href)
+				.then(res => res.text())
+				.then(html => {
+					const parser = new DOMParser();
+					const doc = parser.parseFromString(html, 'text/html');
+					
+					// Replace table
+					const currentTable = document.getElementById('appointments-table-card');
+					const newTable = doc.getElementById('appointments-table-card');
+					if (currentTable && newTable) {
+						currentTable.innerHTML = newTable.innerHTML;
+					}
+				})
+				.catch(err => console.error("Error refreshing appointments:", err));
+		}
+	</script>
 </body>
 </html>

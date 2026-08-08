@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/admin/shared/page-admin.jsp" %>
+<%@ include file="/admin/shared/page.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Quản lý Lịch hẹn - Admin</title>
+<%@ include file="/admin/shared/page-admin.jsp" %>
 </head>
 <body class="bg-light">
 	<%@ include file="/admin/shared/header.jsp" %>
@@ -67,8 +68,8 @@
 													<small class="text-muted">${item.department.name}</small>
 												</td>
 												<td>
-													<div class="fw-medium text-dark">${item.scheduleSlot != null ? item.scheduleSlot.workDate : 'N/A'}</div>
-													<small class="text-danger fw-semibold">${item.scheduleSlot != null ? item.scheduleSlot.startTime : ''} - ${item.scheduleSlot != null ? item.scheduleSlot.endTime : ''}</small>
+													<div class="fw-medium text-dark">${item.slot != null ? item.slot.workDate : 'N/A'}</div>
+													<small class="text-danger fw-semibold">${item.slot != null ? item.slot.startTime : ''} - ${item.slot != null ? item.slot.endTime : ''}</small>
 												</td>
 												<td>
 													<c:choose>

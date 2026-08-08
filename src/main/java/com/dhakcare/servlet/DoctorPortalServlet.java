@@ -72,6 +72,16 @@ public class DoctorPortalServlet extends HttpServlet {
 			    }
 			}
 			
+			String filterStatus = request.getParameter("filterStatus");
+			if (filterStatus != null && !filterStatus.isBlank()) {
+			    try {
+			        com.dhakcare.enums.AppointmentStatus statusEnum = com.dhakcare.enums.AppointmentStatus.valueOf(filterStatus);
+			        doctorAppointments.removeIf(apt -> apt.getStatus() != statusEnum);
+			    } catch (Exception e) {
+			        // Ignore parse error
+			    }
+			}
+			
 			doctorAppointments.sort((a1, a2) -> {
 			    if (a1.getSlot() == null || a1.getSlot().getWorkDate() == null) return 1;
 			    if (a2.getSlot() == null || a2.getSlot().getWorkDate() == null) return -1;
@@ -90,19 +100,52 @@ public class DoctorPortalServlet extends HttpServlet {
 		if (XPath.is("/doctor-portal/schedule")) {
 			List<DoctorScheduleSlot> slots = slotService.findByDoctorUser(loggedInUser);
 			
-			// Group by Date for UI Rendering (Descending order: future -> past)
-			java.util.Map<LocalDate, List<DoctorScheduleSlot>> groupedSlots = new java.util.TreeMap<>(java.util.Collections.reverseOrder());
+			// APPLY FILTERS
+			String filterDate = request.getParameter("filterDate");
+			if (filterDate != null && !filterDate.isBlank()) {
+			    try {
+			        LocalDate dDate = LocalDate.parse(filterDate);
+			        slots.removeIf(slot -> !slot.getWorkDate().equals(dDate));
+			    } catch (Exception e) {}
+			}
+			
+			String filterStatus = request.getParameter("filterStatus");
+			if (filterStatus != null && !filterStatus.isBlank()) {
+			    slots.removeIf(slot -> !slot.getStatus().name().equals(filterStatus));
+			}
+			
+			String filterShift = request.getParameter("filterShift");
+			if (filterShift != null && !filterShift.isBlank()) {
+			    if ("MORNING".equals(filterShift)) {
+			        slots.removeIf(slot -> slot.getStartTime().getHour() >= 12);
+			    } else if ("AFTERNOON".equals(filterShift)) {
+			        slots.removeIf(slot -> slot.getStartTime().getHour() < 12);
+			    }
+			}
+			
+			LocalDate today = LocalDate.now();
+			java.util.Map<LocalDate, List<DoctorScheduleSlot>> upcomingSlots = new java.util.TreeMap<>(); // Ascending
+			java.util.Map<LocalDate, List<DoctorScheduleSlot>> pastSlots = new java.util.TreeMap<>(java.util.Collections.reverseOrder()); // Descending
+			
 			for (DoctorScheduleSlot slot : slots) {
-			    groupedSlots.computeIfAbsent(slot.getWorkDate(), k -> new java.util.ArrayList<>()).add(slot);
+			    if (slot.getWorkDate().isBefore(today)) {
+			        pastSlots.computeIfAbsent(slot.getWorkDate(), k -> new java.util.ArrayList<>()).add(slot);
+			    } else {
+			        upcomingSlots.computeIfAbsent(slot.getWorkDate(), k -> new java.util.ArrayList<>()).add(slot);
+			    }
 			}
 			
 			// Sort slots by time within each day
-			for (List<DoctorScheduleSlot> daySlots : groupedSlots.values()) {
+			for (List<DoctorScheduleSlot> daySlots : upcomingSlots.values()) {
+			    daySlots.sort(java.util.Comparator.comparing(DoctorScheduleSlot::getStartTime));
+			}
+			for (List<DoctorScheduleSlot> daySlots : pastSlots.values()) {
 			    daySlots.sort(java.util.Comparator.comparing(DoctorScheduleSlot::getStartTime));
 			}
 			
-			request.setAttribute("groupedSlots", groupedSlots);
-			request.setAttribute("slotList", slots); // Keep original list just in case
+			request.setAttribute("upcomingSlots", upcomingSlots);
+			request.setAttribute("pastSlots", pastSlots);
+			request.setAttribute("todayDate", today);
 			XPath.forward("/doctor/views/schedule.jsp");
 			return;
 		}
@@ -111,7 +154,7 @@ public class DoctorPortalServlet extends HttpServlet {
 			List<Appointment> doctorAppointments = appointmentService.getAppointmentsByDoctorUser(loggedInUser);
 			java.util.Map<Long, com.dhakcare.entity.Patient> uniquePatients = new java.util.HashMap<>();
 			for (Appointment apt : doctorAppointments) {
-			    if (apt.getPatient() != null) {
+			    if (apt.getPatient() != null && apt.getStatus() == com.dhakcare.enums.AppointmentStatus.COMPLETED) {
 			        uniquePatients.put(apt.getPatient().getId(), apt.getPatient());
 			    }
 			}
@@ -297,22 +340,20 @@ public class DoctorPortalServlet extends HttpServlet {
 			DoctorScheduleSlot slot = slotService.getById(id);
 			if (slot != null) {
 				if (slot.getDoctor().getUser().getId().equals(loggedInUser.getId())) {
-					if (slot.getBookedCount() == 0) {
-						// Set slot to null for any cancelled appointments that might still reference it
-						List<Appointment> slotApts = appointmentService.getAppointmentsBySlot(slot.getId());
-						for (Appointment apt : slotApts) {
-							apt.setSlot(null);
-							appointmentService.updateAppointment(apt);
-						}
-						
-						boolean deleted = slotService.deleteSlot(id);
-						if (deleted) {
-							request.getSession().setAttribute("message", "Xóa khung giờ rảnh thành công!");
-						} else {
-							request.getSession().setAttribute("error", "Lỗi CSDL khi xóa khung giờ!");
-						}
+					// Cập nhật trạng thái thành PENDING_DELETE thay vì xóa
+					slot.setStatus(SlotStatus.PENDING_DELETE);
+					boolean updated = slotService.updateSlot(slot);
+					if (updated) {
+						// Phát qua WebSocket tới admin
+							try {
+								com.dhakcare.websocket.AdminDashboardWS.broadcast(
+										com.dhakcare.enums.WsEventType.LEAVE_REQUEST,
+										"Bác sĩ " + slot.getDoctor().getUser().getFullName() + " xin xóa ca lúc " + slot.getStartTime() + " ngày " + slot.getWorkDate()
+								);
+							} catch (Exception e) {}
+						request.getSession().setAttribute("message", "Đã gửi yêu cầu xóa lịch! Vui lòng chờ Admin duyệt.");
 					} else {
-						request.getSession().setAttribute("error", "Không thể xóa khung giờ đã có bệnh nhân đặt!");
+						request.getSession().setAttribute("error", "Lỗi CSDL khi gửi yêu cầu xóa!");
 					}
 				} else {
 					request.getSession().setAttribute("error", "Bạn không có quyền xóa khung giờ này!");

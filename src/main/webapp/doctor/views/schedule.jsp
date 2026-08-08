@@ -24,6 +24,38 @@
 					<i class="bi bi-plus-circle me-1"></i> Thêm Khung giờ
 				</button>
 			</div>
+
+			<!-- Bộ lọc -->
+			<div class="card border-0 shadow-sm rounded-4 mb-4">
+			    <div class="card-body p-3">
+			        <form method="GET" action="${ctx}/doctor-portal/schedule" class="row g-3 align-items-center">
+			            <div class="col-md-3">
+			                <label class="form-label fw-bold text-secondary small mb-1">Ngày làm việc</label>
+			                <input type="text" name="filterDate" id="filterDate" class="form-control bg-white" placeholder="dd-MM-yyyy" value="${param.filterDate}">
+			            </div>
+			            <div class="col-md-3">
+			                <label class="form-label fw-bold text-secondary small mb-1">Ca làm việc</label>
+			                <select name="filterShift" class="form-select" onchange="this.form.submit()">
+			                    <option value="">Tất cả các ca</option>
+			                    <option value="MORNING" ${param.filterShift == 'MORNING' ? 'selected' : ''}>Ca Sáng (Trước 12h)</option>
+			                    <option value="AFTERNOON" ${param.filterShift == 'AFTERNOON' ? 'selected' : ''}>Ca Chiều (Sau 12h)</option>
+			                </select>
+			            </div>
+			            <div class="col-md-3">
+			                <label class="form-label fw-bold text-secondary small mb-1">Trạng thái</label>
+			                <select name="filterStatus" class="form-select" onchange="this.form.submit()">
+			                    <option value="">Tất cả trạng thái</option>
+			                    <option value="AVAILABLE" ${param.filterStatus == 'AVAILABLE' ? 'selected' : ''}>Còn trống</option>
+			                    <option value="FULL" ${param.filterStatus == 'FULL' ? 'selected' : ''}>Đã kín chỗ</option>
+			                    <option value="CLOSED" ${param.filterStatus == 'CLOSED' ? 'selected' : ''}>Đã nghỉ / Hủy</option>
+			                </select>
+			            </div>
+			            <div class="col-md-3 d-flex align-items-end">
+			                <a href="${ctx}/doctor-portal/schedule" class="btn btn-outline-secondary w-100">Xóa lọc</a>
+			            </div>
+			        </form>
+			    </div>
+			</div>
 			
 			<c:if test="${not empty sessionScope.error}">
 				<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -34,78 +66,164 @@
 			</c:if>
 
 			<c:choose>
-				<c:when test="${not empty groupedSlots}">
-					<div class="row g-4">
-						<c:forEach var="entry" items="${groupedSlots}">
-							<c:set var="workDate" value="${entry.key}" />
-							<c:set var="daySlots" value="${entry.value}" />
-							
-							<div class="col-12">
-								<div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-									<div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-										<h5 class="fw-bold text-primary mb-0">
-											<i class="bi bi-calendar-event me-2"></i>Ngày: 
-											<fmt:parseDate value="${workDate}" pattern="yyyy-MM-dd" var="parsedWorkDate" type="date" />
-											<fmt:formatDate value="${parsedWorkDate}" pattern="dd-MM-yyyy" />
-										</h5>
-									</div>
-									<div class="card-body">
-										<div class="d-flex flex-wrap gap-3">
-											<c:forEach var="item" items="${daySlots}">
-												<c:set var="isFull" value="${item.status == 'FULL'}" />
-												<c:set var="isClosed" value="${item.status == 'CLOSED'}" />
-												<!-- Prevent division by zero just in case -->
-												<c:set var="maxPatients" value="${item.maxPatients > 0 ? item.maxPatients : 1}" />
-												<c:set var="percentage" value="${(item.bookedCount / maxPatients) * 100}" />
-												
-												<div class="position-relative" style="min-width: 170px;">
-													<!-- Khung giờ (Pill) -->
-													<div class="border rounded-4 p-3 text-center ${isClosed ? 'bg-light text-muted border-light' : (isFull ? 'bg-danger-subtle border-danger-subtle text-danger' : 'bg-white shadow-sm border-primary-subtle')}">
-														<div class="fw-bold fs-6 mb-1">${item.startTime} - ${item.endTime}</div>
-														<div class="small fw-semibold ${isClosed ? 'text-muted' : (isFull ? 'text-danger' : 'text-success')}">
-															<c:choose>
-																<c:when test="${isClosed}">Đã nghỉ / Hủy ca</c:when>
-																<c:when test="${isFull}">Đã kín chỗ</c:when>
-																<c:otherwise>${item.bookedCount} / ${item.maxPatients} bệnh nhân</c:otherwise>
-															</c:choose>
-														</div>
-														
-														<!-- Progress bar mini -->
-														<c:if test="${!isClosed}">
-															<div class="progress mt-2" style="height: 6px; border-radius: 10px;">
-															  <div class="progress-bar ${isFull ? 'bg-danger' : (percentage > 70 ? 'bg-warning' : 'bg-success')}" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+				<c:when test="${not empty upcomingSlots or not empty pastSlots}">
+					<ul class="nav nav-pills mb-4 gap-2" id="schedule-tabs" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active rounded-pill px-4" id="upcoming-tab" data-bs-toggle="pill" data-bs-target="#upcoming" type="button" role="tab" aria-controls="upcoming" aria-selected="true">
+								<i class="bi bi-calendar-check me-2"></i>Lịch sắp tới
+							</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link rounded-pill px-4" id="past-tab" data-bs-toggle="pill" data-bs-target="#past" type="button" role="tab" aria-controls="past" aria-selected="false">
+								<i class="bi bi-calendar-x me-2"></i>Lịch đã qua
+							</button>
+						</li>
+					</ul>
+
+					<div class="tab-content" id="schedule-tabs-content">
+						<!-- Tab Upcoming -->
+						<div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+							<div class="row g-4">
+								<c:set var="upcomingCount" value="0" />
+								<c:forEach var="entry" items="${upcomingSlots}">
+									<c:set var="workDate" value="${entry.key}" />
+									<c:set var="upcomingCount" value="${upcomingCount + 1}" />
+									<c:set var="daySlots" value="${entry.value}" />
+									<c:set var="isToday" value="${workDate.isEqual(todayDate)}" />
+										
+										<div class="col-12">
+											<div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 ${isToday ? 'border-primary border-2 border' : ''}">
+												<div class="card-header ${isToday ? 'bg-primary-subtle border-bottom-0' : 'bg-white border-bottom-0'} pt-4 pb-2 d-flex align-items-center">
+													<h5 class="fw-bold text-primary mb-0">
+														<i class="bi bi-calendar-event me-2"></i>Ngày: 
+														<fmt:parseDate value="${workDate}" pattern="yyyy-MM-dd" var="parsedWorkDate" type="date" />
+														<fmt:formatDate value="${parsedWorkDate}" pattern="dd-MM-yyyy" />
+													</h5>
+													<c:if test="${isToday}">
+														<span class="badge bg-primary ms-3 rounded-pill px-3 py-2">HÔM NAY</span>
+													</c:if>
+												</div>
+												<div class="card-body pt-2">
+													<div class="d-flex flex-wrap gap-3">
+														<c:forEach var="item" items="${daySlots}">
+															<c:set var="isFull" value="${item.status == 'FULL'}" />
+															<c:set var="isClosed" value="${item.status == 'CLOSED'}" />
+															<c:set var="maxPatients" value="${item.maxPatients > 0 ? item.maxPatients : 1}" />
+															<c:set var="percentage" value="${(item.bookedCount / maxPatients) * 100}" />
+															
+															<div class="position-relative" style="min-width: 170px;">
+																<div class="border rounded-4 p-3 text-center ${isClosed ? 'bg-light text-muted border-light' : (isFull ? 'bg-danger-subtle border-danger-subtle text-danger' : 'bg-white shadow-sm border-primary-subtle')}">
+																	<div class="fw-bold fs-6 mb-1">${item.startTime} - ${item.endTime}</div>
+																	<div class="small fw-semibold ${isClosed ? 'text-muted' : (isFull ? 'text-danger' : 'text-success')}">
+																		<c:choose>
+																			<c:when test="${isClosed}">Đã nghỉ / Hủy ca</c:when>
+																			<c:when test="${isFull}">Đã kín chỗ</c:when>
+																			<c:otherwise>${item.bookedCount} / ${item.maxPatients} bệnh nhân</c:otherwise>
+																		</c:choose>
+																	</div>
+																	
+																	<c:if test="${!isClosed}">
+																		<div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+																		  <div class="progress-bar ${isFull ? 'bg-danger' : (percentage > 70 ? 'bg-warning' : 'bg-success')}" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+																		</div>
+																	</c:if>
+																	
+																	<div class="mt-3 d-flex justify-content-center gap-2">
+																		<c:if test="${!isClosed}">
+																			<c:if test="${item.bookedCount == 0}">
+																				<form action="${ctx}/doctor-portal/schedule/delete" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa khung giờ này?');">
+																					<input type="hidden" name="id" value="${item.id}">
+																					<button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3" title="Xóa">
+																						<i class="bi bi-trash"></i> Xóa
+																					</button>
+																				</form>
+																			</c:if>
+																			<c:if test="${item.bookedCount > 0}">
+																				<form action="${ctx}/doctor-portal/schedule/close" method="POST" class="d-inline" onsubmit="return confirm('CẢNH BÁO: Đã có bệnh nhân đặt lịch! Nếu XIN NGHỈ, hệ thống sẽ tự động HỦY toàn bộ lịch hẹn và gửi Email. Tiếp tục?');">
+																					<input type="hidden" name="id" value="${item.id}">
+																					<button type="submit" class="btn btn-sm btn-outline-warning rounded-pill px-3" title="Xin nghỉ ca khám">
+																						<i class="bi bi-x-octagon"></i> Nghỉ
+																					</button>
+																				</form>
+																			</c:if>
+																		</c:if>
+																	</div>
+																</div>
 															</div>
-														</c:if>
-														
-														<!-- Thao tác hover (Delete/Close) -->
-														<div class="mt-3 d-flex justify-content-center gap-2">
-															<c:if test="${!isClosed}">
-																<c:if test="${item.bookedCount == 0}">
-																	<form action="${ctx}/doctor-portal/schedule/delete" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa khung giờ này?');">
-																		<input type="hidden" name="id" value="${item.id}">
-																		<button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3" title="Xóa">
-																			<i class="bi bi-trash"></i> Xóa
-																		</button>
-																	</form>
-																</c:if>
-																<c:if test="${item.bookedCount > 0}">
-																	<form action="${ctx}/doctor-portal/schedule/close" method="POST" class="d-inline" onsubmit="return confirm('CẢNH BÁO: Đã có bệnh nhân đặt lịch! Nếu XIN NGHỈ, hệ thống sẽ tự động HỦY toàn bộ lịch hẹn và gửi Email. Tiếp tục?');">
-																		<input type="hidden" name="id" value="${item.id}">
-																		<button type="submit" class="btn btn-sm btn-outline-warning rounded-pill px-3" title="Xin nghỉ ca khám">
-																			<i class="bi bi-x-octagon"></i> Nghỉ
-																		</button>
-																	</form>
-																</c:if>
-															</c:if>
-														</div>
+														</c:forEach>
 													</div>
 												</div>
-											</c:forEach>
+											</div>
+										</div>
+								</c:forEach>
+								<c:if test="${upcomingCount == 0}">
+									<div class="col-12">
+										<div class="text-center py-5 bg-white rounded-4 shadow-sm border-0">
+											<p class="text-muted mb-0">Không có lịch rảnh nào trong thời gian tới.</p>
 										</div>
 									</div>
-								</div>
+								</c:if>
 							</div>
-						</c:forEach>
+						</div>
+						
+						<!-- Tab Past -->
+						<div class="tab-pane fade" id="past" role="tabpanel" aria-labelledby="past-tab">
+							<div class="row g-4">
+								<c:set var="pastCount" value="0" />
+								<c:forEach var="entry" items="${pastSlots}">
+									<c:set var="workDate" value="${entry.key}" />
+									<c:set var="pastCount" value="${pastCount + 1}" />
+									<c:set var="daySlots" value="${entry.value}" />
+										
+										<div class="col-12">
+											<div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 opacity-75">
+												<div class="card-header bg-light border-bottom-0 pt-4 pb-0">
+													<h5 class="fw-bold text-secondary mb-0">
+														<i class="bi bi-calendar2-minus me-2"></i>Ngày: 
+														<fmt:parseDate value="${workDate}" pattern="yyyy-MM-dd" var="parsedWorkDate" type="date" />
+														<fmt:formatDate value="${parsedWorkDate}" pattern="dd-MM-yyyy" />
+													</h5>
+												</div>
+												<div class="card-body bg-light">
+													<div class="d-flex flex-wrap gap-3">
+														<c:forEach var="item" items="${daySlots}">
+															<c:set var="isFull" value="${item.status == 'FULL'}" />
+															<c:set var="isClosed" value="${item.status == 'CLOSED'}" />
+															<c:set var="maxPatients" value="${item.maxPatients > 0 ? item.maxPatients : 1}" />
+															<c:set var="percentage" value="${(item.bookedCount / maxPatients) * 100}" />
+															
+															<div class="position-relative" style="min-width: 170px;">
+																<div class="border rounded-4 p-3 text-center bg-white shadow-sm border-light">
+																	<div class="fw-bold fs-6 mb-1 text-secondary">${item.startTime} - ${item.endTime}</div>
+																	<div class="small fw-semibold text-muted">
+																		<c:choose>
+																			<c:when test="${isClosed}">Đã nghỉ / Hủy ca</c:when>
+																			<c:when test="${isFull}">Đã kín chỗ</c:when>
+																			<c:otherwise>${item.bookedCount} / ${item.maxPatients} bệnh nhân</c:otherwise>
+																		</c:choose>
+																	</div>
+																	<c:if test="${!isClosed}">
+																		<div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+																		  <div class="progress-bar bg-secondary opacity-50" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+																		</div>
+																	</c:if>
+																</div>
+															</div>
+														</c:forEach>
+													</div>
+												</div>
+											</div>
+										</div>
+								</c:forEach>
+								<c:if test="${pastCount == 0}">
+									<div class="col-12">
+										<div class="text-center py-5 bg-white rounded-4 shadow-sm border-0">
+											<p class="text-muted mb-0">Chưa có lịch làm nào trong quá khứ.</p>
+										</div>
+									</div>
+								</c:if>
+							</div>
+						</div>
 					</div>
 				</c:when>
 				<c:otherwise>
@@ -236,7 +354,17 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 	<script>
-		// Init Flatpickr
+		// Init Flatpickr cho bộ lọc
+		flatpickr("#filterDate", {
+			dateFormat: "Y-m-d",
+			altInput: true,
+			altFormat: "d-m-Y",
+			onChange: function(selectedDates, dateStr, instance) {
+				document.getElementById('filterDate').form.submit();
+			}
+		});
+
+		// Init Flatpickr cho thêm khung giờ
 		flatpickr("#workDateInput", {
 			dateFormat: "Y-m-d",
 			altInput: true,

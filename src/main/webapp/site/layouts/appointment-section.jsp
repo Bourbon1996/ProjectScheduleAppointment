@@ -170,7 +170,7 @@
 		            <!-- Ô 4: Bác sĩ -->
 		            <div class="col-md-6">
 		                <label class="form-label small fw-bold text-muted">BÁC SĨ KHÁM <span class="text-muted fw-normal">(Tùy chọn)</span></label>
-		                <div class="input-group" onclick="openSpecificModal('doctor')" style="cursor: pointer;">
+		                <div class="input-group" onclick="openSpecificModal('only-doctor')" style="cursor: pointer;">
 		                    <span class="input-group-text bg-white text-primary"><i class="bi bi-person-badge fs-5"></i></span>
 		                    <input type="text" class="form-control bg-light fw-bold text-dark" id="input-display-doctor" 
 		                           placeholder="Chưa chọn bác sĩ..." readonly style="cursor: pointer;">

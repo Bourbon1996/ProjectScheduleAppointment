@@ -10,4 +10,5 @@ public interface PaymentService {
 	public Payment createPayment(Appointment appointment, BigDecimal amount, String method, String transactionCode);
 	public void updatePaymentSuccess(String txnRef);
 	public java.util.List<BigDecimal> getMonthlyRevenue(int year);
+	public java.util.List<Payment> findAll();
 }

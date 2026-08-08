@@ -7,7 +7,7 @@
     <div class="menu-container">
         
         <!-- Về Chuyên khoa -->
-        <a href="#" class="menu-item">
+        <a href="#dept" class="menu-item">
             <div class="icon-box">
                 <img src="${pageContext.request.contextPath}/assets/img/departments/icon-ve-chuyen-khoa.webp" alt="Chuyên khoa">
             </div>
@@ -15,7 +15,7 @@
         </a>
 
         <!-- Tìm Bác sĩ -->
-        <a href="#" class="menu-item">
+        <a href="${ctx}/home/doctor" class="menu-item">
             <div class="icon-box">
                 <img src="${pageContext.request.contextPath}/assets/img/departments/icon-tim-bac-si.webp" alt="Tìm Bác sĩ">
             </div>
@@ -23,15 +23,15 @@
         </a>
 
         <!-- Lịch khám bệnh -->
-        <a href="#" class="menu-item">
+        <a href="${ctx}/appointment/history" class="menu-item">
             <div class="icon-box">
                 <img src="${pageContext.request.contextPath}/assets/img/departments/icon-lich-kham-benh.webp" alt="Lịch khám">
             </div>
-            <span>Lịch khám bệnh</span>
+            <span>Lịch sử khám bệnh</span>
         </a>
 
         <!-- Đặt lịch khám -->
-        <a href="#" class="menu-item">
+        <a href="${ctx}/appointment" class="menu-item">
             <div class="icon-box">
                 <img src="${pageContext.request.contextPath}/assets/img/departments/icon-dat-lich-kham.webp" alt="Đặt lịch">
             </div>
