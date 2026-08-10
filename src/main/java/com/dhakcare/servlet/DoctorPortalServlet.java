@@ -21,6 +21,8 @@ import com.dhakcare.service.impl.DoctorServiceImpl;
 import com.dhakcare.utils.XAuth;
 import com.dhakcare.utils.XParam;
 import com.dhakcare.utils.XPath;
+import com.dhakcare.websocket.AdminDashboardWS;
+import com.dhakcare.websocket.NotificationWebSocket;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -346,7 +348,7 @@ public class DoctorPortalServlet extends HttpServlet {
 					if (updated) {
 						// Phát qua WebSocket tới admin
 							try {
-								com.dhakcare.websocket.AdminDashboardWS.broadcast(
+								AdminDashboardWS.broadcast(
 										com.dhakcare.enums.WsEventType.LEAVE_REQUEST,
 										"Bác sĩ " + slot.getDoctor().getUser().getFullName() + " xin xóa ca lúc " + slot.getStartTime() + " ngày " + slot.getWorkDate()
 								);
@@ -392,7 +394,7 @@ public class DoctorPortalServlet extends HttpServlet {
 				    }
 				}
 				
-				com.dhakcare.websocket.NotificationWebSocket.sendToAdmins(
+				NotificationWebSocket.sendToAdmins(
 						"{\"type\": \"SLOT_CLOSED\", \"message\": \"Bác sĩ " + slot.getDoctor().getUser().getFullName() + " vừa xin nghỉ ca khám ngày " + slot.getWorkDate() + ".\"}");
 				
 				request.getSession().setAttribute("message", "Đã xin nghỉ ca khám này thành công! Các lịch hẹn (nếu có) đã bị hủy.");

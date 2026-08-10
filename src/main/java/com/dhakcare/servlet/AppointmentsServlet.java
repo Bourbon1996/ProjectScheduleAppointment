@@ -32,6 +32,7 @@ import com.dhakcare.utils.HolidayUtil;
 import com.dhakcare.utils.VNPayConfig;
 import com.dhakcare.utils.VNPayUtil;
 import com.dhakcare.utils.XAuth;
+import com.dhakcare.utils.XMail;
 import com.dhakcare.utils.XParam;
 import com.dhakcare.utils.XPath;
 import com.dhakcare.websocket.NotificationWebSocket;
@@ -222,14 +223,14 @@ public class AppointmentsServlet extends HttpServlet {
 	                jsonMap.put("status", "SUCCESS");
 	                jsonMap.put("appointmentId", newAppointmentId);
 	                
-	                // Send Email and WebSocket Notification since no VNPAY callback will happen
-	                com.dhakcare.utils.XMail.sendBookingSuccess(appointment);
+	               
+	                XMail.sendBookingSuccess(appointment);
 	                if (appointment.getDoctor() != null) {
 	                	NotificationWebSocket.sendToDoctor(
 	                			appointment.getDoctor().getId(), 
 	                			"{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Bạn có một lịch hẹn mới!\"}");
 	                }
-	                com.dhakcare.websocket.NotificationWebSocket.sendToAdmins(
+	                NotificationWebSocket.sendToAdmins(
 	                        "{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Có một lịch hẹn mới được đặt!\"}");
 	            }
 	            response.getWriter().write(objectMapper.writeValueAsString(jsonMap));
@@ -282,11 +283,11 @@ public class AppointmentsServlet extends HttpServlet {
 	                res.put("message", "Đã hủy lịch thành công.");
 	                
 	                if (apt.getDoctor() != null) {
-	                    com.dhakcare.websocket.NotificationWebSocket.sendToDoctor(
+	                    NotificationWebSocket.sendToDoctor(
 	                            apt.getDoctor().getId(), 
 	                            "{\"type\": \"APPOINTMENT_CANCELLED\", \"message\": \"Bệnh nhân " + apt.getPatient().getFullName() + " vừa hủy một lịch hẹn.\"}");
 	                }
-	                com.dhakcare.websocket.NotificationWebSocket.sendToAdmins(
+	                NotificationWebSocket.sendToAdmins(
 	                        "{\"type\": \"APPOINTMENT_CANCELLED\", \"message\": \"Bệnh nhân " + apt.getPatient().getFullName() + " vừa hủy một lịch hẹn.\"}");
 	                
 	            } else {

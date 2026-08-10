@@ -18,6 +18,7 @@ import com.dhakcare.enums.WsEventType;
 import com.dhakcare.service.PaymentService;
 import com.dhakcare.utils.JpaUtil;
 import com.dhakcare.websocket.AdminDashboardWS;
+import com.dhakcare.websocket.NotificationWebSocket;
 
 public class PaymentServiceImpl implements PaymentService{
 
@@ -77,12 +78,12 @@ public class PaymentServiceImpl implements PaymentService{
 		            // Send Email and WebSocket Notification
 		            com.dhakcare.utils.XMail.sendBookingSuccess(appointment);
 		            if (payment.getAppointment().getDoctor() != null) {
-		            	com.dhakcare.websocket.NotificationWebSocket.sendToDoctor(
-		            			payment.getAppointment().getDoctor().getId(), 
+		            	NotificationWebSocket.sendToDoctor(
+		                        appointment.getDoctor().getId(), 
 		            			"{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Bạn có một lịch hẹn mới đã thanh toán!\"}");
 		            }
-		            com.dhakcare.websocket.NotificationWebSocket.sendToAdmins(
-		                    "{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Có một lịch hẹn mới đã thanh toán!\"}");
+		            NotificationWebSocket.sendToAdmins(
+		                    "{\"type\": \"NEW_APPOINTMENT\", \"message\": \"Có một lịch hẹn mới vừa được đặt thành công!\"}");
 		        }
 	
 		        // Không cần gọi merge cho payment vì nó cũng đã managed
