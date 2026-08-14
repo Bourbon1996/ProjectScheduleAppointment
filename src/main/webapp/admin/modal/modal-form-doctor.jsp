@@ -49,37 +49,37 @@
 
                     <div class="row g-3">
 
-                        <!-- TÀI KHOẢN -->
-
+                        <!-- HỌ VÀ TÊN -->
                         <div class="col-md-6">
+                            <label class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="userFullName" name="userFullName" placeholder="Nguyễn Văn A" required>
+                        </div>
 
-                            <label class="form-label">
+                        <!-- SỐ ĐIỆN THOẠI -->
+                        <div class="col-md-6">
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="userPhone" name="userPhone" placeholder="09xxxxxxxxx" required>
+                        </div>
 
-                                Tài khoản
+                        <!-- EMAIL -->
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="email@example.com" required>
+                        </div>
 
-                            </label>
+                        <!-- MẬT KHẨU -->
+                        <div class="col-md-6">
+                            <label class="form-label">Mật khẩu <small class="text-muted" id="passwordHint">(Bỏ trống nếu không đổi)</small></label>
+                            <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="Nhập mật khẩu">
+                        </div>
 
-                            <select class="form-select"
-                                    id="doctorUser"
-                                    name="userId">
-
-                                <option value="">
-                                    -- Chọn tài khoản --
-                                </option>
-
-                                <c:forEach items="${listUsers}"
-                                           var="user">
-
-                                    <option value="${user.id}">
-
-                                        ${user.fullName}
-
-                                    </option>
-
-                                </c:forEach>
-
+                        <!-- GIỚI TÍNH -->
+                        <div class="col-md-6">
+                            <label class="form-label">Giới tính</label>
+                            <select class="form-select" id="userGender" name="userGender" required>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
                             </select>
-
                         </div>
 
 
@@ -101,7 +101,7 @@
                                     -- Chọn chuyên khoa --
                                 </option>
 
-                                <c:forEach items="${listDepartments}"
+                                <c:forEach items="${listDepartmentsChild}"
                                            var="department">
 
                                     <option value="${department.id}">

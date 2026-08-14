@@ -53,6 +53,7 @@ public class AdminServlet extends HttpServlet {
 		
 		if(path.contains("/doctor")) {
 			List<Doctor> listDoctor = doctorService.getAll();
+			List<Department> listChildren = departmentService.getAllDepartmentChild();
 			
 			// KPI Calculation
 			java.time.LocalDate now = java.time.LocalDate.now();
@@ -126,6 +127,7 @@ public class AdminServlet extends HttpServlet {
 			}
 
 			request.setAttribute("listDoctor", listDoctor);
+			request.setAttribute("listDepartmentsChild", listChildren);
 			request.getRequestDispatcher("/admin/views/doctor-manager.jsp").forward(request, response);
 		}else if(path.contains("/department")) {
 			List<Department> listChildren = departmentService.getAllDepartmentChild();

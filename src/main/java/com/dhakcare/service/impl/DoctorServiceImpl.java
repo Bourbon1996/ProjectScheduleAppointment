@@ -49,4 +49,14 @@ public class DoctorServiceImpl implements DoctorService {
 		return dao.findByUser(user);
 	}
 
+	@Override
+	public boolean update(Doctor doctor) {
+		return dao.update(doctor) != null? true: false;
+	}
+
+	@Override
+	public boolean create(Doctor doctor) {
+		return dao.create(doctor);
+	}
+
 }
