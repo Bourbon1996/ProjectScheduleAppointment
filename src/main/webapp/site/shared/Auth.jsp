@@ -87,6 +87,20 @@
                     </button>
                 </div>
             </div>
+            
+            <div class="auth-remember-wrapper">
+			
+			    <label class="auth-remember-label">
+			
+			        <input type="checkbox"
+			               name="remember"
+			               value="true">
+			
+			        <span>Ghi nhớ đăng nhập</span>
+			
+			    </label>
+			
+			</div>
 				<div class="auth-forgot-password"
 				     style="display: flex;
 				            justify-content: center;

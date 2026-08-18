@@ -22,8 +22,8 @@ public class XMail {
 	
 	static public void sendWelcome(User user) {
 		var to = user.getEmail();
-		var subject = "Chào mừng bạn đến với DHA Healthcare";
-		var body = path + "/account/activate/" + user.getEmail();
+		var subject = "Chào mừng bạn đến với DHAK Healthcare";
+		var body = path + "/home/index/";
 		XMail.send(to, subject, body);
 	}
 	

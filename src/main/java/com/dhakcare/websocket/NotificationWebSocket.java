@@ -46,11 +46,6 @@ public class NotificationWebSocket {
         System.err.println("WebSocket error: " + throwable.getMessage());
     }
 
-    @OnMessage
-    public void onMessage(String message, Session session) {
-        // Not used
-    }
-
     public static void sendToDoctor(Long doctorId, String message) {
         Session session = connectedDoctors.get(doctorId);
         if (session != null && session.isOpen()) {

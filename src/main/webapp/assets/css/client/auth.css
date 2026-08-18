@@ -799,3 +799,27 @@ input:checked + .gender-toggle-text {
 
     flex-shrink: 0;
 }
+
+.auth-remember-wrapper {
+    width: 100%;
+    margin: 8px 0 4px;
+}
+
+.auth-remember-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 13px;
+    color: #495057;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+.auth-remember-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+
+    cursor: pointer;
+}

@@ -1,20 +1,24 @@
 package com.dhakcare.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-
 import java.io.IOException;
+import java.util.UUID;
 
+import com.dhakcare.entity.User;
 import com.dhakcare.service.UserService;
 import com.dhakcare.service.impl.UserServiceImpl;
 import com.dhakcare.utils.XAttr;
 import com.dhakcare.utils.XAuth;
+import com.dhakcare.utils.XHttp;
+import com.dhakcare.utils.XMail;
 import com.dhakcare.utils.XParam;
 import com.dhakcare.utils.XPath;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class AuthServlet
@@ -35,35 +39,60 @@ public class AuthServlet extends HttpServlet {
 
    
     protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-
     	if (XPath.contains("logout")) {
 
-    		XAuth.logoff();
+    	    Cookie cookie =
+    	            new Cookie(
+    	                "remember_user",
+    	                ""
+    	            );
 
-    		XAttr.setRequest(
-    			"logoutMessage",
-    			"Đăng xuất thành công"
-    		);
-    		
-    		
-    		
-    		String referer = request.getHeader("Referer");
-    		
-    		
+    	    var contextPath =
+    	            XPath.getContextPath();
 
-    	    if (referer != null && !referer.isEmpty()) {
-    	    	
-    	    	if(referer.contains("/admin")) {
-        			XPath.redirect("/home/index");
-        			return;
-        		}
-    	    	
-    	    	response.sendRedirect(referer);
-    	    	return;
-    	    } else {
+    	    cookie.setPath(
+    	        contextPath == null
+    	        || contextPath.isBlank()
+    	            ? "/"
+    	            : contextPath
+    	    );
+
+    	    cookie.setMaxAge(0);
+
+    	    cookie.setHttpOnly(true);
+
+    	    XHttp.getResponse()
+    	         .addCookie(cookie);
+
+    	    XAuth.logoff();
+
+    	    XAttr.setSession(
+    	        "logoutMessage",
+    	        "Đăng xuất thành công"
+    	    );
+
+    	    String referer = request.getHeader("Referer");
+
+    	    if (
+    	        referer != null
+    	        && referer.contains("/admin")
+    	    ) {
+
     	        XPath.redirect("/home/index");
     	        return;
     	    }
+
+    	    if (
+    	        referer != null
+    	        && !referer.isBlank()
+    	    ) {
+
+    	        response.sendRedirect(referer);
+    	        return;
+    	    }
+
+    	    XPath.redirect("/home/index");
+    	    return;
     	}
 
     	if (XPath.contains("login")) {
@@ -101,6 +130,8 @@ public class AuthServlet extends HttpServlet {
 		//check co sdt co mat khau
 		var phone = XParam.getString("phone");
 		var password = XParam.getString("password");
+		var remember = XParam.getString("remember");
+		boolean isRemember = "true".equals(remember);
 		
 		var user = userService.login(phone, password);
 		
@@ -122,6 +153,30 @@ public class AuthServlet extends HttpServlet {
 		}
 		
 		XAuth.setUser(user);
+		
+		if (isRemember) {
+
+		    Cookie cookie =
+		            new Cookie(
+		                "remember_user",
+		                String.valueOf(user.getId())
+		            );
+
+		    cookie.setHttpOnly(true);
+
+		    cookie.setPath(
+		        XPath.getContextPath().isEmpty()
+		            ? "/"
+		            : XPath.getContextPath()
+		    );
+
+		    cookie.setMaxAge(
+		        7 * 24 * 60 * 60
+		    );
+
+		    XHttp.getResponse()
+		         .addCookie(cookie);
+		}
 		
 		if (XAuth.isAdmin()) {
 			XPath.redirect("/admin/dashboard");
@@ -163,6 +218,10 @@ public class AuthServlet extends HttpServlet {
 		var confirmPassword = XParam.getString("confirmPassword");	
 		
 		var user = userService.register(fullName, gender, phone, email, password, confirmPassword);
+		
+		if(user != null) {
+			XMail.sendWelcome(user);
+		}
 		
 		if(user == null) {
 			XAttr.setRequest("registerError", "Thông tin không hợp lệ hoặc email/số điện thoại đã tồn tại");
